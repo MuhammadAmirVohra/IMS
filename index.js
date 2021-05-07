@@ -141,16 +141,6 @@ mongoose.connect(uri, {
 // });
 //
 
-if (process.env.NODE_ENV === 'production') {
-  // Exprees will serve up production assets
-  app.use(express.static('client/build'));
-
-  // Express serve up index.html file if it doesn't recognize route
-  const path = require('path');
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
 
 app.get('/:id/pdf', (req,res)=>{
   console.log(req.params.id)
@@ -1388,6 +1378,16 @@ app.post('/:id/upload', upload.single('file'), (req, res, next) => {
 
 
 
+if (process.env.NODE_ENV === 'production') {
+  // Exprees will serve up production assets
+  app.use(express.static('client/build'));
+
+  // Express serve up index.html file if it doesn't recognize route
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 
 
@@ -1396,8 +1396,8 @@ app.post('/:id/upload', upload.single('file'), (req, res, next) => {
 
 
 
-const buildPath = path.join(__dirname, '..', 'build');
-app.use(express.static(buildPath));
+//const buildPath = path.join(__dirname, '..', 'build');
+//app.use(express.static(buildPath));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
