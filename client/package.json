@@ -1,0 +1,58 @@
+{
+  "name": "inventory",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "react-scripts": "^1.1.0"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.1",
+    "downloadjs": "^1.4.7",
+    "formik": "^2.2.6",
+    "js-cookie": "^2.2.1",
+    "jspdf": "^2.3.1",
+    "jspdf-autotable": "^3.5.14",
+    "moment": "^2.29.1",
+    "prop-type": "0.0.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "^17.0.2",
+    "react-modal": "^3.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "react-table": "^7.6.3",
+    "react-to-pdf": "0.0.13",
+    "styled-components": "^5.2.3",
+    "watchpack": "^1.7.5",
+    "web-vitals": "^1.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
