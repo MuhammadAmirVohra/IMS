@@ -902,29 +902,19 @@ app.post('/:id/rejectdirector', (req,res)=>{
         }
         else
         {
-          PDF.deleteOne({Request_ID : req.params.id}, (err,del)=>{
-            if(err)
-            {
-              console.log(err);
-              res.send({code : 404})
-            }
-            else
-            {
-              mailer.sendMail({
-                from: "fastinventorymanagementsystem@gmail.com",
-                to: req.body.email,
-                subject: 'Your Request has been rejected',
-                html: 'Hi <b>' + req.body.name + '</b>,<br>Due to unfortunate reasons your request against the  Request ID : <b>' + req.params.id + '</b> and Item:<b>' + req.body.item + '</b> has been rejected.'
-              }, function (err) {
-                if (err) {
-                  console.log('Unable to send mail ' + err)
-                }
-              })
-    
-              console.log("Request Rejected")
-              res.send({code : 200});
+          mailer.sendMail({
+            from: "fastinventorymanagementsystem@gmail.com",
+            to: req.body.email,
+            subject: 'Your Request has been rejected',
+            html: 'Hi <b>' + req.body.name + '</b>,<br>Due to unfortunate reasons your request against the  Request ID : <b>' + req.params.id + '</b> and Item:<b>' + req.body.item + '</b> has been rejected.'
+          }, function (err) {
+            if (err) {
+              console.log('Unable to send mail ' + err)
             }
           })
+
+          console.log("Request Rejected")
+          res.send({code : 200});
     
     
         }

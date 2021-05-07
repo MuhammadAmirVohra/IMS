@@ -31,16 +31,10 @@ const Account_Manager = () =>{
     
     const SubmitComment = ()=>{
         axios.post(`${API_URL}/submitaccounts`, { id : id, comment : comments }).then((res)=>{
-                if(res.data.code === 200)
+                if(res.status === 200)
                 { 
                     console.log('Comment Added')
                     history.push('/managerdashboard')
-                }
-                else if(res.data.code === 404)
-                { 
-                    window.flash('Failed to submit comment', 'danger')
-                    // console.log('Comment Added')
-                    // history.push('/managerdashboard')
                 }
         })
     }
