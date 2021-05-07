@@ -1,6 +1,6 @@
 {
   "name": "inventory",
-  "homepage" : "http://fast-inventory.herokuapp.com/",
+  "homepage": "http://fast-inventory.herokuapp.com/",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
@@ -29,6 +29,7 @@
     "react-table": "^7.6.3",
     "react-to-pdf": "0.0.13",
     "styled-components": "^5.2.3",
+    "universal-cookie": "^4.0.4",
     "watchpack": "^1.7.5",
     "web-vitals": "^1.1.1"
   },
