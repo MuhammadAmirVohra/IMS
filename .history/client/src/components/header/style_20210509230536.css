@@ -1,0 +1,15 @@
+const Nav = styled(Navbar)`
+    // background:  rgba(0,0,0,0.8);
+    background: #1F386B;
+    justify-content:flex-end;
+`;
+
+.LogoutButton{
+    background :#EFBB20;
+    border: none; 
+    
+};
+
+.LogoutButton:hover{
+    background: #0e8ccc;
+}

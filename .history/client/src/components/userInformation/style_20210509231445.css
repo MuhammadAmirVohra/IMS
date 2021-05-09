@@ -1,0 +1,16 @@
+.Card1{
+
+    width : inherit;
+    margin-top: 5.5rem;
+};
+
+.Btn{
+    background :#EFBB20;
+    border: none; 
+    
+};
+
+.Btn:hover { 
+    background: #0e8ccc;
+
+};

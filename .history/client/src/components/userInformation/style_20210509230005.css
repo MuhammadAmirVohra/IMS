@@ -1,0 +1,16 @@
+.Card1{
+
+    width : 25rem;
+
+};
+
+.Btn{
+    background :#EFBB20;
+    border: none; 
+    
+};
+
+.Btn:hover { 
+    background: #0e8ccc;
+
+};
