@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-bootstrap';
-// import styled  from 'styled-components';
+import styled  from 'styled-components';
 import { Navbar } from 'react-bootstrap'
 import Flash from '../Flash/flashmessage'
 import '../style.css'

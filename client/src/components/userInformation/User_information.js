@@ -4,7 +4,7 @@ import {Card} from 'react-bootstrap';
 // import Authapi from '../Authapi'
 import { useHistory } from 'react-router';
 // import Cookies from 'js-cookie'
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import {Button, Collapse, Form} from 'react-bootstrap';
 import {API_URL} from '../../utils/constant'
 import '../style.css';

@@ -4,7 +4,7 @@ import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import moment from 'moment';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 // import Pdf from "react-to-pdf";
 import {useHistory} from 'react-router';
 // import ReactDOM from "react-dom";
@@ -29,8 +29,7 @@ const Director = () =>{
     //     }) 
     // }
     // const [req_id, set_req_id] = useState("")
-    
-    async function fetch(){
+    useEffect (() =>{
         axios.get(`${API_URL}/` + id + '/directorrequest')
         .then(
             (res) => {
@@ -41,13 +40,7 @@ const Director = () =>{
         
             } 
         )
-    }
-
-    useEffect (() =>{
-        fetch();
-        setInterval(()=>{fetch()}, 3000);
-
-    })
+    },[id])
     
     const Accept = ()=>{
         axios.post(`${API_URL}/`+id+'/acceptdirector').then((res)=>{
@@ -88,7 +81,7 @@ const Director = () =>{
         })
     }
 
-
+    
 
     const Download = async ()=>{
         await axios.get(`${API_URL}/${id}/download`, {
@@ -105,7 +98,7 @@ const Director = () =>{
         <HeaderPages/>
         <Container className="MainContainer">
 
-        <Card>
+        <Card className="Card1">
             <Card.Header>
                 Request Details
             </Card.Header>
@@ -123,13 +116,17 @@ const Director = () =>{
                 <Button className = "Btn" onClick={Download}>Download Quotation</Button>
               
             </Card.Body>
-            <Card.Footer>
+            <Card.Footer className="">
             {/* <Pdf targetRef={ref} filename="code-example.pdf">
                  {({ toPdf }) => <Btn onClick={ () => { toPdf()}}>Generate Pdf</Btn>}
             </Pdf> */}
-            <Button className = "Btn"><a href = {`${API_URL}/` + id + '/pdf'}>Generate Pdf</a></Button>
-            <Button className = "Btn" onClick={Accept}>Accept</Button>
-            <Button className = "Btn" onClick={Reject}>Reject</Button>
+           <Button className = "btn-danger ml-4 float-right" onClick={Reject}>Reject</Button>
+           <Button className = "btn-success ml-4 float-right" onClick={Accept}>Accept</Button>
+            
+            
+           <Button className = "Btn float-right"><a href = {`${API_URL}/${id}/pdf`}>Generate Pdf</a></Button>
+           
+            
             </Card.Footer>
         </Card>
         </Container>

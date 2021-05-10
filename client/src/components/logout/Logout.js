@@ -12,6 +12,8 @@ function Logout() {
     const history = useHistory()
     const Auth = React.useContext(Authapi)
     axios.get(`${API_URL}/loGout`).then((res)=>{
+            
+
 
         Auth.settoken(false);
         // settoken(null)

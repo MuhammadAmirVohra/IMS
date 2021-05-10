@@ -9,6 +9,11 @@
     border: none; 
 }
 
+.Btn a{ 
+    text-decoration:none;
+    color:white;
+}
+
 .Btn:hover { 
     background: #0e8ccc;
 
@@ -64,11 +69,11 @@
 .FormGroup{
     display:flex;
 }
-
-.CardText{
+.CardText{ 
     color:red;
     margin-top: -13px;
     font-size: 12px;
+
 }
 
 .CardStyle{
@@ -76,5 +81,4 @@
     box-shadow: 6px 5px 5px rgb(0 0 0 );
     width: 500px;
     height: 350px;
-
 }

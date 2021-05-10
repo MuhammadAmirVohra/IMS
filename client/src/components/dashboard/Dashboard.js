@@ -3,7 +3,7 @@ import React from 'react';
 import { Col, Container, Row} from 'react-bootstrap';
 import RequestForm from '../Request_Form/Request_Form.js'
 import HeaderPg from '../header/Header_pages'
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import UserInfo from '../userInformation/User_information.js';
 import TrackRequest from '../track/Track_request'
 

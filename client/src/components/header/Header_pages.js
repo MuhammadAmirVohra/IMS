@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-bootstrap';
-// import styled  from 'styled-components';
+import styled  from 'styled-components';
 import { Navbar, Button} from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import Flash from '../Flash/flashmessage'

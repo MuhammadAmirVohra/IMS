@@ -3,7 +3,7 @@ import RequestTable from '../storeTable/Store_Table'
 import {Link} from 'react-router-dom';
 import {Button, Container} from 'react-bootstrap'
 import UserInformation from '../userInformation/User_information.js';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import HeaderPages from '../header/Header_pages';
 import '../style.css'
 

@@ -9,7 +9,7 @@ import {
   Collapse,
   Card,
 } from "react-bootstrap";
-// import styled from "styled-components";
+import styled from "styled-components";
 
 const TrackRequest = () => {
     const [trackID,settrackID] = useState({})
@@ -80,7 +80,6 @@ const TrackRequest = () => {
               placeholder="Request ID"
               onChange={onChangeHandle}
               name="RequestID"
-              required
             ></Form.Control>
             <br />
             <Button className="Btn" type="submit">Submit</Button>

@@ -2,7 +2,7 @@ import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Table,Button,Container, Modal, Form} from 'react-bootstrap';
 import moment from 'moment';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import { API_URL } from '../../utils/constant';
 import '../style.css'
 const RequestTable = () => {
@@ -22,10 +22,9 @@ const RequestTable = () => {
         }
     // var requests = []
     useEffect( () =>{
-        fetch();
-    setInterval(()=>{fetch()}, 3000);
     
-    })
+    fetch()
+    },[])
     const [showModal, setShow] = useState(false)
     const [ModalInfo, SetInfo] = useState({})
     const ModalContent = ()=>{

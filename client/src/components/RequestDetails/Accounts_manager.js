@@ -4,7 +4,7 @@ import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import moment from 'moment';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import download from 'downloadjs';
 import { API_URL } from '../../utils/constant';
 import {useHistory} from 'react-router';
@@ -17,9 +17,8 @@ const Account_Manager = () =>{
     const [details, setDetails] = useState([]);
     // const [path, setPath] = useState("");
     console.log("Params " , id);
-    
-    async function fetch (){
-        axios.get(`${API_URL}/` + id + '/accountsrequest')
+    useEffect (() =>{
+    axios.get(`${API_URL}/` + id + '/accountsrequest')
     .then(
         (res) => {
             setDetails(res.data)
@@ -28,13 +27,7 @@ const Account_Manager = () =>{
        
         } 
     )
-    }
-
-    useEffect (() =>{
-        fetch();
-        setInterval(()=>{fetch()}, 3000);
-
-    })
+    },[id])
     
     const SubmitComment = ()=>{
         axios.post(`${API_URL}/submitaccounts`, { id : id, comment : comments }).then((res)=>{
@@ -86,7 +79,7 @@ const Account_Manager = () =>{
                 <Form className="mt-4" onSubmit={SubmitComment}>
                     <Form.Group>
                         <Card.Title className="CardTitle">Add Comments<span>*</span></Card.Title>
-                        <Form.Control placeholder="Enter Comments" as="textarea" row={5} value ={comments} onChange = { (e) => { set_comments(e.target.value) }} ></Form.Control>
+                        <Form.Control placeholder="Enter Comments" as="textarea" row={5} value ={comments} onChange = { (e) => { set_comments(e.target.value) }} required></Form.Control>
                     </Form.Group>
                     <Form.Group>
                         <Button type="submit" className="Btn btn btn-md float-right"  >Submit</Button>

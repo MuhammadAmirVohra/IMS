@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-bootstrap'
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-// import styled  from 'styled-components';
+import styled  from 'styled-components';
 import axios from 'axios';
 import { API_URL } from '../../utils/constant';
 import "../style.css"
@@ -76,20 +76,20 @@ const RequestForm = ()=>{
                     <Form className="FormStyle" onSubmit={onSubmit} >
                         <Form.Group >
                             <Form.Label>Name : </Form.Label>
-                            <Form.Control placeholder="Enter Name" onChange={onChangeHandle} type="text" name="Name" value={request.Name} required/>                
+                            <Form.Control placeholder="Enter Name" onChange={onChangeHandle} type="text" name="Name" value={request.Name}/>                
                         </Form.Group>
                         <Form.Group >
                             <Form.Label>Email : </Form.Label>
-                            <Form.Control placeholder="Enter Email" onChange={onChangeHandle} type="email" name="email" value={request.email} required/>
+                            <Form.Control placeholder="Enter Email" onChange={onChangeHandle} type="email" name="email" value={request.email} />
                         </Form.Group>
                         <Form.Group >
                             <Form.Label>Item : </Form.Label>
-                            <Form.Control placeholder="Enter Item Name" onChange={onChangeHandle} type="text" name="itemname" value={request.itemname} required/>
+                            <Form.Control placeholder="Enter Item Name" onChange={onChangeHandle} type="text" name="itemname" value={request.itemname} />
                         </Form.Group>
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Quantity : </Form.Label>
-                                <Form.Control placeholder="Enter Quantity" onChange={onChangeHandle} type="number" name="qty" value={request.qty} required/>
+                                <Form.Control placeholder="Enter Quantity" onChange={onChangeHandle} type="number" name="qty" value={request.qty} />
                             </Form.Group>
                             <Form.Group as={Col} >
                                 <Form.Label>Duration : </Form.Label>
@@ -98,7 +98,7 @@ const RequestForm = ()=>{
                         </Form.Row>
                         <Form.Group>
                             <Form.Label>Reason : </Form.Label>
-                            <Form.Control placeholder="Elaborate Reason(Optional)" as="textarea" rows={4} onChange={onChangeHandle} type="text" name="reason" value={request.reason} required/>
+                            <Form.Control placeholder="Elaborate Reason(Optional)" as="textarea" rows={4} onChange={onChangeHandle} type="text" name="reason" value={request.reason} />
                         </Form.Group>
                         <Form.Group className="text-right">
                             {/* <a href="#"> Forgot Email ? </a> */}

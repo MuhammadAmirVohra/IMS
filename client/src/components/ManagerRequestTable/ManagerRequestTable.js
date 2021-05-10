@@ -2,7 +2,7 @@ import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Table,Container,OverlayTrigger,Tooltip} from 'react-bootstrap';
 import moment from 'moment';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import {useHistory} from 'react-router';
 import { API_URL } from '../../utils/constant';
 import Cookie from 'universal-cookie';
@@ -26,8 +26,10 @@ const AdminRequestTable = () => {
          })
     }
     useEffect( () =>{
-        fetch();
-      setInterval(()=>{fetch()}, 3000);
+    fetch()
+        
+    
+     
     },[])
  
     const history = useHistory() 

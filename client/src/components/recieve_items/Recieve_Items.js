@@ -24,9 +24,9 @@ const RecieveItems = () => {
     } 
     
     useEffect( () =>{
-        fetch();
-        setInterval(()=>{fetch()}, 3000);
-    })
+      
+    fetch()
+    },[])
 
 
     const [showModal, setShow] = useState(false)
@@ -41,7 +41,7 @@ const RecieveItems = () => {
        const UpdateRecord = (event)=>{
            event.preventDefault()
            
-        axios.post(`${API_URL}/recieveitem`
+        axios.post(`${API_URL}/` + 'recieveitem'
         ,{ id : ModalInfo._id, name : name, quantity : quantity, description : description, type : type })
             .then(
             (res) => {
@@ -68,21 +68,21 @@ const RecieveItems = () => {
                     <Modal.Body className="ModalBody">
 
                 <Form.Group>
-                    <Form.Control type="text" value={name} placeholder = "Item Name" onChange={(event)=>{ setname(event.target.value)}} required/>
+                    <Form.Control type="text" value={name} placeholder = "Item Name" onChange={(event)=>{ setname(event.target.value)}} />
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Control type="number" value={quantity} placeholder = "Item Quantity" onChange={(event)=>{ setquantity(event.target.value) }} required/>
-                </Form.Group>
-                
-
-                <Form.Group>
-                    <Form.Control type="text" value={type} placeholder = "Item Type" onChange={ (event)=>{ settype(event.target.value) }} required/>
+                    <Form.Control type="number" value={quantity} placeholder = "Item Quantity" onChange={(event)=>{ setquantity(event.target.value) }} />
                 </Form.Group>
                 
 
                 <Form.Group>
-                    <Form.Control type="text" value={description} placeholder = "Item Description" onChange={ (event)=>{ setdescription(event.target.value) }} required/>
+                    <Form.Control type="text" value={type} placeholder = "Item Type" onChange={ (event)=>{ settype(event.target.value) }} />
+                </Form.Group>
+                
+
+                <Form.Group>
+                    <Form.Control type="text" value={description} placeholder = "Item Description" onChange={ (event)=>{ setdescription(event.target.value) }} />
                 </Form.Group>
                 
                 </Modal.Body>

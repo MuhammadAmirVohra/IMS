@@ -1,10 +1,10 @@
 import React , { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Table,Button,Container, Form} from 'react-bootstrap';
+import {Table,Button,Container, Modal, Form} from 'react-bootstrap';
 import moment from 'moment';
 import { API_URL } from '../../utils/constant';
 
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
 const RequestTable = () => {
     const arr = ['Date Requested','Item Name','Quantity','Quotation']
@@ -23,11 +23,11 @@ const RequestTable = () => {
     // var requests = []
     useEffect( () =>{
        
-      setInterval(()=>{fetch()}, 3000);
-
+        
+    fetch()
     },[])
     
-    // const [showModal, setShow] = useState(false)
+    const [showModal, setShow] = useState(false)
     const [file, SetFile] = useState(null)
     const [Info, SetInfo] = useState("")
 
@@ -50,7 +50,7 @@ const RequestTable = () => {
                 'Content-Type': 'multipart/form-data'
               }
             }).then((res)=>{
-                if(res.data.code === 200)
+                if(res.data.code == 200)
                 {
                     window.flash('File Successfully Submitted')
                     fetch();
@@ -177,7 +177,7 @@ const RequestTable = () => {
                 {/* <a href = "http://localhost:5000/upload"><Btn>Upload</Btn></a> */}
 
                     <Form onSubmit = {SubmitFile}>
-                        <Form.File name = "file" onChange = {  onChangeHandlerFile } required/>
+                        <Form.File name = "file" onChange = {  onChangeHandlerFile } />
                         <Button type="submit" className ="Btn mt-2 btn btn-md" onClick= {() => {SetInfo(request._id)}}>Submit</Button>
                     </Form>
                 </td>
@@ -217,10 +217,10 @@ export default RequestTable
 //     background: #0e8ccc;
 // }`;
 
-// const ModalBody = styled(Modal.Body)`
+const ModalBody = styled(Modal.Body)`
 
-// li{
-//     padding:5px;
-// }
+li{
+    padding:5px;
+}
 
-// `;
+`;

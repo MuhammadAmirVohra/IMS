@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const cors = require('cors');
 const e = require('express');
 const uri = "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
 var logged_in_user = null
@@ -22,12 +22,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:3000", // <-- location of the react app were connecting to
+    credentials: true,
+  })
+);
 app.use(
   session({
     secret: "secretcode",
@@ -130,21 +130,21 @@ mongoose.connect(uri, {
 // app.use(allowCrossDomain);
 
 
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.header("Access-Control-Allow-Credentials", true);
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
-//
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 
 
 app.get('/:id/pdf', (req,res)=>{
-  console.log(req.params.id)
-  Order.findOne({_id : req.params.id}, (err,data)=>{
+  console.log("PDF :",req.params.id)
+  Order.findOne({_id : req.params.id},  (err,data)=>{
     if(err)
     {
       console.log(err);
@@ -165,6 +165,7 @@ app.get('/:id/pdf', (req,res)=>{
         }
         else
         {
+          // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
           pdfDoc.image('./nav_logo.png', {fit: [450, 150], align: 'center'})
           pdfDoc.text('\n\n')
           pdfDoc.fillColor('red').fontSize(30).text("Request Details", {bold : true, align:'center'});
@@ -184,7 +185,20 @@ app.get('/:id/pdf', (req,res)=>{
             pdfDoc.end();
           // console.log(pdfDoc);
           //   res.pipe(pdfDoc);
+            // pdfDoc.pipe(res);
+           
+            // res.download('./report.pdf')
             pdfDoc.pipe(res);
+
+            // res.download(pdfDoc);
+          //   fs.writeFile('report.pdf', pdfDoc,'binary', function(err){
+          //     if (err) throw err;
+          //     console.log('Sucessfully saved!');
+          //     // file = fs.createReadStream('./quotation.pdf')
+          //     // file.pipe(res)
+              
+          //     // fs.unlinkSync('./quotation.pdf')
+          // });
         }
       })
     

@@ -4,7 +4,7 @@ import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import moment from 'moment';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import { API_URL } from '../../utils/constant';
 import download from 'downloadjs';
 import {useHistory} from 'react-router';
@@ -19,8 +19,7 @@ const ManagerAdmin = () =>{
 
     console.log("Params " , id);
     
-
-    async function fetch(){
+    useEffect (() =>{
         axios.get(`${API_URL}/` + id + '/adminrequest')
         .then(
             (res) => {
@@ -31,12 +30,7 @@ const ManagerAdmin = () =>{
         
             } 
         )
-    }
-
-    useEffect (() =>{
-        fetch();
-        setInterval(()=>{fetch()}, 3000);
-    })
+    },[id])
     
     const SubmitComment = ()=>{
         axios.post(`${API_URL}/submitadmin`, { id : id, comment : admin_comment }).then((res)=>{
@@ -84,14 +78,14 @@ const ManagerAdmin = () =>{
                 <Card.Title><strong>Reason : </strong>{request.Reason}</Card.Title>
                 <Card.Title><strong>Date Requested </strong>{moment(request.Added).format('Do MMMM YYYY')}</Card.Title>
                 <Card.Title><strong>Accounts Manager Comments : </strong>{comment.Comment_Accounts}</Card.Title>
-                <Button className ="Btn" onClick={Download}>Download Quotation</Button>
+                <Btn onClick={Download}>Download Quotation</Btn>
                 <Form className="mt-4" onSubmit={SubmitComment}>
                     <Form.Group>
-                        <Card.Title className="CardTitle">Add Comments<span>*</span></Card.Title>
-                        <Form.Control as="textarea" row={5} value = {admin_comment} onChange = {(e) => { set_admin(e.target.value) }}></Form.Control>
+                        <CardTitle>Add Comments<span>*</span></CardTitle>
+                        <Form.Control as="textarea" row={5} value = {admin_comment} onChange = {(e) => { set_admin(e.target.value) }} required></Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Button type="submit" className="Btn btn btn-md float-right"  >Submit</Button>
+                        <Btn type="submit" className="btn btn-md float-right"  >Submit</Btn>
                     </Form.Group>
                 </Form>
             </Card.Body>
@@ -105,25 +99,25 @@ const ManagerAdmin = () =>{
 }
 
 export default ManagerAdmin;
-// const MainContainer = styled(Container)`
-//     width: 100%;
-//     height: auto;
-//     min-height: 100%;
-//     min-height: 100vh;
-//     margin-top:100px;
-// `;
+const MainContainer = styled(Container)`
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    min-height: 100vh;
+    margin-top:100px;
+`;
 
 
-// const Btn = styled(Button)`
-//     background :#EFBB20;
-//     border: none; 
-//     &:hover{
-//     background: #0e8ccc;
-// }`;
+const Btn = styled(Button)`
+    background :#EFBB20;
+    border: none; 
+    &:hover{
+    background: #0e8ccc;
+}`;
 
-// const CardTitle = styled(Card.Title)`
-// span{
-//     color : red;
-// }
-// `;
+const CardTitle = styled(Card.Title)`
+span{
+    color : red;
+}
+`;
 

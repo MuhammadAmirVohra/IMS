@@ -1,7 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Row,Table,Button,Container, Modal, Form} from 'react-bootstrap';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import MainHeader from '../header/Header_pages'
 import { API_URL } from '../../utils/constant';
 import "../style.css"
@@ -10,22 +10,21 @@ import "../style.css"
 const Inventory = () => {
     const arr = ['Name','Type','Description','Quantity']
     const [items, setitems] = useState([])
-        
-    async function fetch(){
-        await axios.get(`${API_URL}/storeitem`, {
-             withCredentials: true
-         }).then((res)=>{
-             console.log(res.data);
-             
-             setitems(res.data);
-             
-         })
-     } 
+
     useEffect( () =>{
        
-       fetch();
-    setInterval(()=>{fetch()}, 3000);
-    })
+        async function fetch(){
+       await axios.get(`${API_URL}/storeitem`, {
+            withCredentials: true
+        }).then((res)=>{
+            console.log(res.data);
+            
+            setitems(res.data);
+            
+        })
+    } 
+    fetch()
+    },[])
 
 
     const [showModal, setShow] = useState(false)
@@ -67,21 +66,21 @@ const Inventory = () => {
                      <Modal.Body className="ModalBody">
  
                  <Form.Group>
-                     <Form.Control type="text" value={name} placeholder = "Item Name" onChange={(event)=>{ setname(event.target.value)}} required/>
+                     <Form.Control type="text" value={name} placeholder = "Item Name" onChange={(event)=>{ setname(event.target.value)}} />
                  </Form.Group>
  
                  <Form.Group>
-                     <Form.Control type="number" value={quantity} placeholder = "Item Quantity" onChange={(event)=>{ setquantity(event.target.value) }} required/>
-                 </Form.Group>
-                 
- 
-                 <Form.Group>
-                     <Form.Control type="text" value={type} placeholder = "Item Type" onChange={ (event)=>{ settype(event.target.value) }} required/>
+                     <Form.Control type="number" value={quantity} placeholder = "Item Quantity" onChange={(event)=>{ setquantity(event.target.value) }} />
                  </Form.Group>
                  
  
                  <Form.Group>
-                     <Form.Control type="text" value={description} placeholder = "Item Description" onChange={ (event)=>{ setdescription(event.target.value) }} required/>
+                     <Form.Control type="text" value={type} placeholder = "Item Type" onChange={ (event)=>{ settype(event.target.value) }} />
+                 </Form.Group>
+                 
+ 
+                 <Form.Group>
+                     <Form.Control type="text" value={description} placeholder = "Item Description" onChange={ (event)=>{ setdescription(event.target.value) }} />
                  </Form.Group>
                  
                  </Modal.Body>

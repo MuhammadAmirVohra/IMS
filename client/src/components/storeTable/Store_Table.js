@@ -1,7 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Table,Container,OverlayTrigger,Tooltip} from 'react-bootstrap';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import {useHistory} from 'react-router-dom';
 import { API_URL } from '../../utils/constant';
 
@@ -56,10 +56,10 @@ const RequestTable = () => {
 
     // var requests = []
     useEffect( () =>{
-        fetch();
-        setInterval(()=>{fetch()}, 3000);
-
-    })
+       
+        
+    fetch()
+    },[])
 
 
     // const [showModal, setShow] = useState(false)

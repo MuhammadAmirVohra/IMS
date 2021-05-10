@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'react-bootstrap'
 import { Form, Button, Container, Row, Col, Card} from 'react-bootstrap';
-// import styled  from 'styled-components';
+import styled  from 'styled-components';
 import axios from 'axios';
 import Header from '../header/Header'
 import { API_URL } from '../../utils/constant';
@@ -12,7 +12,7 @@ import AuthApi from '../Authapi'
 // import {ReactPDF} from '@react-pdf/renderer';
 // import PdfGenerator from '../PDF/PdfGenerator'
 import Cookies from 'universal-cookie';
-
+import "../style.css"
 const LoginForm = () => {
     const cookie = new Cookies();
     
@@ -153,18 +153,18 @@ const LoginForm = () => {
         <Container className="MainContainer d-flex justify-content-center align-items-center">
             <Row>
                 <Col className="text-center">
-                    <Card className= "CardStyle">
+                    <Card className="CardStyle">
                     <Form  onSubmit={onSubmit} >
                         <Card.Header className = "text-left" >LOGIN</Card.Header>
-                        <Card.Body >
+                        <Card.Body>
                         <Form.Group className="text-left">
                         <Form.Label>Username : </Form.Label>
-                        <Form.Control placeholder="Enter Username" onChange={onChangeHandle} type="text" name="username" value={Credentials.username} required/>                
+                        <Form.Control placeholder="Enter Username" onChange={onChangeHandle} type="text" name="username" value={Credentials.username}/>                
                            
                         </Form.Group>
                         <Form.Group className="text-left">
                             <Form.Label>Password : </Form.Label>
-                            <Form.Control onKeyUp={onKeyhandle} placeholder="Enter Password" onChange={onChangeHandle} type="password" name="password" value={Credentials.password} required/>
+                            <Form.Control onKeyUp={onKeyhandle} placeholder="Enter Password" onChange={onChangeHandle} type="password" name="password" value={Credentials.password} />
                         </Form.Group>
 
                     {login===false &&

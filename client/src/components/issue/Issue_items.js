@@ -1,7 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Row,Table,Button,Container, Modal, Form, Card} from 'react-bootstrap';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import MainHeader from '../header/Header_pages';
 import { useParams, useHistory } from 'react-router';
 import { API_URL } from '../../utils/constant';
@@ -77,20 +77,19 @@ const IssueItems = () =>
     
 
     useEffect( () =>{
-        fetch();
-        setInterval(()=>{fetch()}, 3000);
-
-    })
+       fetch()
+  
+    },[])
     // /////////////////////////////////////////////////
     const [showModal, setShow] = useState(false)
     const [ModalInfo, SetInfo] = useState({})
     const [item_id, set_item_id] = useState("")
     const ModalContent = ()=>{
        
-        // const [name, setname] = useState(ModalInfo.Item_Name)
-        // const [quantity, setquantity] = useState(ModalInfo.Item_Quantity)
-        // const [description, setdescription] = useState(ModalInfo.Item_Description)
-        // const [type, settype] = useState(ModalInfo.Item_Type)
+        const [name, setname] = useState(ModalInfo.Item_Name)
+        const [quantity, setquantity] = useState(ModalInfo.Item_Quantity)
+        const [description, setdescription] = useState(ModalInfo.Item_Description)
+        const [type, settype] = useState(ModalInfo.Item_Type)
  
         const UpdateRecord = (event,q)=>{
             // event.preventDefault() oyeeee abbb bass bhot hogaya ... commit karo aur so jao 
@@ -130,7 +129,7 @@ const IssueItems = () =>
                          Details 
                      </Modal.Title>
                      </Modal.Header>
-                <ModalBody>
+                <Modal.Body className="ModalBody">
              
                 <h5><strong>Requested Item Information</strong></h5>
                 <p>Item Name: {requested.Item}</p>
@@ -144,10 +143,10 @@ const IssueItems = () =>
                 <p><strong>Set Issue Quantity</strong></p> 
                
                 <Form>
-                    <Form.Control type="number" value = {Quantity} onChange={(event)=>{setQuantity(event.target.value)}}  required/>    
+                    <Form.Control type="number" value = {Quantity} onChange={(event)=>{setQuantity(event.target.value)}}  />    
                 </Form>
 
-                </ModalBody>
+                </Modal.Body>
                  <Modal.Footer>
                     <Button onClick={()=>UpdateRecord(ModalInfo.Item_Quantity - Quantity)} type ="submit" className = "Btn btn-success">Issue</Button>              
                 </Modal.Footer>
@@ -176,11 +175,11 @@ const IssueItems = () =>
         
 
         <Container className="MainContainer">
-            <Row1>
+            <Row className="Row1">
                 <h1>Store Inventory</h1>
 
-            </Row1>
-            <Row1>
+            </Row>
+            <Row className="Row1">
                 <Card>
                 <Card.Header>Requested Item Information</Card.Header>
                 <Card.Body>
@@ -191,23 +190,23 @@ const IssueItems = () =>
                 {/* <Btn onClick = {() => {SetInfo(request); setShow(true);} } className = "mr-1"> Details </Btn> */}
                 {/* <Btn onClick={()=>onIssue(request._id)} className = "btn-success mr-1">Issue</Btn> */}
                 <Card.Footer>
-                <Button  className="Btn btn-success" onClick= {() => {onPurchase()}}>Send To Purchase Department</Button>
-                <Button onClick={()=>onCancel(requested._id, requested.R_Emp_Email, requested.R_Emp_Name, requested.Item)} className="Btn btn-danger">Cancel</Button>
+                <Button  className="Btn btn-success mr-4" onClick= {() => {onPurchase()}}>Send To Purchase Department</Button>
+                <Button className = " btn-danger" onClick={()=>onCancel(requested._id, requested.R_Emp_Email, requested.R_Emp_Name, requested.Item)} >Cancel</Button>
                 </Card.Footer></Card>
-            </Row1>
-            <Row1 className="float-right" >
+            </Row>
+            <Row className="Row1 float-right" >
         
         <Form>
              
-             <FormGroup>
+             <Form.Group className="FormGroup">
                     
-                <FormLabel>Search </FormLabel>  
+                <Form.Label className="mt-auto mr-2">Search: </Form.Label>  
                  <Form.Control type="text" placeholder="Search" name="searchbar" value={iName} onChange={(event)=>{ setItemName(event.target.value)}} />
                  
                 
               
                 
-             </FormGroup>
+             </Form.Group>
              
         </Form>       
             
@@ -215,7 +214,7 @@ const IssueItems = () =>
           
          
          
-         </Row1>
+         </Row>
      
             { 
                 inventory.length > 0 &&
@@ -257,16 +256,11 @@ const IssueItems = () =>
            
                         </>
                     )
+                    // else return(<tr></tr>)
 
-                    
-                    else 
-                        return(<tr></tr>)
-                    
-                
-                    
                     }
-                )
-            }
+                    )
+                }
             </tbody>
       
             </Table>
@@ -288,12 +282,12 @@ const IssueItems = () =>
 
 export default IssueItems;
 
-const Row1 = styled(Row)`
-    padding:100px 16px 0px 0px;
+// const Row1 = styled(Row)`
+//     padding:100px 16px 0px 0px;
     
 
 
-`;
+// `;
 // const MainContainer = styled(Container)`
 //     width: 100%;
 //   height: auto;
@@ -319,22 +313,22 @@ const Row1 = styled(Row)`
 // }
 // `;
 
-const ModalBody = styled(Modal.Body)`
+// const ModalBody = styled(Modal.Body)`
 
-li{
-    padding:10px;
-}
+// li{
+//     padding:10px;
+// }
 
-`;
-
-
-const FormGroup = styled(Form.Group)`
-display : flex
-
-`;
+// `;
 
 
-const FormLabel = styled(Form.Label)`
-font-size : 25px
+// const FormGroup = styled(Form.Group)`
+// display : flex
 
-`;
+// `;
+
+
+// const FormLabel = styled(Form.Label)`
+// font-size : 25px
+
+// `;
