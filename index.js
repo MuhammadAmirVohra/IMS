@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
+// const cors = require('cors');
 const e = require('express');
 const uri = "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
 var logged_in_user = null
@@ -22,12 +22,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(
+
+/*app.use(
   cors({
     origin: "http://localhost:3000", // <-- location of the react app were connecting to
     credentials: true,
   })
-);
+);*/
+
 app.use(
   session({
     secret: "secretcode",
@@ -129,7 +131,7 @@ mongoose.connect(uri, {
 // //allow all crossDomain request
 // app.use(allowCrossDomain);
 
-
+/*
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Credentials", true);
@@ -139,7 +141,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
+*/
 
 
 app.get('/:id/pdf', (req,res)=>{
