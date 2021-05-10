@@ -96,17 +96,15 @@ const Director = () =>{
               const blob = await res.blob();
               const file = new Blob(
                 [blob], 
-                {type: 'application/pdf'},
-                {name : 'report.pdf'}
+                {type: 'application/pdf'}
               );
               console.log(file)
-              
               //Build a URL from the file
               const fileURL = URL.createObjectURL(file);
               //Open the URL on new Window
               console.log(fileURL)
-            //   download(res.data, details.request.Item + '_report', 'pdf');
-              window.open(fileURL);  
+              download(fileURL, details.request.Item + '_report', 'pdf');
+            //   window.open(fileURL);  
             }
           })
     }

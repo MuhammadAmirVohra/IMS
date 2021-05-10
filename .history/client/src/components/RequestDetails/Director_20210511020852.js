@@ -88,7 +88,7 @@ const Director = () =>{
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              filename: "report",
+              filename: "test",
               content: "Testing Content"
             }),
           }).then(async res => {
@@ -96,16 +96,11 @@ const Director = () =>{
               const blob = await res.blob();
               const file = new Blob(
                 [blob], 
-                {type: 'application/pdf'},
-                {name : 'report.pdf'}
+                {type: 'application/pdf'}
               );
-              console.log(file)
-              
               //Build a URL from the file
               const fileURL = URL.createObjectURL(file);
               //Open the URL on new Window
-              console.log(fileURL)
-            //   download(res.data, details.request.Item + '_report', 'pdf');
               window.open(fileURL);  
             }
           })
@@ -152,8 +147,8 @@ const Director = () =>{
            <Button className = "btn-success ml-4 float-right" onClick={Accept}>Accept</Button>
             
             
-           {/* <Button className = "Btn float-right"><a href = {`${API_URL}/${id}/pdf`}>Generate Pdf</a></Button> */}
-           <Button className = "Btn float-right" onClick={PDF}>Generate PDF</Button>
+           <Button className = "Btn float-right"><a href = {`${API_URL}/${id}/pdf`}>Generate Pdf</a></Button>
+           
             
             </Card.Footer>
         </Card>

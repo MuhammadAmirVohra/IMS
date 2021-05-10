@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
 `; 
 function App() 
 {
-    // const cookie = new Cookie()
+    const cookie = new Cookie()
     const [token , settoken] = useState(false)
     const [UserRole , setRole] = useState(false)
 

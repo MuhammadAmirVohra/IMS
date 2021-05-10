@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
 `; 
 function App() 
 {
-    // const cookie = new Cookie()
+    const cookie = new Cookie()
     const [token , settoken] = useState(false)
     const [UserRole , setRole] = useState(false)
 
@@ -128,8 +128,8 @@ const Routes = () =>{
             
                         console.log('token found');
                         Auth.settoken(true); 
-                        Auth.setRole(localStorage.getItem('user'));
-                        // Auth.setRole(cookie.get('user'));
+                        // Auth.setRole(localStorage.getItem('user'));
+                        Auth.setRole(cookie.get('user'));
 
                     }
                     else

@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
 `; 
 function App() 
 {
-    // const cookie = new Cookie()
+    const cookie = new Cookie()
     const [token , settoken] = useState(false)
     const [UserRole , setRole] = useState(false)
 
@@ -116,20 +116,20 @@ function App()
 }
 
 const Routes = () =>{
-    // const cookie = new Cookie()
+    const cookie = new Cookie()
     const Auth = React.useContext(AuthApi);
     return(         
            
            <Switch>
                 <Route exact path="/" render={() => {
-                    let tok = localStorage.getItem('token');
-                    // let tok = cookie.get('token');
+                    // let tok = localStorage.getItem('token');
+                    let tok = cookie.get('token');
                     if (tok) {
             
                         console.log('token found');
                         Auth.settoken(true); 
-                        Auth.setRole(localStorage.getItem('user'));
-                        // Auth.setRole(cookie.get('user'));
+                        // Auth.setRole(localStorage.getItem('user'));
+                        Auth.setRole(cookie.get('user'));
 
                     }
                     else

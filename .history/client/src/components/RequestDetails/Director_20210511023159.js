@@ -100,13 +100,13 @@ const Director = () =>{
                 {name : 'report.pdf'}
               );
               console.log(file)
-              
+              co
               //Build a URL from the file
               const fileURL = URL.createObjectURL(file);
               //Open the URL on new Window
               console.log(fileURL)
-            //   download(res.data, details.request.Item + '_report', 'pdf');
-              window.open(fileURL);  
+              download(res.data, details.request.Item + '_report', 'pdf');
+            //   window.open(fileURL);  
             }
           })
     }

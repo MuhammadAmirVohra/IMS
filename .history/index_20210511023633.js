@@ -181,7 +181,7 @@ app.post('/:id/pdf',(req,res)=>{
           
 
           // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
-          pdfDoc.info['Title'] = 'Report.pdf';
+          
           pdfDoc.image('./nav_logo.png', {fit: [450, 150], align: 'center'})
           pdfDoc.text('\n\n')
           pdfDoc.fillColor('red').fontSize(30).text("Request Details", {bold : true, align:'center'});

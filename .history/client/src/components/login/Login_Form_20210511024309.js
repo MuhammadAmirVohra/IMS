@@ -113,10 +113,10 @@ const LoginForm = () => {
                     Auth.settoken(true);
                     // Cookies.set('user', 'loginTrue')
                     // Auth.setRole(res.data.user.Designation);
-                    localStorage.setItem('token', true);
-                    localStorage.setItem('user', res.data.user.Designation);
-                    // cookie.set("token", true, {path: "/"});
-                    // cookie.set("user", res.data.user.Designation, {path: "/"});
+                    // localStorage.setItem('token', true);
+                    // localStorage.setItem('user', res.data.user.Designation);
+                    cookie.set("token", true, {path: "/"});
+                    cookie.set("user", res.data.user.Designation, {path: "/"});
 
                     Auth.setRole(res.data.user.Designation);
 

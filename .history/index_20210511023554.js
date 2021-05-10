@@ -181,7 +181,6 @@ app.post('/:id/pdf',(req,res)=>{
           
 
           // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
-          pdfDoc.info['Title'] = 'Report.pdf';
           pdfDoc.image('./nav_logo.png', {fit: [450, 150], align: 'center'})
           pdfDoc.text('\n\n')
           pdfDoc.fillColor('red').fontSize(30).text("Request Details", {bold : true, align:'center'});
@@ -197,13 +196,13 @@ app.post('/:id/pdf',(req,res)=>{
           pdfDoc.text('\nDate Requested : ' + moment(data.Added).format('Do MMMM YYYY'))
           pdfDoc.text('\nManager Accounts Comments : ' + data1.Comment_Accounts)
           pdfDoc.text('\nManager Admin Comments : ' +data1.Comment_Admin)
-          pdfDoc.pipe(res);
+          pdfDoc.pipe(fs.createWriteStream('report.pdf'));
           pdfDoc.end();
           // console.log(pdfDoc);
           //   res.pipe(pdfDoc);
             // pdfDoc.pipe(res);
            
-            // res.download('./report.pdf')
+            res.download('./report.pdf')
             // pdfDoc.pipe(res);
           
             // res.download(pdfDoc);

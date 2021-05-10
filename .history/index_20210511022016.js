@@ -161,14 +161,11 @@ app.post('/:id/pdf',(req,res)=>{
       var pdfDoc = new PDFDocument;
       const moment = require('moment')
       let filename = req.body.filename
-     
       // Stripping special characters
       filename = encodeURIComponent(filename) + '.pdf'
       // Setting response to 'attachment' (download).
       // If you use 'inline' here it will automatically open the PDF
-      console.log(filename)
-      // res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
-      res.setHeader('Content-disposition', 'inline; filename=report.pdf');
+      res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
       res.setHeader('Content-type', 'application/pdf')
       Temp.findOne({Req_Id : req.params.id},(err,data1)=>{
         if(err)
@@ -180,8 +177,7 @@ app.post('/:id/pdf',(req,res)=>{
 
           
 
-          // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
-          pdfDoc.info['Title'] = 'Report.pdf';
+          pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
           pdfDoc.image('./nav_logo.png', {fit: [450, 150], align: 'center'})
           pdfDoc.text('\n\n')
           pdfDoc.fillColor('red').fontSize(30).text("Request Details", {bold : true, align:'center'});
@@ -197,8 +193,8 @@ app.post('/:id/pdf',(req,res)=>{
           pdfDoc.text('\nDate Requested : ' + moment(data.Added).format('Do MMMM YYYY'))
           pdfDoc.text('\nManager Accounts Comments : ' + data1.Comment_Accounts)
           pdfDoc.text('\nManager Admin Comments : ' +data1.Comment_Admin)
-          pdfDoc.pipe(res);
-          pdfDoc.end();
+          pdfDoc.pipe(res)
+            pdfDoc.end();
           // console.log(pdfDoc);
           //   res.pipe(pdfDoc);
             // pdfDoc.pipe(res);

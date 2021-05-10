@@ -167,8 +167,7 @@ app.post('/:id/pdf',(req,res)=>{
       // Setting response to 'attachment' (download).
       // If you use 'inline' here it will automatically open the PDF
       console.log(filename)
-      // res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
-      res.setHeader('Content-disposition', 'inline; filename=report.pdf');
+      res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
       res.setHeader('Content-type', 'application/pdf')
       Temp.findOne({Req_Id : req.params.id},(err,data1)=>{
         if(err)
@@ -181,7 +180,6 @@ app.post('/:id/pdf',(req,res)=>{
           
 
           // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
-          pdfDoc.info['Title'] = 'Report.pdf';
           pdfDoc.image('./nav_logo.png', {fit: [450, 150], align: 'center'})
           pdfDoc.text('\n\n')
           pdfDoc.fillColor('red').fontSize(30).text("Request Details", {bold : true, align:'center'});

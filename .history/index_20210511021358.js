@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
+// const cors = require('cors');
 const e = require('express');
 const uri = "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
 var logged_in_user = null
@@ -23,12 +23,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(
+/*app.use(
   cors({
     origin: "http://localhost:3000", // <-- location of the react app were connecting to
     credentials: true,
   })
-);
+);*/
 
 app.use(
   session({
@@ -131,7 +131,7 @@ mongoose.connect(uri, {
 // //allow all crossDomain request
 // app.use(allowCrossDomain);
 
-
+/*
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Credentials", true);
@@ -141,7 +141,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
+*/
 app.post('/:id/pdf',(req,res)=>{
   
   Order.findOne({_id : req.params.id},  (err,data)=>{
@@ -161,64 +161,15 @@ app.post('/:id/pdf',(req,res)=>{
       var pdfDoc = new PDFDocument;
       const moment = require('moment')
       let filename = req.body.filename
-     
       // Stripping special characters
       filename = encodeURIComponent(filename) + '.pdf'
       // Setting response to 'attachment' (download).
       // If you use 'inline' here it will automatically open the PDF
-      console.log(filename)
-      // res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
-      res.setHeader('Content-disposition', 'inline; filename=report.pdf');
+      res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
       res.setHeader('Content-type', 'application/pdf')
-      Temp.findOne({Req_Id : req.params.id},(err,data1)=>{
-        if(err)
-        {
-          console.log(err)
-        }
-        else
-        {
-
-          
-
-          // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
-          pdfDoc.info['Title'] = 'Report.pdf';
-          pdfDoc.image('./nav_logo.png', {fit: [450, 150], align: 'center'})
-          pdfDoc.text('\n\n')
-          pdfDoc.fillColor('red').fontSize(30).text("Request Details", {bold : true, align:'center'});
-          pdfDoc.fillColor('black').fontSize(20).text('\n\nRequested By : ' + data.R_Emp_Name)
-          pdfDoc.text('\nEmail : ' + data.R_Emp_Email)
-          pdfDoc.text('\nItem Requested : ' + data.Item)
-          pdfDoc.text('\nQuantity Required : ' + data.Quantity)
-          if (data.Duration.length)
-          pdfDoc.text('\nDuration : ' + data.Duration)
-
-          pdfDoc.text('\nReason : ' + data.Reason)
-
-          pdfDoc.text('\nDate Requested : ' + moment(data.Added).format('Do MMMM YYYY'))
-          pdfDoc.text('\nManager Accounts Comments : ' + data1.Comment_Accounts)
-          pdfDoc.text('\nManager Admin Comments : ' +data1.Comment_Admin)
-          pdfDoc.pipe(res);
-          pdfDoc.end();
-          // console.log(pdfDoc);
-          //   res.pipe(pdfDoc);
-            // pdfDoc.pipe(res);
-           
-            // res.download('./report.pdf')
-            // pdfDoc.pipe(res);
-          
-            // res.download(pdfDoc);
-          //   fs.writeFile('report.pdf', pdfDoc,'binary', function(err){
-          //     if (err) throw err;
-          //     console.log('Sucessfully saved!');
-          //     // file = fs.createReadStream('./quotation.pdf')
-          //     // file.pipe(res)
-              
-          //     // fs.unlinkSync('./quotation.pdf')
-          // });
-        }
-      })
+      
     }
-})});
+});
 
 app.get('/:id/pdf', (req,res)=>{
   console.log("PDF :",req.params.id)
