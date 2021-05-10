@@ -1,0 +1,53 @@
+.Card1{
+
+    width : inherit;
+    margin-top: 5.5rem;
+}
+
+.Btn{
+    background :#EFBB20;
+    border: none; 
+}
+
+.Btn:hover { 
+    background: #0e8ccc;
+
+}
+
+.TableStyle th {
+    background: #1F386B; 
+    color:white;
+}
+
+.TableStyle tr {
+    cursor:pointer;
+}
+
+.TableStyle tr:hover{
+        background: lightgray;
+    
+}
+
+.MainContainer{
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    min-height: 100vh;
+    margin-top:100px;
+}
+
+.CardTitle span{ 
+    color: red;
+}
+
+.FormStyle{
+
+    background-color: white;
+    width: 500px;
+
+}
+
+.ModalBody li{
+         padding:5px;
+}
+    
