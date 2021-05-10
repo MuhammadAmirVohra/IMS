@@ -202,7 +202,7 @@ const Routes = () =>{
 
                 }}>
                 </Route> */}
-                <Route path ="/:id/issue"
+                <Route path ="/:id/issuerequest"
                 render={() => {
                     if (Auth.token !== false && (Auth.UserRole === "Store"))
                     { return <IssueItems/>}
