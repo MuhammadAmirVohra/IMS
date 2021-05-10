@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'react-bootstrap'
 import { Form, Button, Container, Row, Col, Card} from 'react-bootstrap';
-// import styled  from 'styled-components';
+import styled  from 'styled-components';
 import axios from 'axios';
 import Header from '../header/Header'
 import { API_URL } from '../../utils/constant';
@@ -153,7 +153,7 @@ const LoginForm = () => {
         <Container className="MainContainer d-flex justify-content-center align-items-center">
             <Row>
                 <Col className="text-center">
-                    <Card className= "CardStyle">
+                    <CardStyle>
                     <Form  onSubmit={onSubmit} >
                         <Card.Header className = "text-left" >LOGIN</Card.Header>
                         <Card.Body >
@@ -169,7 +169,7 @@ const LoginForm = () => {
 
                     {login===false &&
                     
-                    <Card.Text className="CardText text-left">*username or password incorrect</Card.Text>
+                    <CardText className="text-left">*username or password incorrect</CardText>
                     
                     }
 
@@ -184,7 +184,7 @@ const LoginForm = () => {
                         {/* <PDF /> */}
                         </Card.Body>
                     </Form>   
-                    </Card>
+                    </CardStyle>
                 </Col> 
             </Row>
 

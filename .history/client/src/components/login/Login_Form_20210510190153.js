@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'react-bootstrap'
 import { Form, Button, Container, Row, Col, Card} from 'react-bootstrap';
-// import styled  from 'styled-components';
+import styled  from 'styled-components';
 import axios from 'axios';
 import Header from '../header/Header'
 import { API_URL } from '../../utils/constant';
