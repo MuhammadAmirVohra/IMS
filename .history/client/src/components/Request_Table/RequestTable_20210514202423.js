@@ -9,7 +9,7 @@ const RequestTable = () => {
     const [showModal, setShow] = useState(false);
    const arr = ['Requested By','Email','Date Requested','Item Name','Quantity','Duration']
     const [allrequest, setrequests] = useState([])
-    const interval_id = useRef(null);
+
 
     async function fetch(){
         console.log('in fetch', showModal);
@@ -17,7 +17,7 @@ const RequestTable = () => {
              withCredentials: true
          }).then((res)=>{
              console.log(res.data);
-            //  if (showModal === false)
+             if (showModal === false)
              setrequests(res.data);
              
          })
@@ -28,10 +28,9 @@ const RequestTable = () => {
     
     fetch()
      
-      interval_id.current = setInterval(()=>{fetch()}, 3000);
-     return function cleanup() {
-        clearInterval(interval_id.current);
-        }
+     let interval_id = setInterval(()=>{fetch()}, 3000);
+    
+        return () => clearInterval(interval_id);
     },[])
 
     const [ModalInfo, SetInfo] = useState({})
@@ -73,7 +72,7 @@ const RequestTable = () => {
         } 
 
         return(
-            <Modal show = {showModal} onHide ={() => { fetch(); interval_id.current = setInterval(()=>{fetch()}, 3000); setShow(false)}}>
+            <Modal show = {showModal} onHide ={() => { setShow(false)}}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         Details 
@@ -140,7 +139,7 @@ const RequestTable = () => {
           {allrequest.map((request, index) =>{
             return(
             <>
-            <tr onClick = {() => { clearInterval(interval_id.current); SetInfo(request); setShow(true);} }>
+            <tr onClick = {() => { SetInfo(request); setShow(true);} }>
                 <td>{index+1}</td>
                 <td>{request.R_Emp_Name}<br/></td>
                 <td>{request.R_Emp_Email}</td>

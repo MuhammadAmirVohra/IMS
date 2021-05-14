@@ -26,10 +26,10 @@ const RequestTable = () => {
     useEffect( () =>{
       fetch()
      
-      interval_id.current = setInterval(()=>{fetch()}, 3000);
-     return function cleanup() {
-        clearInterval(interval_id.current);
-        }
+    //   interval_id.current = setInterval(()=>{fetch()}, 3000);
+    //  return function cleanup() {
+    //     clearInterval(interval_id.current);
+    //     }
     },[])
     
     const [showModal, setShow] = useState(false)
@@ -57,7 +57,6 @@ const RequestTable = () => {
             }).then((res)=>{
                 if(res.data.code == 200)
                 {
-                    SetFile(null);
                     window.flash('File Successfully Submitted')
                     fetch();
                 }
@@ -155,7 +154,7 @@ const RequestTable = () => {
 
 
      <Container>
-       <Button className = "Btn float-right mb-2" onClick={fetch} >Refresh</Button>
+       <Button className = "Btn float-right" onClick={fetch} >Refresh</Button>
         <Table className="TableStyle" responsive="sm">
         <thead>
             <tr>

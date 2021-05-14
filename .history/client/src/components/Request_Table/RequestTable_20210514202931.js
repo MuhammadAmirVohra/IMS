@@ -73,7 +73,7 @@ const RequestTable = () => {
         } 
 
         return(
-            <Modal show = {showModal} onHide ={() => { fetch(); interval_id.current = setInterval(()=>{fetch()}, 3000); setShow(false)}}>
+            <Modal show = {showModal} onHide ={() => { interval_id.current = setInterval(()=>{fetch()}, 3000); setShow(false)}}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         Details 

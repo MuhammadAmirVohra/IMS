@@ -12,7 +12,6 @@ const RequestTable = () => {
     const interval_id = useRef(null);
     // const [open, setOpen] = useState(false);
     async function fetch(){
-      console.log('in fetch');
         await axios.get(`${API_URL}/get_purchase_request`, {
              withCredentials: true
          }).then((res)=>{
@@ -57,7 +56,6 @@ const RequestTable = () => {
             }).then((res)=>{
                 if(res.data.code == 200)
                 {
-                    SetFile(null);
                     window.flash('File Successfully Submitted')
                     fetch();
                 }
@@ -155,7 +153,6 @@ const RequestTable = () => {
 
 
      <Container>
-       <Button className = "Btn float-right mb-2" onClick={fetch} >Refresh</Button>
         <Table className="TableStyle" responsive="sm">
         <thead>
             <tr>

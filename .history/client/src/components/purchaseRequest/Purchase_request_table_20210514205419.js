@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Table,Button,Container, Modal, Form} from 'react-bootstrap';
 import moment from 'moment';
 import { API_URL } from '../../utils/constant';
-
+import { Input } from 'mdb-ui-kit';
 import styled from 'styled-components';
 
 const RequestTable = () => {
@@ -26,10 +26,10 @@ const RequestTable = () => {
     useEffect( () =>{
       fetch()
      
-      interval_id.current = setInterval(()=>{fetch()}, 3000);
-     return function cleanup() {
-        clearInterval(interval_id.current);
-        }
+    //   interval_id.current = setInterval(()=>{fetch()}, 3000);
+    //  return function cleanup() {
+    //     clearInterval(interval_id.current);
+    //     }
     },[])
     
     const [showModal, setShow] = useState(false)
@@ -57,7 +57,6 @@ const RequestTable = () => {
             }).then((res)=>{
                 if(res.data.code == 200)
                 {
-                    SetFile(null);
                     window.flash('File Successfully Submitted')
                     fetch();
                 }
@@ -155,7 +154,7 @@ const RequestTable = () => {
 
 
      <Container>
-       <Button className = "Btn float-right mb-2" onClick={fetch} >Refresh</Button>
+       <Button className = "Btn float-right mb-2 " onClick={fetch} ><Input icon="sync-alt" />Refresh</Button>
         <Table className="TableStyle" responsive="sm">
         <thead>
             <tr>

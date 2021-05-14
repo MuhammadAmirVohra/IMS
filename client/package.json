@@ -3,7 +3,6 @@
   "homepage": "http://fast-inventory.herokuapp.com/",
   "version": "0.1.0",
   "private": true,
-
   "devDependencies": {
     "react-scripts": "^1.1.0",
     "babel-plugin-styled-components": "^1.8.0"

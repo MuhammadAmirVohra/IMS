@@ -1,4 +1,4 @@
-import React , { useEffect, useState,useRef } from 'react';
+import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Row,Table,Button,Container, Modal, Form} from 'react-bootstrap';
 import styled from 'styled-components';
@@ -172,7 +172,7 @@ const RecieveItems = () => {
                 <td>{request.Item}</td>
                 <td>{request.Quantity}</td>
                 <td>{moment(request.Added).format('Do MMMM YYYY')}</td>
-                <td><Button className="Btn" onClick = {()=>{ clearInterval(interval_id.current); SetInfo(request); setShow(true); }} >Recieved</Button></td>
+                <td><Button className="Btn" onClick = {()=>{ SetInfo(request); setShow(true); }} >Recieved</Button></td>
                     
                
             </tr>

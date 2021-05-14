@@ -26,10 +26,10 @@ const RequestTable = () => {
     useEffect( () =>{
       fetch()
      
-      interval_id.current = setInterval(()=>{fetch()}, 3000);
-     return function cleanup() {
-        clearInterval(interval_id.current);
-        }
+    //   interval_id.current = setInterval(()=>{fetch()}, 3000);
+    //  return function cleanup() {
+    //     clearInterval(interval_id.current);
+    //     }
     },[])
     
     const [showModal, setShow] = useState(false)
@@ -57,7 +57,6 @@ const RequestTable = () => {
             }).then((res)=>{
                 if(res.data.code == 200)
                 {
-                    SetFile(null);
                     window.flash('File Successfully Submitted')
                     fetch();
                 }
@@ -87,59 +86,39 @@ const RequestTable = () => {
    
 
    
-    // const ModalContent = ()=>{
+    const ModalContent = ()=>{
        
-    //    function getBase64(e) {
-    //         var file = e.target.files[0]
-    //         let reader = new FileReader()
-    //         reader.readAsDataURL(file)
-    //         reader.onload = () => {
-    //             console.log(reader.result)
-    //             SetFile(reader.result)
-    //         //   this.setState({
-    //         //     imgUpload: reader.result
-    //         //   })
-    //         };
-    //         reader.onerror = function (error) {
-    //           console.log('Error: ', error);
-    //         }
-    //       }
+       
         
 
-    //     return(
-    //         <Modal show = {showModal} onHide ={() => {setShow(false)}}>
-    //             <Modal.Header closeButton>
-    //                 <Modal.Title>
-    //                     Details 
-    //                 </Modal.Title>
-    //                 </Modal.Header>
-    //                 <Form>    
+        return(
+            <Modal show = {showModal} onHide ={() => {setShow(false)}}>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Details 
+                    </Modal.Title>
+                    </Modal.Header>
+                    <Form>    
 
-    //                 <ModalBody>
+                    <ModalBody>
                         
-    //                 <input
-    //                 type = 'file'
-    //                 id="file"
-    //                 name = "file"
-    //                 value={FileInfo}
-    //                 onChange={(e) => { e.preventDefault(); 
-    //                     SetFile(e.target.files[0])
-    //                     // getBase64(e);
-    //                 }}
-    //                 />
-    //                 </ModalBody>
+                    <Form onSubmit = {SubmitFile}>
+                        <Form.File name = "file" onChange = { (e)=>{e.preventDefault();  onChangeHandlerFile(); } />
+                        <Button type="submit" className ="Btn mt-2 btn btn-md" onClick= {() => {SetInfo(request._id)}}>Submit</Button>
+                    </Form>
+                    </ModalBody>
 
                 
-    //             <Modal.Footer>
-    //                 <Btn className = "btn-success" type = "submit">Submit</Btn>
-    //             </Modal.Footer>
-    //             </Form>
+                <Modal.Footer>
+                    <Btn className = "btn-success" type = "submit">Submit</Btn>
+                </Modal.Footer>
+                </Form>
 
-    //         </Modal>
-    //     );
+            </Modal>
+        );
         
     
-    // }
+    }
     
 
 
@@ -155,7 +134,7 @@ const RequestTable = () => {
 
 
      <Container>
-       <Button className = "Btn float-right mb-2" onClick={fetch} >Refresh</Button>
+       <Button className = "Btn float-right mb-2 " onClick={fetch} ><i class="fa fa-refresh"></i>Refresh</Button>
         <Table className="TableStyle" responsive="sm">
         <thead>
             <tr>
@@ -183,10 +162,10 @@ const RequestTable = () => {
 
                 {/* <a href = "http://localhost:5000/upload"><Btn>Upload</Btn></a> */}
 
-                    <Form onSubmit = {SubmitFile}>
+                    {/* <Form onSubmit = {SubmitFile}>
                         <Form.File name = "file" onChange = {  onChangeHandlerFile } />
                         <Button type="submit" className ="Btn mt-2 btn btn-md" onClick= {() => {SetInfo(request._id)}}>Submit</Button>
-                    </Form>
+                    </Form> */}
                 </td>
             </tr>
             

@@ -26,10 +26,10 @@ const RequestTable = () => {
     useEffect( () =>{
       fetch()
      
-      interval_id.current = setInterval(()=>{fetch()}, 3000);
-     return function cleanup() {
-        clearInterval(interval_id.current);
-        }
+    //   interval_id.current = setInterval(()=>{fetch()}, 3000);
+    //  return function cleanup() {
+    //     clearInterval(interval_id.current);
+    //     }
     },[])
     
     const [showModal, setShow] = useState(false)
@@ -57,7 +57,6 @@ const RequestTable = () => {
             }).then((res)=>{
                 if(res.data.code == 200)
                 {
-                    SetFile(null);
                     window.flash('File Successfully Submitted')
                     fetch();
                 }

@@ -17,6 +17,7 @@ const app = express()
 const mailer = require('./mail')
 app.use(express.static('public'));
 app.set("view engine", "ejs");
+const socket = require('socket.io')
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

@@ -1,4 +1,4 @@
-import React , { useEffect, useState, useRef } from 'react';
+import React , { useEffect, useState } from 'react';
 import axios from 'axios';
 import {Table,Button,Container, Modal, Form} from 'react-bootstrap';
 import moment from 'moment';
@@ -6,34 +6,30 @@ import styled from 'styled-components';
 import { API_URL } from '../../utils/constant';
 import '../style.css'
 const RequestTable = () => {
-    const [showModal, setShow] = useState(false);
    const arr = ['Requested By','Email','Date Requested','Item Name','Quantity','Duration']
     const [allrequest, setrequests] = useState([])
-    const interval_id = useRef(null);
+    // const [open, setOpen] = useState(false);
 
     async function fetch(){
-        console.log('in fetch', showModal);
         await axios.get(`${API_URL}/get_all_request`, {
              withCredentials: true
          }).then((res)=>{
              console.log(res.data);
-            //  if (showModal === false)
+             
              setrequests(res.data);
              
          })
         }
     // var requests = []
-
+    var f = null;
     useEffect( () =>{
     
     fetch()
      
-      interval_id.current = setInterval(()=>{fetch()}, 3000);
-     return function cleanup() {
-        clearInterval(interval_id.current);
-        }
-    },[])
+    f = setInterval(()=>{fetch()}, 3000);
 
+    },[])
+    const [showModal, setShow] = useState(false)
     const [ModalInfo, SetInfo] = useState({})
     const ModalContent = ()=>{
        const [comment , setcomment] = useState("")
@@ -73,7 +69,7 @@ const RequestTable = () => {
         } 
 
         return(
-            <Modal show = {showModal} onHide ={() => { fetch(); interval_id.current = setInterval(()=>{fetch()}, 3000); setShow(false)}}>
+            <Modal show = {showModal} onHide ={() => {  f = setInterval(()=>{fetch()}, 3000);  setShow(false)}}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         Details 
@@ -140,7 +136,7 @@ const RequestTable = () => {
           {allrequest.map((request, index) =>{
             return(
             <>
-            <tr onClick = {() => { clearInterval(interval_id.current); SetInfo(request); setShow(true);} }>
+            <tr onClick = {() => {  clearInterval(f); SetInfo(request); setShow(true);} }>
                 <td>{index+1}</td>
                 <td>{request.R_Emp_Name}<br/></td>
                 <td>{request.R_Emp_Email}</td>

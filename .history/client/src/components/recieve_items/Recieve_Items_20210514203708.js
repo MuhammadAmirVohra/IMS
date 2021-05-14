@@ -172,7 +172,7 @@ const RecieveItems = () => {
                 <td>{request.Item}</td>
                 <td>{request.Quantity}</td>
                 <td>{moment(request.Added).format('Do MMMM YYYY')}</td>
-                <td><Button className="Btn" onClick = {()=>{ clearInterval(interval_id.current); SetInfo(request); setShow(true); }} >Recieved</Button></td>
+                <td><Button className="Btn" onClick = {()=>{ SetInfo(request); setShow(true); }} >Recieved</Button></td>
                     
                
             </tr>
