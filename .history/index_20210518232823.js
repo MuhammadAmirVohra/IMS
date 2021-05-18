@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const cors = require('cors');
 const e = require('express');
 const uri = "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
 var logged_in_user = null
@@ -23,12 +23,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:3000", // <-- location of the react app were connecting to
+    credentials: true,
+  })
+);
 
 app.use(
   session({
@@ -132,15 +132,15 @@ mongoose.connect(uri, {
 // app.use(allowCrossDomain);
 
 
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.header("Access-Control-Allow-Credentials", true);
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.post('/:id/pdf',(req,res)=>{
   
@@ -185,31 +185,22 @@ app.post('/:id/pdf',(req,res)=>{
           pdfDoc.image('./nav_logo.png', {fit: [450, 150], align: 'center'})
           pdfDoc.text('\n\n')
           pdfDoc.fillColor('red').fontSize(30).text("Request Details", {bold : true, align:'center'});
-          pdfDoc.fillColor('black').fontSize(20).font('Helvetica-Bold').text('\n\nRequested By : ' ,{continued : true});pdfDoc.font('Helvetica').text(data.R_Emp_Name)
-          pdfDoc.font('Helvetica-Bold').text('\nEmail : ', {continued : true}); pdfDoc.font('Helvetica').text(data.R_Emp_Email)
-          pdfDoc.font('Helvetica-Bold').text('\nItem Requested : ', {continued : true}); pdfDoc.font('Helvetica').text(data.Item)
-          pdfDoc.font('Helvetica-Bold').text('\nQuantity Required : ',{continued : true});pdfDoc.font('Helvetica').text(data.Quantity)
+          pdfDoc.fillColor('black').fontSize(20).text('\n\nRequested By : ' + data.R_Emp_Name)
+          pdfDoc.text('\nEmail : ' + data.R_Emp_Email)
+          pdfDoc.text('\nItem Requested : ' + data.Item)
+          pdfDoc.text('\nQuantity Required : ' + data.Quantity)
           if (data.Duration.length)
-          pdfDoc.font('Helvetica-Bold').text('\nDuration : ',{continued : true}); pdfDoc.font('Helvetica').text(data.Duration)
+          pdfDoc.text('\nDuration : ' + data.Duration)
 
-          pdfDoc.font('Helvetica-Bold').text('\nReason : ',{continued : true});pdfDoc.font('Helvetica').text(data.Reason)
+          pdfDoc.text('\nReason : ' + data.Reason)
 
-          pdfDoc.font('Helvetica-Bold').text('\nDate Requested : ',{continued : true}); pdfDoc.fillColor('black').font('Helvetica').text(moment(data.Added).format('DD-MMMM-YYYY hh:mm A'))
-          pdfDoc.font('Helvetica-Bold').text('\nApproved By Head : ',{continued : true}); pdfDoc.font('Helvetica').text(moment(data.Approved_At).format('DD-MMMM-YYYY hh:mm A'))
-          pdfDoc.font('Helvetica-Bold').text('\nQuotation Added : ',{continued : true});pdfDoc.font('Helvetica').text(moment(data.Quotation_Added).format('DD-MMMM-YYYY hh:mm A'))
-          pdfDoc.font('Helvetica-Bold').text('\nManager Accounts Comments : ' ,{continued : true});pdfDoc.font('Helvetica').text(data1.Comment_Accounts)
-          pdfDoc.font('Helvetica-Bold').text('\nManager Accounts Comments Added : ',{continued : true});pdfDoc.font('Helvetica').text( moment(data1.Comment_Accounts_Added).format('DD-MMMM-YYYY hh:mm A'))
-          pdfDoc.font('Helvetica-Bold').text('\nManager Admin Comments : ' ,{continued : true});pdfDoc.font('Helvetica').text(data1.Comment_Admin)
-          pdfDoc.font('Helvetica-Bold').text('\nManager Accounts Comments Added : ' ,{continued : true});pdfDoc.font('Helvetica').text( moment(data1.Comment_Admin_Added).format('DD-MMMM-YYYY hh:mm A'))
-          pdfDoc.text('\n\n\n')
-          for(var i = 0; i < 50; i ++)
-          pdfDoc.text(' ', {continued : true})
-          for(var i = 0; i < 30; i ++)
-          pdfDoc.text(' ', {underline : true, continued:true});
-          pdfDoc.text('\n')
-          for(var i = 0; i < 57; i ++)
-          pdfDoc.text(' ', {continued : true})
-          pdfDoc.text('Signature')
+          pdfDoc.text('\nDate Requested : ' + moment(data.Added).format('DD-MMMM-YYYY HH:mm:ss'))
+          pdfDoc.text('\nApproved By Head : ' + moment(data.Approved_At).format('DD-MMMM-YYYY HH:mm:ss'))
+          pdfDoc.text('\nQuotation Added : ' + moment(data.Quotation_Added).format('DD-MMMM-YYYY HH:mm:ss'))
+          pdfDoc.text('\nManager Accounts Comments : ' + data1.Comment_Accounts)
+          pdfDoc.text('\nManager Accounts Comments Added : ' + moment(data1.Comment_Accounts_Added).format('DD-MMMM-YYYY HH:mm:ss'))
+          pdfDoc.text('\nManager Admin Comments : ' +data1.Comment_Admin)
+          pdfDoc.text('\nManager Accounts Comments Added : ' + moment(data1.Comment_Admin_Added).format('DD-MMMM-YYYY HH:mm:ss'))
           pdfDoc.pipe(res);
           pdfDoc.end();
           // console.log(pdfDoc);
@@ -272,7 +263,7 @@ app.post('/:id/pdf',(req,res)=>{
 
 //           pdfDoc.text('\nReason : ' + data.Reason)
 
-//           pdfDoc.text('\nDate Requested : ' + moment(data.Added).format('DD-MMMM-YYYY hh:mm A'))
+//           pdfDoc.text('\nDate Requested : ' + moment(data.Added).format('DD-MMMM-YYYY HH:mm:ss'))
 //           pdfDoc.text('\nManager Accounts Comments : ' + data1.Comment_Accounts)
 //           pdfDoc.text('\nManager Admin Comments : ' +data1.Comment_Admin)
           
@@ -580,7 +571,6 @@ app.post('/add_request', (req, res) => {
       Duration: req.body.Duration,
       Quantity: req.body.Quantity,
       Reason: req.body.Reason,
-      Approved_At : Date.now(),
       Status: "Approved"
     }, (err, data) => {
       if (err) {

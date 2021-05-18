@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const cors = require('cors');
 const e = require('express');
 const uri = "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
 var logged_in_user = null
@@ -23,12 +23,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:3000", // <-- location of the react app were connecting to
+    credentials: true,
+  })
+);
 
 app.use(
   session({
@@ -132,15 +132,15 @@ mongoose.connect(uri, {
 // app.use(allowCrossDomain);
 
 
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.header("Access-Control-Allow-Credentials", true);
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.post('/:id/pdf',(req,res)=>{
   
@@ -202,14 +202,8 @@ app.post('/:id/pdf',(req,res)=>{
           pdfDoc.font('Helvetica-Bold').text('\nManager Admin Comments : ' ,{continued : true});pdfDoc.font('Helvetica').text(data1.Comment_Admin)
           pdfDoc.font('Helvetica-Bold').text('\nManager Accounts Comments Added : ' ,{continued : true});pdfDoc.font('Helvetica').text( moment(data1.Comment_Admin_Added).format('DD-MMMM-YYYY hh:mm A'))
           pdfDoc.text('\n\n\n')
-          for(var i = 0; i < 50; i ++)
-          pdfDoc.text(' ', {continued : true})
-          for(var i = 0; i < 30; i ++)
-          pdfDoc.text(' ', {underline : true, continued:true});
-          pdfDoc.text('\n')
-          for(var i = 0; i < 57; i ++)
-          pdfDoc.text(' ', {continued : true})
-          pdfDoc.text('Signature')
+          for(var i = 0; i < 100; i ++)
+          pdfDoc(' ', {underline : true, continue:true});
           pdfDoc.pipe(res);
           pdfDoc.end();
           // console.log(pdfDoc);
