@@ -9,6 +9,9 @@
     "node_modules",
     "client/node_modules"
   ],
+  "engines": {
+    "node": "16.3.0"
+  },
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
