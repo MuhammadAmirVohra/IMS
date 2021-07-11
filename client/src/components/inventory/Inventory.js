@@ -31,10 +31,10 @@ const Inventory = () => {
     const [ModalInfo, SetInfo] = useState({})
     const ModalContent = ()=>{
        
-        const [name, setname] = useState(ModalInfo.Item_Name)
-        const [quantity, setquantity] = useState(ModalInfo.Item_Quantity)
-        const [description, setdescription] = useState(ModalInfo.Item_Description)
-        const [type, settype] = useState(ModalInfo.Item_Type)
+        const [name, setname] = useState(ModalInfo.Item_ID.Item_Name)
+        const [quantity, setquantity] = useState(ModalInfo.Quantity)
+        const [description, setdescription] = useState(ModalInfo.Item_ID.Item_Description)
+        const [type, settype] = useState(ModalInfo.Item_ID.Item_Type)
  
         const UpdateRecord = (event)=>{
             event.preventDefault()
@@ -155,15 +155,15 @@ const Inventory = () => {
         </thead>
         <tbody>
           {items.map((item, index) =>{
-            if (item.Item_Name.toLowerCase().includes(itemName.toLowerCase()) || item.Item_Description.toLowerCase().includes(itemName.toLowerCase()) )
+            if (item.Item_ID.Item_Name.toLowerCase().includes(itemName.toLowerCase()) || item.Item_ID.Item_Description.toLowerCase().includes(itemName.toLowerCase()) )
             return(
             <>
            <tr>
                 <td>{index+1}</td>
-                <td>{item.Item_Name}<br/></td>
-                <td>{item.Item_Type}</td>
-                <td>{item.Item_Description}</td>
-                <td>{item.Item_Quantity}</td>
+                <td>{item.Item_ID.Item_Name}<br/></td>
+                <td>{item.Item_ID.Item_Type}</td>
+                <td>{item.Item_ID.Item_Description}</td>
+                <td>{item.Quantity}</td>
                 <td><Button className="Btn" onClick = {()=>{ SetInfo(item); setShow(true); }} >Update</Button></td>
                     
                

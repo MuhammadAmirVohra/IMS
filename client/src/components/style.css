@@ -1,84 +1,91 @@
-.Card1{
-
-    width : inherit;
+.Card1 {
+    width: inherit;
     margin-top: 5.5rem;
 }
-
-.Btn{
-    background :#EFBB20;
-    border: none; 
+.Container_Date{
+    margin : 200px;
+    margin-top: 5.5rem;
+    width: 1000px;
+}
+.Btn {
+    background: #EFBB20;
+    border: none;
+}
+.Date_Button{
+    margin-top: 2rem;
+}
+.selectstyle{
+    width: 200px;
+}
+.Btn a {
+    text-decoration: none;
+    color: white;
 }
 
-.Btn a{ 
-    text-decoration:none;
-    color:white;
-}
-
-.Btn:hover { 
+.Btn:hover {
     background: #0e8ccc;
-
 }
 
 .TableStyle th {
-    background: #1F386B; 
-    color:white;
+    background: #1F386B;
+    color: white;
 }
 
 .TableStyle tr {
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.TableStyle tr:hover{
-        background: lightgray;
-    
+.TableStyle tr:hover {
+    background: lightgray;
 }
 
-.MainContainer{
+.MainContainer {
     width: 100%;
     height: auto;
     min-height: 100%;
     min-height: 100vh;
-    /* margin-top:100px; */
+    margin-top: 100px;
 }
 
-.CardTitle span{ 
+.CardTitle span {
     color: red;
 }
 
-.FormStyle{
-
+.FormStyle {
     background-color: white;
     width: 500px;
-
 }
 
-.ModalBody li{
-    padding:5px;
+.ModalBody li {
+    padding: 5px;
 }
 
-.Row1
-{
-    padding:82px 16px 0px 0px;
+.Row1 {
+    padding: 82px 16px 0px 0px;
 }
 
-.Nav{
+.Nav {
     background: #1F386B;
-    justify-content:flex-start;
+    justify-content: flex-start;
 }
 
-.FormGroup{
-    display:flex;
+.FormGroup {
+    display: flex;
 }
-.CardText{ 
-    color:red;
+
+.CardText {
+    color: red;
     margin-top: -13px;
     font-size: 12px;
-
 }
 
-.CardStyle{
+.CardStyle {
     background: white;
-    box-shadow: 6px 5px 5px rgb(0 0 0 );
+    box-shadow: 6px 5px 5px rgb(0 0 0);
     width: 500px;
     height: 350px;
+}
+
+.Date_Form{
+    margin-top: 2rem;
 }

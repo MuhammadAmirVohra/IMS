@@ -18,7 +18,10 @@ return(
     
     
     <Link to="/inventory"> <Button className="btn Btn btn-md mt-4 mb-4 float-right"> Inventory </Button> </Link>
-    <Link to="/recieveitems"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Recieved Item </Button> </Link>
+    <Link to="/recieveitems"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Recieve Item </Button> </Link>
+    <Link to="/returnitem"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Return Item </Button> </Link>
+    <Link to="/productledger"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Product Ledger </Button> </Link>
+    <Link to="/stockreport"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Stock Report </Button> </Link>
     
     
     <RequestTable/>

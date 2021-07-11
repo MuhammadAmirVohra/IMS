@@ -20,6 +20,10 @@ import StoreDashboard from './components/StoreDashboard/Store_Dashboard'
 import Inventory from './components/inventory/Inventory'
 import RecieveItems from './components/recieve_items/Recieve_Items'
 import IssueItems from './components/issue/Issue_items'
+import StockReport from './components/stock_report/Stock_Report';
+import ProductLedger from './components/product_ledger/Product_Ledger';
+import ReturnItems from './components/return_items/Return_items';
+
 // import Cookie from 'universal-cookie'
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
@@ -213,6 +217,28 @@ const Routes = () =>{
                 }}>
                 </Route>
 
+                <Route path ="/productledger"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === "Store"))
+                    { return <ProductLedger/>}
+                    else
+                    { return <Redirect exact to="/" ></Redirect>}
+
+
+                }}>
+                </Route>
+
+                <Route path ="/stockreport"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === "Store"))
+                    { return <StockReport/>}
+                    else
+                    { return <Redirect exact to="/" ></Redirect>}
+
+
+                }}>
+                </Route>
+
                 <Route path ="/:id/accounts"
                 render={() => {
                     if (Auth.token !== false && (Auth.UserRole === "Accounts"))
@@ -223,7 +249,16 @@ const Routes = () =>{
 
                 }}>
                 </Route>
+                <Route path ="/returnitem"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === "Store"))
+                    { return <ReturnItems/>}
+                    else
+                    { return <Redirect exact to="/" ></Redirect>}
 
+
+                }}>
+                </Route>
                 <Route path ="/recieveitems"
                 render={() => {
                     if (Auth.token !== false && (Auth.UserRole === "Store"))
@@ -336,7 +371,7 @@ const Routes = () =>{
                        return <Redirect to="/"/>
                    }
                       
-                      
+                   
                }}>
                 </Route>
                 <Route  path="/*" 
