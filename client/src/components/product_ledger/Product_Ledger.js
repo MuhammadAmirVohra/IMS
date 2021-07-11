@@ -101,7 +101,7 @@ return(
                     <Form.Group as = {Col} className = "mt-4"  >
                     <Form.Label>Product</Form.Label>
                     <Form.Control as = "select" className = "selectstyle" onChange = {(e)=> {set_Product(e.target.value)}} required>
-                    <option disabled></option>
+                    <option disabled selected>-</option>
                     {   
                         allitems.map((item,index) =>{
                             return(
