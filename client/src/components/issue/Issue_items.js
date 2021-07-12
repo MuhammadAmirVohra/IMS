@@ -308,7 +308,7 @@ const IssueItems = () => {
                       <tr>
                         <td>{index + 1}</td>
                         <td>
-                          {item.Item_Name}
+                          {item.Item_ID.Item_Name}
                           <br />
                         </td>
                         <td>{item.Item_ID.Item_Type}</td>

@@ -1336,7 +1336,7 @@ app.post("/:id/updateitem", (req, res) => {
 	  _id: req.params.id,
 	},
 	{
-	  Item_Name: req.body.name,
+	  Item_Name: req.body.name + ' - ' + moment(Date.now()).format('DD-MMMM-YYYY'),
 	//   Item_Quantity: req.body.quantity,
 	  Item_Description: req.body.description,
 	  Item_Type: req.body.type,
@@ -1555,7 +1555,7 @@ app.post('/productledgerpdf', (req,res)=>{
 	// 	prepareRow: (row, i) => doc.font('Helvetica').fontSize(12)
 	// });
 
-	doc.moveDown().table(req.body.product,table0, 100, 200);
+	doc.moveDown().table("Product Ledger of " + req.body.product + " from " + moment(new Date(req.body.start)).format('DD-MMMM-YYYY') + " to " + moment(new Date(req.body.end)).format('DD-MMMM-YYYY'),table0, 100, 200);
 
 
 	doc.pipe(res);
@@ -1564,6 +1564,161 @@ app.post('/productledgerpdf', (req,res)=>{
 
 })
 
+
+
+app.post('/generatestockreport', (req,res)=>{
+	
+	console.log(req.body);
+
+	Item.find( { "Item_Name" : {"$exists" : true}} , (err,Received_Data)=>{
+		if(err)
+		{
+			console.log(err);
+		}
+		else
+		{
+			if (Received_Data)
+			{
+				var ids = []
+				for (let i = 0 ; i < Received_Data.length; i++)
+				{
+					ids.push(Received_Data[i]._id)
+				}
+
+				
+				Issue_Items.find({}, (err, Isssue_Data)=>{
+					if(err){
+						console.log(err);
+					}
+					else
+					{
+						if(Isssue_Data)
+						{
+						
+							
+							var data = []
+							var start = new Date(req.body.start_date)
+							var end = new Date(req.body.end_date)
+							
+							
+							console.log(Received_Data);
+							console.log(Isssue_Data);
+							console.log(start);
+							console.log(end);
+
+							
+							for(let i = 0 ; i < Received_Data.length; i++)
+							{
+
+								if (Received_Data[i].Receive_Date > end)
+								continue;
+
+								var name = Received_Data[i].Item_Name;
+								var item_in = Received_Data[i].Item_Quantity;
+								
+								for(let j = 0; j < Isssue_Data.length; j++)
+								{
+									if (Isssue_Data[j].Date < start && String(Isssue_Data[j].Item_ID) == String(Received_Data[i]._id))
+									{
+										if (Isssue_Data[j].Status == 'Issued')
+										{
+											item_in -= Isssue_Data[j].Quantity;
+										}
+										else
+										{
+											item_in += Isssue_Data[j].Quantity;
+										}
+									}
+								}
+								console.log('Item In ' + item_in)
+								if (item_in == 0)
+								continue;
+
+								var item_out = item_in;
+								var issued = 0;
+								
+								for(let j = 0; j < Isssue_Data.length; j++)
+								{
+									
+									if (Isssue_Data[j].Date >= start && Isssue_Data[j].Date <= end && String(Isssue_Data[j].Item_ID) == String(Received_Data[i]._id))
+									{
+										if (Isssue_Data[j].Status == 'Issued')
+										{
+											item_out -= Isssue_Data[j].Quantity;
+											issued += Isssue_Data[j].Quantity;
+										}
+										else
+										{
+											item_out += Isssue_Data[j].Quantity;
+											issued -= Isssue_Data[j].Quantity;
+										}
+									}
+									
+
+								}
+								if (issued < 0)
+								issued = 0
+
+								data.push([name, item_in, item_out, issued])
+
+							}
+							
+							
+							console.log(data);
+							res.send({ code : 200 , records :data});
+						}
+						else
+						{
+							res.send({code : 404})
+						}
+					}
+				})
+			}
+			else
+			{
+				res.send({code : 404})
+			}
+			
+		}
+	})
+
+
+});
+
+
+app.post('/stockreportpdf', (req,res)=>{
+	
+	
+	'use strict';
+	
+	const fs = require('fs');
+	const PDFDocument = require('./pdf_table');
+	const doc = new PDFDocument();
+	res.setHeader("Content-disposition", "inline; filename=Stock Report.pdf");
+	res.setHeader("Content-type", "application/pdf");
+						
+	// doc.pipe(fs.createWriteStream('example.pdf'));
+	const table0 = {
+		headers: ['Product', 'Item In', 'Item Out', 'Issued'],
+		rows: req.body.data
+	};
+
+	
+
+
+	// doc.moveDown().table(req.body.product,table0, {
+	// 	prepareHeader: () => doc.font('Helvetica-Bold'),
+	// 	prepareRow: (row, i) => doc.font('Helvetica').fontSize(12)
+	// });
+
+	doc.moveDown().table("Stock Report from " + moment(new Date(req.body.start)).format('DD-MMMM-YYYY') + " to " + moment(new Date(req.body.end)).format('DD-MMMM-YYYY'),table0, 100, 200);
+
+
+	doc.pipe(res);
+
+	doc.end();
+
+})
 
 
 

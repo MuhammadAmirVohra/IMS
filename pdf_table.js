@@ -13,7 +13,7 @@ class PDFDocumentWithTables extends PDFDocument {
         this
         .font("Helvetica-Bold")
         .fontSize(20)
-        .text("\n Product Ledger of "  + product , {underline : true, align : 'center'})
+        .text("\n"  + product , {underline : true, align : 'center'})
         .fontSize(10)
         .font('Helvetica');
         

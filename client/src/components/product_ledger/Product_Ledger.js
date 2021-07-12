@@ -47,7 +47,9 @@ const Pdf = async()=>{
         },
         body: JSON.stringify({
             product : Product, 
-            data : allRecords
+            data : allRecords,
+            start : start_Date,
+            end : end_Date
         }),
       }).then(async res => {
         if (res.status === 200) {
