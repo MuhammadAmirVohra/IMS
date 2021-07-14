@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Bus from '../Bus';
 import {Alert} from 'react-bootstrap';
-import styled from 'styled-components'
+// import styled from 'styled-components'
 
 
 const Flash = () => {
@@ -32,16 +32,11 @@ const Flash = () => {
     })
 
     return (
-        visibility &&   <AlertMessage  variant={type}>
+        visibility &&   <Alert className = "AlertMessage"  variant={type}>
                 <p className="m-0 text-center">{message}</p>
-            </AlertMessage>
+            </Alert>
     )
 }
 
 export default Flash;
-
-const AlertMessage = styled(Alert)`
-    margin-top : 90px;
-
-`;
 
