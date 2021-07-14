@@ -1188,7 +1188,7 @@ app.get("/:id/issuerequest", (req, res) => {
   Order.findOne(
 	{
 	  _id: req.params.id,
-	  $or: [{ Status: "Approved" }, { Status: "Recieved" }],
+	  $or: [{ Status: "Approved" }, { Status: "Received" }],
 	}).populate('R_Emp_Dept').exec(
 	(err, request) => {
 	  if (err) {
@@ -1324,11 +1324,12 @@ app.get("/storerequests", (req, res) => {
   console.log("Requesting Request Details Store");
 
   Order.find(
-	{ $or: [{ Status: "Approved" }, { Status: "Recieved" }] }
+	{ $or: [{ Status: "Approved" }, { Status: "Received" }] }
   ).populate('R_Emp_Dept').exec((err, requests) => {
 	  if (err) {
 		console.log(err);
 	  } else {
+		console.log(requests)
 		res.send(requests);
 	  }
 	}
