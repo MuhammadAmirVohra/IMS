@@ -398,10 +398,17 @@ const Item_Remaining = mongoose.model("Item_Remaining", Remaining_Schema);
 
 const Issue_Schema = new mongoose.Schema({
   Item_ID: {type : mongoose.Types.ObjectId, ref : 'Item'},
+ 
   Department: String,
+ 
+  done : {
+	type : Boolean,
+	default : false
+  },
+  
   Duration: {
 	type: String,
-	Default: "Unspecified",
+	Default: "Unspecified"
   },
   Quantity: {
 	type: Number,
@@ -1188,7 +1195,8 @@ app.get("/:id/issuerequest", (req, res) => {
   Order.findOne(
 	{
 	  _id: req.params.id,
-	  $or: [{ Status: "Approved" }, { Status: "Received" }],
+	//   $or: [{ Status: "Approved" }, { Status: "Received" }],
+
 	}).populate('R_Emp_Dept').exec(
 	(err, request) => {
 	  if (err) {
@@ -1196,7 +1204,7 @@ app.get("/:id/issuerequest", (req, res) => {
 	  } else {
 		console.log('Request : ' +  request);
 		// res.send(request)
-		Item_Remaining.find({}).populate('Item_ID').exec(
+		Item_Remaining.find({Quantity : { $gt : 0 }}).populate('Item_ID').exec(
 		  
 		  (err, items) => {
 			if (err) {
@@ -1338,7 +1346,7 @@ app.get("/storerequests", (req, res) => {
 
 
 app.get('/get_issued_records', (req,res)=>{
-	Issue_Items.find({Status : 'Issued'}).populate('Item_ID').exec((err, data)=>{
+	Issue_Items.find({$and : [{Status : 'Issued'}, { done : false }]}).populate('Item_ID').exec((err, data)=>{
 		if(err)
 		{
 			console.log(err);
@@ -1436,27 +1444,100 @@ app.post("/:id/updateitem", (req, res) => {
 });
 
 
+app.post('/dissmiss_issue_record', (req,res)=>{
+	Issue_Items.updateOne(
+		{_id : req.body.id}
+		,{
+			done : true
+		}, (err, created)=>{
+			if(err){
+				console.log(err);
+			}
+			else
+			{
+				console.log('Issue Record Status Updated');
+				Issue_Items.find({ $and : [{Status : 'Issued'}, { done : false }]}).populate('Item_ID').exec((err, data)=>{
+					if(err)
+					{
+						console.log(er);
+					}
+					else
+					{
+						res.send(data);
+					}
+				})
+
+			}
+		
+		
+		})
+});
+
+
+
+
 app.post("/return_this_item", (req, res) => {
 	Issue_Items.updateOne(
 	{_id : req.body.id}
 	,{
-		Quantity : req.body.quantity,
-		Status : "Returned"
+		done : true
 	}, (err, created)=>{
 		if(err){
 			console.log(err);
 		}
 		else
 		{
-			console.log('Issue Record Status Updated');
-			Issue_Items.find({Status : 'Issued'}, (err, data)=>{
+			Issue_Items.findOne({
+				_id : req.body.id
+			}, (err, issue_record)=>{
 				if(err)
 				{
-					console.log(er);
+					console.log(err);
 				}
 				else
 				{
-					res.send(data);
+					Item_Remaining.updateOne({
+						Item_ID : issue_record.Item_ID
+					},
+					{
+						$inc : {'Quantity' : req.body.quantity}
+					},
+					
+					(err, item_remaining_record)=>{
+						if(err)
+						{
+							console.log(err);
+						}else
+						{
+							Issue_Items.create({
+								Item_ID : issue_record.Item_ID,
+								Quantity : req.body.quantity,
+								Status : "Returned",
+								done : true,
+								Department : issue_record.Department,
+								Duration : "-"
+							}, (err, created_issue_record)=>{
+								if(err)
+								{
+									console.log(err);
+								}
+								else
+								{
+									console.log('Issue Record Status Updated');
+									Issue_Items.find({ $and : [{Status : 'Issued'}, { done : false }]}).populate('Item_ID').exec((err, data)=>{
+										if(err)
+										{
+											console.log(er);
+										}
+										else
+										{
+											res.send(data);
+										}
+									})
+								}
+							})
+						}
+					})
 				}
 			})
 		}

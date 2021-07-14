@@ -8,7 +8,7 @@ import "../style.css"
 
 
 const ReturnItems = () => {
-    const arr = ['Name','Quantity','Duration','Date']
+    const arr = ['Item Name', 'Department','Quantity','Duration','Date', ' ']
     const [items, setitems] = useState([])
 
     useEffect( () =>{
@@ -67,6 +67,7 @@ const ReturnItems = () => {
                  </Form.Group> */}
  
                  <Form.Group>
+                        <Form.Label>Quantity</Form.Label>
                      <Form.Control type="number" value={quantity} placeholder = "Returned Quantity" onChange={(event)=>{ setquantity(event.target.value) }} />
                  </Form.Group>
 {/*                  
@@ -93,6 +94,18 @@ const ReturnItems = () => {
 
     }
     
+    const Dissmiss = (id)=>{
+        axios.post(`${API_URL}/` + 'dissmiss_issue_record'
+         ,{ id : id })
+             .then(
+             (res) => {
+                 console.log(res) 
+                 window.flash('Record Updated')
+                 setitems(res.data);
+             } 
+         )
+         
+    }
 
     
     const [itemName, setItemName] = useState("")
@@ -158,10 +171,12 @@ const ReturnItems = () => {
            <tr>
                 <td>{index+1}</td>
                 <td>{item.Item_ID.Item_Name}<br/></td>
+                <td>{item.Department}<br/></td>
                 <td>{item.Quantity}</td>
                 <td>{item.Duration}</td>
                 <td>{moment(item.Date).format('Do MMMM YYYY')}</td>
                 <td><Button className="Btn" onClick = {()=>{ SetInfo(item); setShow(true); }} >Returned</Button></td>
+                <td><Button className="btn-danger" onClick = {()=>{ Dissmiss(item._id); }} >Dissmiss</Button></td>
                     
                
             </tr>

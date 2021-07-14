@@ -41,7 +41,7 @@ const IssueItems = () => {
           console.log(res.data);
           setRequested(res.data.requested_item);
           setInventory(res.data.inventory_items);
-          setItemName(res.data.requested_item.Item);
+          // setItemName(res.data.requested_item.Item);
           setDepartment(res.data.department);
 
         }
