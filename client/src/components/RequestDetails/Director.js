@@ -18,7 +18,7 @@ const Director = () =>{
     const history = useHistory();
     const { id } = useParams();
     const [details, setDetails] = useState({request : {}, comment : []});
-    // const [Hide, setHide] = useState(false);
+    const [Department, setDepartment] = useState("");
 
     console.log("Params " , id);
     const ref = React.createRef();
@@ -34,7 +34,7 @@ const Director = () =>{
         .then(
             (res) => {
                 setDetails(res.data)
-                // set_req_id(id);
+                setDepartment(res.data.request.R_Emp_Dept.Dept_Name)
                 console.log(id)
                 // console.log(details.request._id) 
         
@@ -134,6 +134,7 @@ const Director = () =>{
                 <Card.Title><strong>ID: </strong>{id}</Card.Title>
                 <Card.Title><strong>Name: </strong>{details.request.R_Emp_Name}</Card.Title>
                 <Card.Title><strong>Email: </strong>{details.request.R_Emp_Email}</Card.Title>
+                <Card.Title><strong>Department: </strong>{Department}</Card.Title>
                 <Card.Title><strong>Item: </strong>{details.request.Item}</Card.Title>
                 <Card.Title><strong>Duration: </strong>{details.request.Duration}</Card.Title>
                 <Card.Title><strong>Quantity: </strong>{details.request.Quantity}</Card.Title>

@@ -7,7 +7,7 @@ import { API_URL } from '../../utils/constant';
 import '../style.css'
 const RequestTable = () => {
     const [showModal, setShow] = useState(false);
-   const arr = ['Requested By','Email','Date Requested','Item Name','Quantity','Duration']
+   const arr = ['Requested By','Email','Department','Date Requested','Item Name','Quantity','Duration']
     const [allrequest, setrequests] = useState([])
     const interval_id = useRef(null);
 
@@ -85,6 +85,7 @@ const RequestTable = () => {
                         <ul className="list-unstyled">
                             <li><strong>Requested by:</strong> {ModalInfo.R_Emp_Name}</li>
                             <li><strong>Email:</strong> {ModalInfo.R_Emp_Email}</li>
+                            <li><strong>Department:</strong> {ModalInfo.R_Emp_Dept.Dept_Name}</li>
                             <li><strong>Item:</strong> {ModalInfo.Item}</li>
                             <li><strong>Quantity:</strong> {ModalInfo.Quantity}</li>
                             <li><strong>Duration:</strong> {ModalInfo.Duration}</li>
@@ -144,6 +145,7 @@ const RequestTable = () => {
                 <td>{index+1}</td>
                 <td>{request.R_Emp_Name}<br/></td>
                 <td>{request.R_Emp_Email}</td>
+                <td>{request.R_Emp_Dept.Dept_Name}</td>
                 <td>{moment(request.Added).format('Do MMMM YYYY')}</td>
                 <td>{request.Item}</td>
                 <td>{request.Quantity}</td>

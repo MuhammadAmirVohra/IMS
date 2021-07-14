@@ -14,7 +14,8 @@ const Account_Manager = () =>{
     const [comments, set_comments] = useState("")
     const  { id } = useParams();
     const history = useHistory();
-    const [details, setDetails] = useState([]);
+    const [details, setDetails] = useState({});
+    const [department, setDepartment] = useState("");
     // const [path, setPath] = useState("");
     console.log("Params " , id);
     useEffect (() =>{
@@ -22,8 +23,8 @@ const Account_Manager = () =>{
     .then(
         (res) => {
             setDetails(res.data)
-            // setPath(res.data.path)
-            console.log(res.data) 
+            setDepartment(res.data.R_Emp_Dept.Dept_Name)
+            console.log('Request : ' + res.data) 
        
         } 
     )
@@ -47,6 +48,25 @@ const Account_Manager = () =>{
         })
     }
     
+    const SendBack = ()=>{
+        axios.post(`${API_URL}/sendbacktopurchase`, { id : id, comment : comments }).then((res)=>{
+                if(res.data.code === 200)
+                { 
+                    console.log('Comment Added')
+                    history.push('/managerdashboard')
+                    window.flash('Sended Back to Purchase Department')
+
+                }
+                else if(res.data.code === 404)
+                { 
+                    window.flash('Failed to Send Back', 'danger')
+                    // console.log('Comment Added')
+                    // history.push('/managerdashboard')
+                }
+        })
+    }
+    
+
 
     const Download = async ()=>{
         await axios.get(`${API_URL}/${id}/download`, {
@@ -55,6 +75,7 @@ const Account_Manager = () =>{
             download(res.data, 'quotation', 'pdf');
           })
     }
+    
 
     
     return(
@@ -70,6 +91,7 @@ const Account_Manager = () =>{
             <Card.Body>
                 <Card.Title><strong>Name: </strong>{details.R_Emp_Name}</Card.Title>
                 <Card.Title><strong>Email: </strong>{details.R_Emp_Email}</Card.Title>
+                <Card.Title><strong>Department: </strong>{department}</Card.Title>
                 <Card.Title><strong>Item: </strong>{details.Item}</Card.Title>
                 <Card.Title><strong>Duration: </strong>{details.Duration}</Card.Title>
                 <Card.Title><strong>Quantity: </strong>{details.Quantity}</Card.Title>
@@ -77,6 +99,7 @@ const Account_Manager = () =>{
                 <Card.Title><strong>Date Requested </strong>{moment(details.Added).format('Do MMMM YYYY')}</Card.Title>
                 
                 <Button className = "Btn" onClick={Download}>Download Quotation</Button>
+                <Button className = "ml-3 btn-danger" onClick={SendBack}>Send Back to Purchase</Button>
                 
                 <Form className="mt-4" onSubmit={SubmitComment}>
                     <Form.Group>

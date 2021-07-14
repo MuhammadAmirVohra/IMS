@@ -10,7 +10,7 @@ import '../style.css'
 
 const AdminRequestTable = () => {
     // const cookie = new Cookie();
-    const arr = ['Requested By','Email','Date Requested','Item Name','Quantity','Duration']
+    const arr = ['Requested By','Email','Date Requested', 'Department','Item Name','Quantity','Duration']
     const [allrequest, setrequests] = useState([])
     const interval_id = useRef(null);
 
@@ -80,6 +80,7 @@ const AdminRequestTable = () => {
                 <td>{request.R_Emp_Name}<br/></td>
                 <td>{request.R_Emp_Email}</td>
                 <td>{moment(request.Added).format('Do MMMM YYYY')}</td>
+                <td>{request.R_Emp_Dept.Dept_Name}</td>
                 <td>{request.Item}</td>
                 <td>{request.Quantity}</td>
                 <td>{request.Duration}</td>

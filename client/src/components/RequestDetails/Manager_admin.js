@@ -16,6 +16,7 @@ const ManagerAdmin = () =>{
     const [admin_comment, set_admin] = useState("");
     const [request, set_request] = useState({});
     const [comment, set_comment] = useState({});
+    const [department, setDepartment] = useState("");
 
     console.log("Params " , id);
     
@@ -25,6 +26,7 @@ const ManagerAdmin = () =>{
             (res) => {
                 // setDetails(res.data)
                 set_request(res.data.request)
+                setDepartment(res.data.request.R_Emp_Dept.Dept_Name)
                 set_comment(res.data.comment)
                 console.log(res.data) 
         
@@ -72,6 +74,7 @@ const ManagerAdmin = () =>{
             <Card.Body>
                 <Card.Title><strong>Name: </strong>{request.R_Emp_Name}</Card.Title>
                 <Card.Title><strong>Email: </strong>{request.R_Emp_Email}</Card.Title>
+                <Card.Title><strong>Department: </strong>{department}</Card.Title>
                 <Card.Title><strong>Item: </strong>{request.Item}</Card.Title>
                 <Card.Title><strong>Duration: </strong>{request.Duration}</Card.Title>
                 <Card.Title><strong>Quantity: </strong>{request.Quantity}</Card.Title>

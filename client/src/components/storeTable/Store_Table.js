@@ -6,7 +6,7 @@ import {useHistory} from 'react-router-dom';
 import { API_URL } from '../../utils/constant';
 
 const RequestTable = () => {
-    const arr = ['Requested By','Email','Item Name','Quantity','Duration']
+    const arr = ['Requested By','Email','Department','Item Name','Quantity','Duration']
     const [allrequest, setrequests] = useState([])
     const interval_id = useRef(null);
     const history = useHistory()
@@ -142,7 +142,7 @@ const RequestTable = () => {
                 <td>{index+1}</td>
                 <td>{request.R_Emp_Name}<br/></td>
                 <td>{request.R_Emp_Email}</td>
-                
+                <td>{request.R_Emp_Dept.Dept_Name}</td>
                 <td>{request.Item}</td>
                 <td>{request.Quantity}</td>
                 <td>{request.Duration}</td>

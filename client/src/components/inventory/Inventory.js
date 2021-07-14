@@ -39,8 +39,8 @@ const Inventory = () => {
         const UpdateRecord = (event)=>{
             event.preventDefault()
             
-         axios.post(`${API_URL}/` + ModalInfo._id + '/updateitem'
-         ,{ id : ModalInfo._id, name : name, quantity : quantity, description : description, type : type })
+         axios.post(`${API_URL}/` + ModalInfo.Item_ID._id + '/updateitem'
+         ,{ id : ModalInfo.Item_ID._id, name : name, quantity : quantity, description : description, type : type })
              .then(
              (res) => {
                  setShow(false);

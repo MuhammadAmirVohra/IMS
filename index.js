@@ -149,6 +149,12 @@ mongoose
 //   next();
 // });
 
+
+
+
+
+
+
 app.post("/:id/pdf", (req, res) => {
   Order.findOne({ _id: req.params.id }, (err, data) => {
 	if (err) {
@@ -355,8 +361,7 @@ app.post("/:id/pdf", (req, res) => {
 
 const Item_Schema = new mongoose.Schema({
   Item_Name: {
-	type: String,
-	unique : true
+	type: String
   },
   Request_ID: {type : mongoose.Types.ObjectId, ref : 'Order'},
   Item_Type: {
@@ -370,11 +375,11 @@ const Item_Schema = new mongoose.Schema({
   Item_Quantity: {
 	type: Number,
   },
-  Comments: {
-	Manager_Admin: String,
-	Manager_Accounts: String,
-  },
-  Quotation: {type : mongoose.Types.ObjectId, ref : 'PDF'},
+//   Comments: {
+// 	Manager_Admin: String,
+// 	Manager_Accounts: String,
+//   },
+//   Quotation: {type : mongoose.Types.ObjectId, ref : 'PDF'},
   Receive_Date : {
 	  type : Date
   }
@@ -726,7 +731,7 @@ app.get("/get_all_request", (req, res) => {
 	{
 	  R_Emp_Dept: req.user.user.Department_ID,
 	  Status: "Requested",
-	},
+	}).populate('R_Emp_Dept').exec(
 	(err, all_data) => {
 	  if (err) {
 		console.log(err);
@@ -739,7 +744,7 @@ app.get("/get_all_request", (req, res) => {
 });
 
 app.get("/get_purchase_request", (req, res) => {
-  Order.find({ Status: "Purchase" }, (err, all_data) => {
+  Order.find({ Status: "Purchase" }).populate('R_Emp_Dept').exec((err, all_data) => {
 	if (err) {
 	  console.log(err);
 	} else {
@@ -983,6 +988,42 @@ app.post("/submitaccounts", (req, res) => {
   );
 });
 
+
+
+app.post("/sendbacktopurchase", (req, res) => {
+		  Order.updateOne(
+			{ _id: req.body.id },
+			{ Status: "Purchase" },
+			(err, order) => {
+			  if (err) {
+				console.log(err);
+				res.send({ code: 404 });
+			  } else {
+				PDF.deleteOne({Request_ID : req.body.id}, (err, deleted)=>{
+					if(err)
+					{
+						console.log(err)
+					}
+					else
+					{
+						console.log("deleted :", deleted);
+						console.log("order :", order);
+		
+						console.log("Sent to Purchase");
+						res.send({ code: 200});
+					}
+				})
+			  }
+			}
+		  );
+  });
+  
+
+
+
+
+
+
 app.post("/submitadmin", (req, res) => {
   Temp.updateOne(
 	{ Req_Id: req.body.id },
@@ -1026,12 +1067,12 @@ app.post("/:id/acceptdirector", (req, res) => {
 		  } else {
 			Item.create(
 			  {
-				Request_ID: req.params.id,
-				Comments: {
-				  Manager_Admin: temp.Comment_Admin,
-				  Manager_Accounts: temp.Comment_Accounts,
-				},
-				Quotation: temp.Quotation_Attachment,
+				Request_ID: req.params.id
+				// Comments: {
+				//   Manager_Admin: temp.Comment_Admin,
+				//   Manager_Accounts: temp.Comment_Accounts,
+				// },
+				// Quotation: temp.Quotation_Attachment,
 			  },
 			  (err, item) => {
 				if (err) {
@@ -1043,8 +1084,17 @@ app.post("/:id/acceptdirector", (req, res) => {
 					  console.log(err);
 					  res.send({ code: 404 });
 					} else {
-					  console.log("Request Accepted");
-					  res.send({ code: 200 });
+					  PDF.deleteOne({Request_ID : req.params.id}, (err, pdf_deleted)=>{
+						  if(err)
+						  {
+							  console.log(err);
+						  }
+						  else
+						  {
+							console.log("Request Accepted");
+							res.send({ code: 200 });
+						  }
+					  })
 					}
 				  });
 				}
@@ -1106,7 +1156,7 @@ app.post("/:id/rejectdirector", (req, res) => {
 
 app.get("/get_accounts_requests", (req, res) => {
   console.log("desig ", req.user.user.Designation);
-  Order.find({ Status: req.user.user.Designation }, (err, requests) => {
+  Order.find({ Status: req.user.user.Designation }).populate('R_Emp_Dept').exec((err, requests) => {
 	// Order.find({}, (err, requests) => {
 	if (err) {
 	  console.log(err);
@@ -1122,7 +1172,7 @@ app.get("/:id/accountsrequest", (req, res) => {
   Order.findOne(
 	{
 	  _id: req.params.id,
-	},
+	}).populate('R_Emp_Dept').exec(
 	(err, request) => {
 	  if (err) {
 		console.log(err);
@@ -1211,7 +1261,7 @@ app.get("/:id/adminrequest", (req, res) => {
   Order.findOne(
 	{
 	  _id: req.params.id,
-	},
+	}).populate('R_Emp_Dept').exec(
 	(err, request) => {
 	  if (err) {
 		console.log(err);
@@ -1244,7 +1294,7 @@ app.get("/:id/directorrequest", (req, res) => {
   Order.findOne(
 	{
 	  _id: req.params.id,
-	},
+	}).populate('R_Emp_Dept').exec(
 	(err, request) => {
 	  if (err) {
 		console.log(err);
@@ -1274,8 +1324,8 @@ app.get("/storerequests", (req, res) => {
   console.log("Requesting Request Details Store");
 
   Order.find(
-	{ $or: [{ Status: "Approved" }, { Status: "Recieved" }] },
-	(err, requests) => {
+	{ $or: [{ Status: "Approved" }, { Status: "Recieved" }] }
+  ).populate('R_Emp_Dept').exec((err, requests) => {
 	  if (err) {
 		console.log(err);
 	  } else {
@@ -1331,46 +1381,57 @@ app.get("/recieveitem", (req, res) => {
 
 app.post("/:id/updateitem", (req, res) => {
   console.log("Update Item", req.params.id);
-  Item.updateOne(
-	{
-	  _id: req.params.id,
-	},
-	{
-	  Item_Name: req.body.name + ' - ' + moment(Date.now()).format('DD-MMMM-YYYY'),
-	//   Item_Quantity: req.body.quantity,
-	  Item_Description: req.body.description,
-	  Item_Type: req.body.type,
-	},
-	(err, updated) => {
-	  if (err) {
-		console.log(err);
-	  } else {
-		console.log(updated);
-		Item_Remaining.updateOne({Item_ID : req.params.id}, {Quantity : req.body.quantity}, (err, updated_item)=>{
-			if(err)
-			{
-				console.log(err);
-			}
-			else
-			{
-
-				Item_Remaining.find(
-					{}).populate('Item_ID').exec(
-					(err, data) => {
-					  if (err) {
-						console.log(err);
-					  } else {
-						res.send(data);
-					  }
-					}
-				  )
-
-
-			}
-		})
+//   var name = req.body.name  + ' - ' + moment(Date.now()).format('DD-MMMM-YYYY');
+	// console.log(name);
+  Item.findOne({_id : req.params.id}, (err, item_data)=>{
+	  if(err)
+	  {
+		  console.log(err);
 	  }
-	}
-  );
+	  else
+	  {
+		Item.updateOne(
+			{
+			  _id: req.params.id,
+			},
+			{
+			  Item_Name: req.body.name  + ' - ' + moment(item_data.Receive_Date).format('DD-MMMM-YYYY'),
+			//   Item_Quantity: req.body.quantity,
+			  Item_Description: req.body.description,
+			  Item_Type: req.body.type,
+			},
+			(err, updated) => {
+			  if (err) {
+				console.log(err);
+			  } else {
+				console.log(updated);
+				Item_Remaining.updateOne({Item_ID : req.params.id}, {Quantity : req.body.quantity}, (err, updated_item)=>{
+					if(err)
+					{
+						console.log(err);
+					}
+					else
+					{
+		
+						Item_Remaining.find(
+							{}).populate('Item_ID').exec(
+							(err, data) => {
+							  if (err) {
+								console.log(err);
+							  } else {
+								res.send(data);
+							  }
+							}
+						  )
+		
+		
+					}
+				})
+			  }
+			}
+		  );
+	  }
+  })
 });
 
 
@@ -1733,7 +1794,7 @@ app.post("/recieveitem", (req, res) => {
 	  Request_ID: req.body.id,
 	},
 	{
-	  Item_Name: req.body.name,
+	  Item_Name: req.body.name  + ' - ' + moment(Date.now()).format('DD-MMMM-YYYY'),
 	  Item_Quantity: req.body.quantity,
 	  Item_Description: req.body.description,
 	  Item_Type: req.body.type,

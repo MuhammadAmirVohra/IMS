@@ -7,7 +7,7 @@ import { API_URL } from '../../utils/constant';
 import styled from 'styled-components';
 
 const RequestTable = () => {
-    const arr = ['Date Requested','Item Name','Quantity','Quotation']
+    const arr = ['Name','Email','Department','Date Requested','Item Name','Quantity','Quotation']
     const [allrequest, setrequests] = useState([])
     const interval_id = useRef(null);
     // const [open, setOpen] = useState(false);
@@ -172,8 +172,9 @@ const RequestTable = () => {
             <>
              <tr key= {index}>
                 <td>{index+1}</td>
-                {/* <td>{request.R_Emp_Name}<br/></td> */}
-                {/* <td>{request.R_Emp_Email}</td> */}
+                <td>{request.R_Emp_Name}<br/></td>
+                <td>{request.R_Emp_Email}</td>
+                <td>{request.R_Emp_Dept.Dept_Name}</td>
                 <td>{moment(request.Added).format('Do MMMM YYYY')}</td>
                 <td>{request.Item}</td>
                 <td>{request.Quantity}</td>
