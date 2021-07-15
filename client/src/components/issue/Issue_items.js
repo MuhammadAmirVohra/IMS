@@ -130,9 +130,11 @@ const IssueItems = () => {
             window.flash("Item Quantity Invalid", "danger");
           } else if (res.data.code === 200) {
             window.scrollTo(0, 0);
+            history.push("/storedashboard");
+            setTimeout(()=>{
             window.flash("Item Successfully Issued ");
-            // history.push("/storedashboard");
-            fetch();
+            }, 1000) 
+            // fetch();
           }
           //  setRequested(res.data);
         });

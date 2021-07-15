@@ -18,6 +18,13 @@ const HeaderPages = () => {
                         Log Out
                 </Button>
             </Link>
+
+            <Link to="/" >
+                <Button className="btn-success btn-md mr-4">
+                        Home
+                </Button>
+            </Link>
+
            
         </Navbar>
         </>
