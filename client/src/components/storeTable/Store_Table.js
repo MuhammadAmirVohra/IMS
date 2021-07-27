@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Tab, Tabs, Container } from 'react-bootstrap';
 // import { Tabs, Tab } from 'react-bootstrap-tabs';
 // import { useHistory } from 'react-router-dom';
 import { API_URL } from '../../utils/constant';
@@ -154,7 +154,7 @@ const RequestTable = () => {
 
 
     // }
-
+    const [key, setkey] = useState('Issue')
 
 
     return (
@@ -165,168 +165,181 @@ const RequestTable = () => {
             </div>
         :null
         } */}
+            <Container className="MainContainer">
+                <Tabs
+                    id="controlled-tab-example"
+                    activeKey={key}
+                    onSelect={key => setkey(key)}
+                >
+                    <Tab eventKey="Issue" title={"Issue Requests (" + allrequest.length + ")"}>
 
 
 
-
-
-
-
-            {allrequest.length > 0 &&
-                <>
-                    <h1>Issue Request</h1>
-                    <Table className="w-100 TableStyle" responsive>
-                        <thead>
+                        {
+                            allrequest.length > 0 &&
                             <>
-                                <tr>
-                                    <th>#</th>
-                                    {arr.map((_, index) => (
-                                        <th key={index}>{_}</th>
-                                    ))}
-                                    <th></th>
-                                </tr>
-                            </>
-                        </thead>
-                        <tbody>
-                            {allrequest.map((request, index) => {
-                                return (
-                                    <>
-                                        {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
-                                        {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
-                                        <tr>
-                                            <td>{index + 1}</td>
-                                            <td>{request.Order_ID}<br /></td>
-                                            <td>{request.R_Emp_Name}<br /></td>
-                                            <td>{request.R_Emp_Email}</td>
-                                            <td>{request.R_Emp_Dept.Dept_Name}</td>
-                                            <td className="new-line">{request.Item}</td>
-                                            {/* <td>{request.Quantity}</td>
+                                {/* <h1>Issue Request</h1> */}
+                                <Table className="w-100 TableStyle" responsive>
+                                    <thead>
+                                        <>
+                                            <tr>
+                                                <th>#</th>
+                                                {arr.map((_, index) => (
+                                                    <th key={index}>{_}</th>
+                                                ))}
+                                                <th></th>
+                                            </tr>
+                                        </>
+                                    </thead>
+                                    <tbody>
+                                        {allrequest.map((request, index) => {
+                                            return (
+                                                <>
+                                                    {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
+                                                    {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
+                                                    <tr>
+                                                        <td>{index + 1}</td>
+                                                        <td>{request.Order_ID}<br /></td>
+                                                        <td>{request.R_Emp_Name}<br /></td>
+                                                        <td>{request.R_Emp_Email}</td>
+                                                        <td>{request.R_Emp_Dept.Dept_Name}</td>
+                                                        <td className="new-line">{request.Item}</td>
+                                                        {/* <td>{request.Quantity}</td>
                                         <td>{request.Duration}</td> */}
 
-                                            <td>
-                                                <Button onClick={() => { onPurchase(request); }} className="Btn m-2"> Send to Purchase </Button>
-                                                <Button onClick={() => onIssue(request._id)} className="m-2 btn-success mr-1">Issue</Button>
-                                                <Button onClick={() => onCancel(request._id, request.R_Emp_Email, request.R_Emp_Name, request.Item)} className="btn-danger">Cancel</Button>
-                                            </td>
-                                        </tr>
-                                        {/* </OverlayTrigger> */}
+                                                        <td>
+                                                            <Button onClick={() => { onPurchase(request); }} className="Btn m-2"> Send to Purchase </Button>
+                                                            <Button onClick={() => onIssue(request._id)} className="m-2 btn-success mr-1">Issue</Button>
+                                                            <Button onClick={() => onCancel(request._id, request.R_Emp_Email, request.R_Emp_Name, request.Item)} className="btn-danger">Cancel</Button>
+                                                        </td>
+                                                    </tr>
+                                                    {/* </OverlayTrigger> */}
 
-                                    </>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
-                </>
-            }
-            {/* {
+                                                </>
+                                            )
+                                        })}
+                                    </tbody>
+                                </Table>
+                            </>
+                        }
+                        {/* {
                 allrequest.length === 0 && <h2>No Requests.</h2>
             } */}
+                    </Tab>
+                    <Tab eventKey="Return" title={"Return Requests (" + allissued.length + ")"}>
 
 
-            {allissued.length > 0 &&
-                <>
-                    <h1>Return Request</h1>
 
-                    <Table className="w-100 TableStyle" responsive>
-                        <thead>
+
+                        {allissued.length > 0 &&
                             <>
-                                <tr>
-                                    <th>#</th>
-                                    {arr.map((_, index) => (
-                                        <th key={index}>{_}</th>
-                                    ))}
-                                    <th></th>
-                                </tr>
-                            </>
-                        </thead>
-                        <tbody>
-                            {allissued.map((request, index) => {
-                                return (
-                                    <>
-                                        {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
-                                        {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
-                                        <tr>
-                                            <td>{index + 1}</td>
-                                            <td>{request.Order_ID}<br /></td>
-                                            <td>{request.R_Emp_Name}<br /></td>
-                                            <td>{request.R_Emp_Email}</td>
-                                            <td>{request.R_Emp_Dept.Dept_Name}</td>
-                                            <td className="new-line">{request.Item}</td>
-                                            {/* <td>{request.Quantity}</td>
+                                {/* <h1>Return Request</h1> */}
+
+                                <Table className="w-100 TableStyle" responsive>
+                                    <thead>
+                                        <>
+                                            <tr>
+                                                <th>#</th>
+                                                {arr.map((_, index) => (
+                                                    <th key={index}>{_}</th>
+                                                ))}
+                                                <th></th>
+                                            </tr>
+                                        </>
+                                    </thead>
+                                    <tbody>
+                                        {allissued.map((request, index) => {
+                                            return (
+                                                <>
+                                                    {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
+                                                    {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
+                                                    <tr>
+                                                        <td>{index + 1}</td>
+                                                        <td>{request.Order_ID}<br /></td>
+                                                        <td>{request.R_Emp_Name}<br /></td>
+                                                        <td>{request.R_Emp_Email}</td>
+                                                        <td>{request.R_Emp_Dept.Dept_Name}</td>
+                                                        <td className="new-line">{request.Item}</td>
+                                                        {/* <td>{request.Quantity}</td>
                                         <td>{request.Duration}</td> */}
 
-                                            <td>
-                                                <Button onClick={() => OnReturn(request._id)} className="m-2 btn-success mr-1">Returned</Button>
-                                                <Button onClick={() => OnDissmiss(request._id)} className="m-2 mr-1 btn-danger">Dissmiss</Button>
-                                            </td>
-                                        </tr>
-                                        {/* </OverlayTrigger> */}
+                                                        <td>
+                                                            <Button onClick={() => OnReturn(request._id)} className="m-2 btn-success mr-1">Returned</Button>
+                                                            <Button onClick={() => OnDissmiss(request._id)} className="m-2 mr-1 btn-danger">Dissmiss</Button>
+                                                        </td>
+                                                    </tr>
+                                                    {/* </OverlayTrigger> */}
 
-                                    </>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
-                </>
-            }
-            {/* {
+                                                </>
+                                            )
+                                        })}
+                                    </tbody>
+                                </Table>
+                            </>
+                        }
+                        {/* {
                 allissued.length === 0 && <h2>No Requests.</h2>
             } */}
+                    </Tab>
+                    <Tab eventKey="Receive" title={"Receive Requests (" + allreceive.length + ")"}>
 
 
 
-            {allreceive.length > 0 &&
-                <>
-                    <h1>Receive Request</h1>
 
-                    <Table className="w-100 TableStyle" responsive>
-                        <thead>
+
+                        {allreceive.length > 0 &&
                             <>
-                                <tr>
-                                    <th>#</th>
-                                    {arr.map((_, index) => (
-                                        <th key={index}>{_}</th>
-                                    ))}
-                                    <th></th>
-                                </tr>
-                            </>
-                        </thead>
-                        <tbody>
-                            {allreceive.map((request, index) => {
-                                return (
-                                    <>
-                                        {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
-                                        {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
-                                        <tr>
-                                            <td>{index + 1}</td>
-                                            <td>{request.Order_ID}<br /></td>
-                                            <td>{request.R_Emp_Name}<br /></td>
-                                            <td>{request.R_Emp_Email}</td>
-                                            <td>{request.R_Emp_Dept.Dept_Name}</td>
-                                            <td className="new-line">{request.Item}</td>
-                                            {/* <td>{request.Quantity}</td>
+                                {/* <h1>Receive Request</h1> */}
+
+                                <Table className="w-100 TableStyle" responsive>
+                                    <thead>
+                                        <>
+                                            <tr>
+                                                <th>#</th>
+                                                {arr.map((_, index) => (
+                                                    <th key={index}>{_}</th>
+                                                ))}
+                                                <th></th>
+                                            </tr>
+                                        </>
+                                    </thead>
+                                    <tbody>
+                                        {allreceive.map((request, index) => {
+                                            return (
+                                                <>
+                                                    {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
+                                                    {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
+                                                    <tr>
+                                                        <td>{index + 1}</td>
+                                                        <td>{request.Order_ID}<br /></td>
+                                                        <td>{request.R_Emp_Name}<br /></td>
+                                                        <td>{request.R_Emp_Email}</td>
+                                                        <td>{request.R_Emp_Dept.Dept_Name}</td>
+                                                        <td className="new-line">{request.Item}</td>
+                                                        {/* <td>{request.Quantity}</td>
                                         <td>{request.Duration}</td> */}
 
-                                            <td>
-                                                <Button onClick={() => OnReceived(request._id)} className="m-2 btn-success mr-1">Received</Button>
-                                                <Button onClick={() => OnDissmiss(request._id)} className="m-2 mr-1 btn-danger">Dissmiss</Button>
-                                            </td>
-                                        </tr>
-                                        {/* </OverlayTrigger> */}
+                                                        <td>
+                                                            <Button onClick={() => OnReceived(request._id)} className="m-2 btn-success mr-1">Received</Button>
+                                                            <Button onClick={() => OnDissmiss(request._id)} className="m-2 mr-1 btn-danger">Dissmiss</Button>
+                                                        </td>
+                                                    </tr>
+                                                    {/* </OverlayTrigger> */}
 
-                                    </>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
-                </>
-            }
-            {/* {
+                                                </>
+                                            )
+                                        })}
+                                    </tbody>
+                                </Table>
+                            </>
+                        }
+                        {/* {
                         allreceive.length === 0 && <h2>No Requests.</h2>
                     } */}
 
-
-
+                    </Tab>
+                </Tabs>
+            </Container>
         </>
     )
 
