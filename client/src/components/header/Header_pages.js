@@ -1,32 +1,32 @@
 import React from 'react';
 import 'react-bootstrap';
-import styled  from 'styled-components';
-import { Navbar, Button} from 'react-bootstrap'
+
+import { Navbar, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import Flash from '../Flash/flashmessage'
 import '../style.css'
-  
+
 
 const HeaderPages = () => {
-    return(  
+    return (
         <>
-       <Flash />
-        <Navbar className="Nav justify-content-end fixed-top">
-           
-            <Link to="/logout" >
-                <Button className="Btn  btn-primary btn-md mr-4">
+            <Flash />
+            <Navbar className="Nav justify-content-end fixed-top">
+
+                <Link to="/logout" >
+                    <Button className="Btn  btn-primary btn-md mr-4">
                         Log Out
-                </Button>
-            </Link>
+                    </Button>
+                </Link>
 
-            <Link to="/" >
-                <Button className="btn-success btn-md mr-4">
+                <Link to="/" >
+                    <Button className="btn-success btn-md mr-4">
                         Home
-                </Button>
-            </Link>
+                    </Button>
+                </Link>
 
-           
-        </Navbar>
+
+            </Navbar>
         </>
     )
 };
@@ -41,7 +41,7 @@ export default HeaderPages;
 
 // const LogoutButton = styled(Button)`
 //     background :#EFBB20;
-//     border: none; 
+//     border: none;
 //     &:hover{
 //     background: #0e8ccc;
 // }

@@ -1,24 +1,23 @@
 import RequestTable from '../purchaseRequest/Purchase_request_table'
 // import axios from 'axios';
 // import {Link} from 'react-router-dom';
-import {Container} from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import UserInformation from '../userInformation/User_information.js';
-import styled from 'styled-components';
 import HeaderPages from '../header/Header_pages';
 import "../style.css"
-const PurchaseDashboard = () =>{
+const PurchaseDashboard = () => {
 
-return(
-    <>
-    <HeaderPages/>
-    <Container className="MainContainer">
-    
-    <UserInformation />
-    <br/>
-    <RequestTable/>
-    </Container>
-    </>
-)
+    return (
+        <>
+            <HeaderPages />
+            <Container className="MainContainer">
+
+                <UserInformation />
+                <br />
+                <RequestTable />
+            </Container>
+        </>
+    )
 
 
 }
@@ -27,7 +26,7 @@ export default PurchaseDashboard;
 
 // const Btn = styled(Button)`
 //     background :#EFBB20;
-//     border: none; 
+//     border: none;
 //     &:hover{
 //     background: #0e8ccc;
 // }

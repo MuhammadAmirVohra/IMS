@@ -1,80 +1,127 @@
-import React , { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import {Table,Container,OverlayTrigger,Tooltip} from 'react-bootstrap';
-import styled from 'styled-components';
-import {useHistory} from 'react-router-dom';
+import { Table, Button } from 'react-bootstrap';
+// import { Tabs, Tab } from 'react-bootstrap-tabs';
+// import { useHistory } from 'react-router-dom';
 import { API_URL } from '../../utils/constant';
 
 const RequestTable = () => {
-    const arr = ['Requested By','Email','Department','Item Name','Quantity','Duration']
+    const arr = ['Request ID', 'Requested By', 'Email', 'Department', 'Item Name', ' ']
     const [allrequest, setrequests] = useState([])
+    const [allissued, setissued] = useState([])
+    const [allreceive, setreceive] = useState([])
+
     const interval_id = useRef(null);
-    const history = useHistory()
-    async function fetch(){
+    // const history = useHistory()
+    async function fetch() {
         await axios.get(`${API_URL}/storerequests`, {
             withCredentials: true
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res.data);
-            setrequests(res.data);
-            
+            setrequests(res.data.requests);
+            setissued(res.data.issued);
+            setreceive(res.data.receive);
+
+
+
+
         })
-    } 
-    const onIssue = (id)=>{
-        
-        console.log("STORE TABLE MAIN ID FOR PARAMS",id)
-        history.push('/'+id+'/issue')
+    }
+    const onIssue = (id) => {
+
+        console.log("STORE TABLE MAIN ID FOR PARAMS", id)
+        axios.post(`${API_URL}/request_issued`, { id: id }).then(
+            (res) => {
+                if (res.data) {
+                    // setShow(false)
+                    window.flash('Request Issued');
+                    fetch();
+                }
+            }
+        )
+        // history.push('/issuenote');
     }
 
 
-    // const onPurchase = (id)=>{
-    //     axios.post(`${API_URL}/request_forward_purchase`, { id : id}).then(
-    //         (res)=>{
-    //             if(res.data)
-    //             { 
-    //                 setShow(false)
-    //                 window.flash('Request Forwarded to Purchase Department')
-    //                 fetch();
-    //             }
-    //         }
-    //     )
+    const onPurchase = (id) => {
+        axios.post(`${API_URL}/request_forward_purchase`, { id: id }).then(
+            (res) => {
+                if (res.data) {
+                    // setShow(false)
+                    window.flash('Request Forwarded to Purchase Department')
+                    fetch();
+                }
+            }
+        )
 
-    // }
-        
-    // const onCancel = (_id, email, name, item) => {
-    //     axios.post(`${API_URL}/request_cancel`, {id : _id, email : email, name : name, item : item}).then(
-    //         (res)=>{
-    //             if(res.data)
-    //             { 
-    //                 window.flash('Request Cancelled');
-    //                 fetch();
+    }
 
-    //             }
-    //         }
-    //     )
-    // }
+    const onCancel = (_id, email, name, item) => {
+        axios.post(`${API_URL}/request_cancel`, { id: _id, email: email, name: name, item: item }).then(
+            (res) => {
+                if (res.data) {
+                    window.flash('Request Cancelled');
+                    fetch();
 
-    
+                }
+            }
+        )
+    }
 
+    const OnReturn = (_id, email, name, item) => {
+        axios.post(`${API_URL}/return_this_item`, { id: _id, email: email, name: name, item: item }).then(
+            (res) => {
+                if (res.data) {
+                    window.flash('Request Returned');
+                    fetch();
+
+                }
+            }
+        )
+    }
+    const OnReceived = (_id, email, name, item) => {
+        axios.post(`${API_URL}/receive_this_item`, { id: _id, email: email, name: name, item: item }).then(
+            (res) => {
+                if (res.data) {
+                    window.flash('Request Recieved');
+                    fetch();
+
+                }
+            }
+        )
+    }
+
+    const OnDissmiss = (_id, email, name, item) => {
+        axios.post(`${API_URL}/dissmiss_this_item`, { id: _id, email: email, name: name, item: item }).then(
+            (res) => {
+                if (res.data) {
+                    window.flash('Request Dissmissed');
+                    fetch();
+
+                }
+            }
+        )
+    }
     // var requests = []
-    useEffect( () =>{
+    useEffect(() => {
         fetch()
-     
-        interval_id.current = setInterval(()=>{fetch()}, 3000);
-       return function cleanup() {
-          clearInterval(interval_id.current);
-          }
-    },[])
+
+        interval_id.current = setInterval(() => { fetch() }, 3000);
+        return function cleanup() {
+            clearInterval(interval_id.current);
+        }
+    }, [])
 
 
     // const [showModal, setShow] = useState(false)
     // const [ModalInfo, SetInfo] = useState({})
     // const ModalContent = ()=>{
-       
+
     //     return(
     //         <Modal show = {showModal} onHide ={() => {setShow(false)}}>
     //             <Modal.Header closeButton>
     //                 <Modal.Title>
-    //                     Details 
+    //                     Details
     //                 </Modal.Title>
     //                        </Modal.Header>
     //                 <ModalBody>
@@ -95,79 +142,192 @@ const RequestTable = () => {
     //                     </ul>
     //                 </ModalBody>
 
-                
+
     //             <Modal.Footer>
     //                 {/* <Btn className = "btn-success">Approve</Btn>
     //                 <Btn className="btn-danger">Reject</Btn> */}
     //                 <Btn className="btn-success" onClick= {() => {onPurchase()}}>Send To Purchase Department</Btn>
-                        
+
     //             </Modal.Footer>
     //         </Modal>
     //     );
-        
+
 
     // }
-    
 
 
-    return(
+
+    return (
         <>
-        {/* {showModal?
+            {/* {showModal?
             <div>
                 <ModalContent/>
             </div>
-        :null   
+        :null
         } */}
 
-     <Container>
-         { allrequest.length > 0 &&
-        <Table className="TableStyle" responsive>
-        <thead>
-            <>
-            <tr>
-             <th>#</th>
-            {arr.map((_, index) => (
-              <th key={index}>{_}</th>
-            ))}
-            <th></th>
-          </tr>
-</>
-        </thead>
-        <tbody>
-          {allrequest.map((request, index) =>{
-            return(
-            <>
-            <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} >
-            <tr key={index} onClick = {() => {onIssue(request._id)} }>
-                <td>{index+1}</td>
-                <td>{request.R_Emp_Name}<br/></td>
-                <td>{request.R_Emp_Email}</td>
-                <td>{request.R_Emp_Dept.Dept_Name}</td>
-                <td>{request.Item}</td>
-                <td>{request.Quantity}</td>
-                <td>{request.Duration}</td>
-                    
-                {/* <td>
-                    <Btn onClick = {() => {SetInfo(request); setShow(true);} } className = "mr-1"> Details </Btn>
-                    <Btn onClick={()=>onIssue(request._id)} className = "btn-success mr-1">Issue</Btn>
-                <Btn onClick={()=>onCancel(request._id, request.R_Emp_Email, request.R_Emp_Name, request.Item)} className="btn-danger">Cancel</Btn>
-                </td> */}
-            </tr>
-            </OverlayTrigger>
-           
-            </>
-            )
-          })}
-        </tbody>
-      </Table>
-      
-      }
-      {
-          allrequest.length === 0 && <h2>No Requests.</h2>
-      }
-        
-      </Container>
-      </>
+
+
+
+
+
+
+            {allrequest.length > 0 &&
+                <>
+                    <h1>Issue Request</h1>
+                    <Table className="w-100 TableStyle" responsive>
+                        <thead>
+                            <>
+                                <tr>
+                                    <th>#</th>
+                                    {arr.map((_, index) => (
+                                        <th key={index}>{_}</th>
+                                    ))}
+                                    <th></th>
+                                </tr>
+                            </>
+                        </thead>
+                        <tbody>
+                            {allrequest.map((request, index) => {
+                                return (
+                                    <>
+                                        {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
+                                        {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
+                                        <tr>
+                                            <td>{index + 1}</td>
+                                            <td>{request.Order_ID}<br /></td>
+                                            <td>{request.R_Emp_Name}<br /></td>
+                                            <td>{request.R_Emp_Email}</td>
+                                            <td>{request.R_Emp_Dept.Dept_Name}</td>
+                                            <td className="new-line">{request.Item}</td>
+                                            {/* <td>{request.Quantity}</td>
+                                        <td>{request.Duration}</td> */}
+
+                                            <td>
+                                                <Button onClick={() => { onPurchase(request); }} className="Btn m-2"> Send to Purchase </Button>
+                                                <Button onClick={() => onIssue(request._id)} className="m-2 btn-success mr-1">Issue</Button>
+                                                <Button onClick={() => onCancel(request._id, request.R_Emp_Email, request.R_Emp_Name, request.Item)} className="btn-danger">Cancel</Button>
+                                            </td>
+                                        </tr>
+                                        {/* </OverlayTrigger> */}
+
+                                    </>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
+                </>
+            }
+            {/* {
+                allrequest.length === 0 && <h2>No Requests.</h2>
+            } */}
+
+
+            {allissued.length > 0 &&
+                <>
+                    <h1>Return Request</h1>
+
+                    <Table className="w-100 TableStyle" responsive>
+                        <thead>
+                            <>
+                                <tr>
+                                    <th>#</th>
+                                    {arr.map((_, index) => (
+                                        <th key={index}>{_}</th>
+                                    ))}
+                                    <th></th>
+                                </tr>
+                            </>
+                        </thead>
+                        <tbody>
+                            {allissued.map((request, index) => {
+                                return (
+                                    <>
+                                        {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
+                                        {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
+                                        <tr>
+                                            <td>{index + 1}</td>
+                                            <td>{request.Order_ID}<br /></td>
+                                            <td>{request.R_Emp_Name}<br /></td>
+                                            <td>{request.R_Emp_Email}</td>
+                                            <td>{request.R_Emp_Dept.Dept_Name}</td>
+                                            <td className="new-line">{request.Item}</td>
+                                            {/* <td>{request.Quantity}</td>
+                                        <td>{request.Duration}</td> */}
+
+                                            <td>
+                                                <Button onClick={() => OnReturn(request._id)} className="m-2 btn-success mr-1">Returned</Button>
+                                                <Button onClick={() => OnDissmiss(request._id)} className="m-2 mr-1 btn-danger">Dissmiss</Button>
+                                            </td>
+                                        </tr>
+                                        {/* </OverlayTrigger> */}
+
+                                    </>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
+                </>
+            }
+            {/* {
+                allissued.length === 0 && <h2>No Requests.</h2>
+            } */}
+
+
+
+            {allreceive.length > 0 &&
+                <>
+                    <h1>Receive Request</h1>
+
+                    <Table className="w-100 TableStyle" responsive>
+                        <thead>
+                            <>
+                                <tr>
+                                    <th>#</th>
+                                    {arr.map((_, index) => (
+                                        <th key={index}>{_}</th>
+                                    ))}
+                                    <th></th>
+                                </tr>
+                            </>
+                        </thead>
+                        <tbody>
+                            {allreceive.map((request, index) => {
+                                return (
+                                    <>
+                                        {/* <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Click to see Details</Tooltip>} > */}
+                                        {/* <tr key={index} onClick={() => { onIssue(request._id) }}> */}
+                                        <tr>
+                                            <td>{index + 1}</td>
+                                            <td>{request.Order_ID}<br /></td>
+                                            <td>{request.R_Emp_Name}<br /></td>
+                                            <td>{request.R_Emp_Email}</td>
+                                            <td>{request.R_Emp_Dept.Dept_Name}</td>
+                                            <td className="new-line">{request.Item}</td>
+                                            {/* <td>{request.Quantity}</td>
+                                        <td>{request.Duration}</td> */}
+
+                                            <td>
+                                                <Button onClick={() => OnReceived(request._id)} className="m-2 btn-success mr-1">Received</Button>
+                                                <Button onClick={() => OnDissmiss(request._id)} className="m-2 mr-1 btn-danger">Dissmiss</Button>
+                                            </td>
+                                        </tr>
+                                        {/* </OverlayTrigger> */}
+
+                                    </>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
+                </>
+            }
+            {/* {
+                        allreceive.length === 0 && <h2>No Requests.</h2>
+                    } */}
+
+
+
+        </>
     )
 
 

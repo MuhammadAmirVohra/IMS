@@ -1,6 +1,6 @@
 import Login from './components/login/Login_Form';
 import React, { useState } from 'react';
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { createGlobalStyle } from "styled-components";
 import Dashboard from './components/dashboard/Dashboard';
 import LogOut from './components/logout/Logout'
@@ -18,30 +18,31 @@ import ManagerAdminDetails from './components/RequestDetails/Manager_admin'
 import DirectorDetails from './components/RequestDetails/Director'
 import StoreDashboard from './components/StoreDashboard/Store_Dashboard'
 import Inventory from './components/inventory/Inventory'
-import RecieveItems from './components/recieve_items/Recieve_Items'
-import IssueItems from './components/issue/Issue_items'
+import ReceiveNote from './components/recieve_items/receive_note'
+// import IssueItems from './components/issue/Issue_items'
 import StockReport from './components/stock_report/Stock_Report';
 import ProductLedger from './components/product_ledger/Product_Ledger';
-import ReturnItems from './components/return_items/Return_items';
-
+// import ReturnItems from './components/return_items/Return_items';
+import ReturnNote from './components/return_items/return_note';
+import IssueNote from './components/issue/issue_note';
+import PrevReqs from './components/Previous_records/PreviousRecords';
+import ReqInfo from './components/Previous_records/RecordInfo';
 // import Cookie from 'universal-cookie'
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
     *{
         font-family: 'Merriweather', sans-serif;
    }
-    
-`; 
-function App() 
-{
+
+`;
+function App() {
     // const cookie = new Cookie()
-    const [token , settoken] = useState(false)
-    const [UserRole , setRole] = useState(false)
+    const [token, settoken] = useState(false)
+    const [UserRole, setRole] = useState(false)
 
     console.log(token)
 
-    function CheckUser()
-    {
+    function CheckUser() {
         // await  axios({
         //     method: "POST",
         //     withCredentials: true,
@@ -52,8 +53,8 @@ function App()
         //     {
         //         if(res.data.code === 404)
         //         {
-                    // settoken(false);
-                    // setRole("");
+        // settoken(false);
+        // setRole("");
         //         }
         //         else
         //         {
@@ -61,24 +62,23 @@ function App()
         //             setRole(res.data.user.user.Designation);
         //         }
         //     }
-            
+
 
         // });
 
-            
+
         let tok = localStorage.getItem('token');
         // let tok = cookie.get('token');
 
         if (tok) {
 
             console.log('token found');
-            settoken(true); 
+            settoken(true);
             // var u = cookie.get('user');
             setRole(localStorage.getItem('user'));
             // setRole(u);
         }
-        else
-        {
+        else {
             console.log('No token found');
             settoken(false); setRole("");
         }
@@ -92,11 +92,11 @@ function App()
 
 
 
-    React.useEffect(()=> {
-        
+    React.useEffect(() => {
+
         CheckUser();
 
-        
+
         // const user  = Cookies.get('user');
         // if (user) {
         //     settoken(true);
@@ -105,98 +105,89 @@ function App()
         // {
         //     settoken(false);
         // }
-    },[])
+    }, [])
 
-        return ( 
+    return (
         <>
-        <GlobalStyle/>
-            <AuthApi.Provider value = {{token, settoken, UserRole, setRole, CheckUser}}>
-            <BrowserRouter>
-                <Routes />
-            </BrowserRouter>   
-            </AuthApi.Provider>    
+            <GlobalStyle />
+            <AuthApi.Provider value={{ token, settoken, UserRole, setRole, CheckUser }}>
+                <BrowserRouter>
+                    <Routes />
+                </BrowserRouter>
+            </AuthApi.Provider>
         </>
     );
 }
 
-const Routes = () =>{
+const Routes = () => {
     // const cookie = new Cookie()
     const Auth = React.useContext(AuthApi);
-    return(         
-           
-           <Switch>
-                <Route exact path="/" render={() => {
-                    let tok = localStorage.getItem('token');
-                    // let tok = cookie.get('token');
-                    if (tok) {
-            
-                        console.log('token found');
-                        Auth.settoken(true); 
-                        Auth.setRole(localStorage.getItem('user'));
-                        // Auth.setRole(cookie.get('user'));
+    return (
 
-                    }
-                    else
-                    {
-                        console.log('No token found');
-                        Auth.settoken(false); Auth.setRole("");
-                    }
-            
-            
-                    console.log('Auth Token ', Auth.token);
-                    console.log('Auth User Role ', Auth.userRole);
+        <Switch>
+            <Route exact path="/" render={() => {
+                let tok = localStorage.getItem('token');
+                // let tok = cookie.get('token');
+                if (tok) {
 
-                    // Auth.token === null ? (<Login />) :  <Redirect to="/dashboard"/>
-                        
+                    console.log('token found');
+                    Auth.settoken(true);
+                    Auth.setRole(localStorage.getItem('user'));
+                    // Auth.setRole(cookie.get('user'));
 
-                    if (Auth.token === false)   
-                    {
-                        console.log("here") ;
-                        return <Login /> 
-                    }
-                    else if(Auth.token !== false && Auth.UserRole === 'General')   
-                    {
-                        return <Redirect to="/dashboard"/>
-                    }
-                    else if(Auth.token !== false && Auth.UserRole === 'Purchase')   
-                    {
-                        return <Redirect to="/purchase"/>
-                    }
-                    else if(Auth.token !== false && Auth.UserRole === 'Head')   
-                    {
-                        return <Redirect to="/hoddashboard"/>
-                    }
-                    else if(Auth.token !== false && (Auth.UserRole === 'Accounts' || Auth.UserRole === "Admin" || Auth.UserRole === "Director") )
-                    {
-                        return <Redirect to="/managerdashboard"/>
-                    }
-                    else if(Auth.token !== false && Auth.UserRole === 'Store'  )
-                    {
-                        return <Redirect to="/storedashboard"/>
-                    }
-                    
-                    
-                    
-                       
-                       
-                }}>
+                }
+                else {
+                    console.log('No token found');
+                    Auth.settoken(false); Auth.setRole("");
+                }
 
 
-                    
-                </Route>  
-                {/* <ProtectLogin path = '/' exact components = {Login} token = {Auth.token} /> */}
+                console.log('Auth Token ', Auth.token);
+                console.log('Auth User Role ', Auth.userRole);
 
-                <Route path ="/inventory"
+                // Auth.token === null ? (<Login />) :  <Redirect to="/dashboard"/>
+
+
+                if (Auth.token === false) {
+                    console.log("here");
+                    return <Login />
+                }
+                else if (Auth.token !== false && Auth.UserRole === 'General') {
+                    return <Redirect to="/dashboard" />
+                }
+                else if (Auth.token !== false && Auth.UserRole === 'Purchase') {
+                    return <Redirect to="/purchase" />
+                }
+                else if (Auth.token !== false && Auth.UserRole === 'Head') {
+                    return <Redirect to="/hoddashboard" />
+                }
+                else if (Auth.token !== false && (Auth.UserRole === 'Accounts' || Auth.UserRole === "Admin" || Auth.UserRole === "Director")) {
+                    return <Redirect to="/managerdashboard" />
+                }
+                else if (Auth.token !== false && Auth.UserRole === 'Store') {
+                    return <Redirect to="/storedashboard" />
+                }
+
+
+
+
+
+            }}>
+
+
+
+            </Route>
+            {/* <ProtectLogin path = '/' exact components = {Login} token = {Auth.token} /> */}
+
+            <Route path="/inventory"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store"))
-                    { return <Inventory/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Store")) { return <Inventory /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
                 }}>
-                </Route>
-                {/* <Route path ="/:itemName/issuerequest"
+            </Route>
+            {/* <Route path ="/:itemName/issuerequest"
                 render={() => {
                     if (Auth.token !== false && (Auth.UserRole === "Store"))
                     { return <IssueItems/>}
@@ -206,210 +197,214 @@ const Routes = () =>{
 
                 }}>
                 </Route> */}
-                <Route path ="/:id/issue"
+            {/* <Route path="/:id/issue"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store"))
-                    { return <IssueItems/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Store")) { return <IssueItems /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
                 }}>
-                </Route>
+            </Route> */}
 
-                <Route path ="/productledger"
+            <Route exact path="/issuenote"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store"))
-                    { return <ProductLedger/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Store")) { return <IssueNote /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
                 }}>
-                </Route>
+            </Route>
 
-                <Route path ="/stockreport"
+
+            <Route path="/productledger"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store"))
-                    { return <StockReport/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Store" || Auth.UserRole === "Accounts" || Auth.UserRole === "Admin" || Auth.UserRole === "Director")) { return <ProductLedger /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
                 }}>
-                </Route>
+            </Route>
 
-                <Route path ="/:id/accounts"
+            <Route path="/stockreport"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Accounts"))
-                    { return <AccountsManagerDetails/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Store" || Auth.UserRole === "Accounts" || Auth.UserRole === "Admin" || Auth.UserRole === "Director")) { return <StockReport /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
                 }}>
-                </Route>
-                <Route path ="/returnitem"
+            </Route>
+
+            <Route path="/:id/accounts"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store"))
-                    { return <ReturnItems/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Accounts")) { return <AccountsManagerDetails /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
                 }}>
-                </Route>
-                <Route path ="/recieveitems"
+            </Route>
+            <Route path="/returnnote"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store"))
-                    { return <RecieveItems/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Store")) { return <ReturnNote /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
                 }}>
-                </Route>
-                <Route path ="/:id/admin"
+            </Route>
+            <Route path="/receivenote"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Admin"))
-                    { return <ManagerAdminDetails/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Store")) { return <ReceiveNote /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
-                }}> 
-
-                </Route>
-                
-                <Route path ="/:id/director"
+                }}>
+            </Route>
+            <Route path="/:id/admin"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Director"))
-                    { return <DirectorDetails/>}
-                    else
-                    { return <Redirect exact to="/" ></Redirect>}
+                    if (Auth.token !== false && (Auth.UserRole === "Admin")) { return <ManagerAdminDetails /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
 
 
-                }}> 
+                }}>
 
-                </Route>
-                
-                <Route  path="/dashboard" 
+            </Route>
+
+            <Route path="/:id/director"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === "Director")) { return <DirectorDetails /> }
+                    else { return <Redirect exact to="/" ></Redirect> }
+
+
+                }}>
+
+            </Route>
+
+            <Route path="/dashboard"
                 render={() => {
                     console.log('Auth Token ', Auth.token);
                     console.log('Auth User Role ', Auth.userRole);
-                    if (Auth.token !== false && (Auth.UserRole === 'General' || Auth.UserRole === 'Head'))   
-                        { return <Dashboard /> }
-                    else    
-                    {
+                    if (Auth.token !== false && (Auth.UserRole === 'General' || Auth.UserRole === 'Head' || Auth.UserRole === "Accounts" || Auth.UserRole === "Admin" || Auth.UserRole === "Director")) { return <Dashboard /> }
+                    else {
                         console.log('here');
                         return <Redirect exact to="/" />
                     }
-                       
-                       
-                }}>
-                </Route>
-                {/* <ProtectRoute path = '/dashboard' exact comp = {Dashboard} token = {Auth.token} /> */}
 
-                <Route  path="/hoddashboard" 
-                render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === 'Head'))   
-                        { return <HODDashboard/> }
-                    else    
-                    {
-                        return <Redirect to="/"/>
-                    }
-                       
-                       
-                }}>
-                </Route>
-                    
-                <Route  path="/logout" 
-                render={() => {
-                    if (Auth.token !== false )   
-                        { return <LogOut/> }
-                    else    
-                    {
-                        return <Redirect to="/"/>
-                    }
-                       
-                       
-                }}>
-                </Route>
-                    
-                <Route  path="/purchase" 
-                render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === 'Purchase'))   
-                        { return <PurchaseDashboard/> }
-                    else    
-                    {
-                        return <Redirect to="/"/>
-                    }
-                       
-                       
-                }}>
-                </Route>    
-                
-                <Route  path="/managerdashboard" 
-                render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director"))   
-                        { return <MDashboard /> }
-                    else    
-                    {
-                        return <Redirect to="/"/>
-                    }
-                       
-                       
-                }}>
-                </Route>  
 
-               <Route  path="/storedashboard" 
-               render={() => {
-                   if (Auth.token !== false && Auth.UserRole === 'Store')   
-                       { return <StoreDashboard /> }
-                   else    
-                   {
-                       return <Redirect to="/"/>
-                   }
-                      
-                   
-               }}>
-                </Route>
-                <Route  path="/*" 
-               render={() => {
-                       return <Redirect to="/"/>   
-                      
-               }}>
-    
-               </Route> 
-            </Switch>
-         
+                }}>
+            </Route>
+            {/* <ProtectRoute path = '/dashboard' exact comp = {Dashboard} token = {Auth.token} /> */}
+
+            <Route path="/hoddashboard"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === 'Head')) { return <HODDashboard /> }
+                    else {
+                        return <Redirect to="/" />
+                    }
+
+
+                }}>
+            </Route>
+
+            <Route path="/logout"
+                render={() => {
+                    if (Auth.token !== false) { return <LogOut /> }
+                    else {
+                        return <Redirect to="/" />
+                    }
+
+
+                }}>
+            </Route>
+
+            <Route path="/purchase"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === 'Purchase')) { return <PurchaseDashboard /> }
+                    else {
+                        return <Redirect to="/" />
+                    }
+
+
+                }}>
+            </Route>
+
+            <Route path="/managerdashboard"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director")) { return <MDashboard /> }
+                    else {
+                        return <Redirect to="/" />
+                    }
+
+
+                }}>
+            </Route>
+
+            <Route path="/previousrequests"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director")) { return <PrevReqs /> }
+                    else {
+                        return <Redirect to="/" />
+                    }
+
+
+                }}>
+            </Route>
+
+            <Route path="/:id/recordinfo"
+                render={() => {
+                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director")) { return <ReqInfo /> }
+                    else {
+                        return <Redirect to="/" />
+                    }
+
+
+                }}>
+            </Route>
+
+            <Route path="/storedashboard"
+                render={() => {
+                    if (Auth.token !== false && Auth.UserRole === 'Store') { return <StoreDashboard /> }
+                    else {
+                        return <Redirect to="/" />
+                    }
+
+
+                }}>
+            </Route>
+            <Route path="/*"
+                render={() => {
+                    return <Redirect to="/" />
+
+                }}>
+
+            </Route>
+        </Switch>
+
     )
 }
 
 // const ProtectRoute = ({token, comp: Component, ...rest})=>{
 //     // const Auth = React.useContext(AuthApi);
-    
+
 //     return (
 
-//         <Route 
+//         <Route
 //         {...rest}
-//         render={() =>{ 
+//         render={() =>{
 //          if (token)
 //             {
 //                 console.log("Token is true")
 //                 return <Component />
 //             }
-        
+
 //         else
 //             {
 //                 console.log("Token is not true")
 //                 return (<Redirect to='/' exact/>)
-//             }    
+//             }
 //         }
-    
-    
+
+
 //     }
-        
+
 //         />
 //     )
 // }
@@ -417,19 +412,19 @@ const Routes = () =>{
 
 // const ProtectLogin = ({token, components: Component, ...rest})=>{
 //     return (
-        
-//         <Route 
+
+//         <Route
 //         {...rest}
 //         render={() => token ? (
-//             <Redirect to='/dashboard'/>    
+//             <Redirect to='/dashboard'/>
 //         ):
 //         (
 //             <Component />
 //         )
-    
-    
+
+
 //     }
-        
+
 //         />
 //     )
 // }

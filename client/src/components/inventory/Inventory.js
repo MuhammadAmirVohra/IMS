@@ -1,191 +1,193 @@
-import React , { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Row,Table,Button,Container, Modal, Form} from 'react-bootstrap';
-import styled from 'styled-components';
+import { Row, Table, Button, Container, Modal, Form } from 'react-bootstrap';
 import MainHeader from '../header/Header_pages'
 import { API_URL } from '../../utils/constant';
 import "../style.css"
 
 
 const Inventory = () => {
-    const arr = ['Name','Type','Description','Quantity']
+    const arr = ['Name', 'Type', 'Description', 'Purchased', 'Issued', 'Remaining Quantity']
     const [items, setitems] = useState([])
 
-    useEffect( () =>{
-       
-        async function fetch(){
-       await axios.get(`${API_URL}/storeitem`, {
-            withCredentials: true
-        }).then((res)=>{
-            console.log(res.data);
-            
-            setitems(res.data);
-            
-        })
-    } 
-    fetch()
-    },[])
+    useEffect(() => {
+
+        async function fetch() {
+            await axios.get(`${API_URL}/storeallitem`, {
+                withCredentials: true
+            }).then((res) => {
+                console.log(res.data);
+
+                setitems(res.data.items);
+
+            })
+        }
+        fetch()
+    }, [])
 
 
     const [showModal, setShow] = useState(false)
     const [ModalInfo, SetInfo] = useState({})
-    const ModalContent = ()=>{
-       
+    const ModalContent = () => {
+
         const [name, setname] = useState(ModalInfo.Item_ID.Item_Name)
-        const [quantity, setquantity] = useState(ModalInfo.Quantity)
+        // const [quantity, setquantity] = useState(ModalInfo.Quantity)
         const [description, setdescription] = useState(ModalInfo.Item_ID.Item_Description)
         const [type, settype] = useState(ModalInfo.Item_ID.Item_Type)
- 
-        const UpdateRecord = (event)=>{
+
+        const UpdateRecord = (event) => {
             event.preventDefault()
-            
-         axios.post(`${API_URL}/` + ModalInfo.Item_ID._id + '/updateitem'
-         ,{ id : ModalInfo.Item_ID._id, name : name, quantity : quantity, description : description, type : type })
-             .then(
-             (res) => {
-                 setShow(false);
-                 console.log(res) 
-                 window.flash('Record Updated')
-                 setitems(res.data);
-             } 
-         )
-         
+
+            axios.post(`${API_URL}/` + ModalInfo.Item_ID._id + '/updateitem'
+                , { id: ModalInfo.Item_ID._id, name: name, description: description, type: type })
+                .then(
+                    (res) => {
+                        setShow(false);
+                        console.log(res)
+                        window.flash('Record Updated')
+                        setitems(res.data);
+                    }
+                )
+
         }
- 
- 
- 
-         return(
-             <Modal show = {showModal} onHide ={() => {setShow(false)}}>
-                 <Modal.Header closeButton>
-                     <Modal.Title>
-                         Details 
-                     </Modal.Title>
-                     </Modal.Header>
-                   <Form onSubmit = {UpdateRecord}>  
- 
-                     <Modal.Body className="ModalBody">
- 
-                 <Form.Group>
-                     <Form.Control type="text" value={name} placeholder = "Item Name" onChange={(event)=>{ setname(event.target.value)}} />
-                 </Form.Group>
- 
-                 <Form.Group>
-                     <Form.Control type="number" value={quantity} placeholder = "Item Quantity" onChange={(event)=>{ setquantity(event.target.value) }} />
-                 </Form.Group>
-                 
- 
-                 <Form.Group>
-                     <Form.Control type="text" value={type} placeholder = "Item Type" onChange={ (event)=>{ settype(event.target.value) }} />
-                 </Form.Group>
-                 
- 
-                 <Form.Group>
-                     <Form.Control type="text" value={description} placeholder = "Item Description" onChange={ (event)=>{ setdescription(event.target.value) }} />
-                 </Form.Group>
-                 
-                 </Modal.Body>
- 
-                  
-                <Modal.Footer>
-                    <Button type ="submit" className = "Btn btn-success">Update</Button>              
-                </Modal.Footer>
+
+
+
+        return (
+            <Modal show={showModal} onHide={() => { setShow(false) }}>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Details
+                    </Modal.Title>
+                </Modal.Header>
+                <Form onSubmit={UpdateRecord}>
+
+                    <Modal.Body className="ModalBody">
+
+                        <Form.Group>
+                            <Form.Control type="text" value={name} placeholder="Item Name" onChange={(event) => { setname(event.target.value) }} />
+                        </Form.Group>
+
+                        {/* <Form.Group>
+                            <Form.Control type="number" value={quantity} placeholder="Item Quantity" onChange={(event) => { setquantity(event.target.value) }} />
+                        </Form.Group> */}
+
+
+                        <Form.Group>
+                            <Form.Control type="text" value={type} placeholder="Item Type" onChange={(event) => { settype(event.target.value) }} />
+                        </Form.Group>
+
+
+                        <Form.Group>
+                            <Form.Control type="text" value={description} placeholder="Item Description" onChange={(event) => { setdescription(event.target.value) }} />
+                        </Form.Group>
+
+                    </Modal.Body>
+
+
+                    <Modal.Footer>
+                        <Button type="submit" className="Btn btn-success">Update</Button>
+                    </Modal.Footer>
                 </Form>
             </Modal>
         );
-        
+
 
     }
-    
 
-    
+
+
     const [itemName, setItemName] = useState("")
-    return(
+    return (
         <>
-        {showModal?
-            <div>
-                <ModalContent/>
-            </div>
-        :null   
-        }
+            {showModal ?
+                <div>
+                    <ModalContent />
+                </div>
+                : null
+            }
 
-        
-   
-    <MainHeader/>
-    
-     
-    <Container className="MainContainer">
-        <Row className = "Row1">
-     <h1>Store Inventory</h1>
 
-        </Row>
-     <Row className="Row1 float-right" >
-        
-    <Form>
-         
-         <Form.Group className="FormGroup">
-           
-             <Form.Control type="text" placeholder="Search" name="searchbar" value={itemName} onChange={(event)=>{ setItemName(event.target.value)}} >
-                 
-            
-             </Form.Control>
-            
-         </Form.Group>
-         
-    </Form>       
-        
-            
-      
-     
-     
-     </Row>
- 
-        
-         { items.length > 0 &&
-        <Table className="TableStyle" responsive>
-        <thead>
-            <>
-            <tr>
-             <th>#</th>
-            {arr.map((_, index) => (
-              <th key={index}>{_}</th>
-            ))}
-            <th></th>
-          </tr>
-</>
-        </thead>
-        <tbody>
-          {items.map((item, index) =>{
-            if (item.Item_ID.Item_Name.toLowerCase().includes(itemName.toLowerCase()) || item.Item_ID.Item_Description.toLowerCase().includes(itemName.toLowerCase()) )
-            return(
-            <>
-           <tr>
-                <td>{index+1}</td>
-                <td>{item.Item_ID.Item_Name}<br/></td>
-                <td>{item.Item_ID.Item_Type}</td>
-                <td>{item.Item_ID.Item_Description}</td>
-                <td>{item.Quantity}</td>
-                <td><Button className="Btn" onClick = {()=>{ SetInfo(item); setShow(true); }} >Update</Button></td>
-                    
-               
-            </tr>
-            
-           
-            </>
-            )
-          else return(<tr></tr>)
-          
-          
-          })}
-        </tbody>
-      </Table>
-      
-      }
-      {
-          items.length === 0 && <h2>No Items.</h2>
-      }
-        
-      </Container>
-      </>
+
+            <MainHeader />
+
+
+            <Container className="MainContainer">
+                <Row className="Row1">
+                    <h1>Store Inventory</h1>
+
+                </Row>
+                <Row className="Row1 float-right" >
+
+                    <Form>
+
+                        <Form.Group className="FormGroup">
+
+                            <Form.Control type="text" placeholder="Search" name="searchbar" value={itemName} onChange={(event) => { setItemName(event.target.value) }} >
+
+
+                            </Form.Control>
+
+                        </Form.Group>
+
+                    </Form>
+
+
+
+
+
+                </Row>
+
+
+                {items.length > 0 &&
+                    <Table className="TableStyle text-center" responsive>
+                        <thead>
+                            <>
+                                <tr>
+                                    <th>#</th>
+                                    {arr.map((_, index) => (
+                                        <th key={index}>{_}</th>
+                                    ))}
+                                    <th></th>
+                                </tr>
+                            </>
+                        </thead>
+                        <tbody>
+                            {items.map((item, index) => {
+                                if (item.Item_ID.Item_Name.toLowerCase().includes(itemName.toLowerCase()) || item.Item_ID.Item_Description.toLowerCase().includes(itemName.toLowerCase()))
+                                    return (
+                                        <>
+                                            <tr>
+                                                <td>{index + 1}</td>
+                                                <td>{item.Item_ID.Item_Name}<br /></td>
+                                                <td>{item.Item_ID.Item_Type}</td>
+                                                <td>{item.Item_ID.Item_Description}</td>
+                                                <td>{item.Received}</td>
+                                                <td>{item.Issued}</td>
+                                                <td>{item.Quantity}</td>
+
+                                                <td><Button className="Btn" onClick={() => { SetInfo(item); setShow(true); }} >Update</Button></td>
+
+
+                                            </tr>
+
+
+                                        </>
+                                    )
+                                else return (<tr></tr>)
+
+
+                            })}
+                        </tbody>
+                    </Table>
+
+                }
+                {
+                    items.length === 0 && <h2>No Items.</h2>
+                }
+
+            </Container>
+        </>
     )
 
 
@@ -195,7 +197,7 @@ export default Inventory;
 
 // const Row1 = styled(Row)`
 //     padding:100px 16px 0px 0px;
-    
+
 
 
 // `;
@@ -218,7 +220,7 @@ export default Inventory;
 // const Btn = styled(Button)`
 // background :#EFBB20;
 // margin-left : 10px;
-// border: none; 
+// border: none;
 // &:hover{
 // background: #0e8ccc;
 // }

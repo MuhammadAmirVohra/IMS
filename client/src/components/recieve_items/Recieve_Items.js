@@ -46,7 +46,7 @@ const RecieveItems = () => {
         const UpdateRecord = (event) => {
             event.preventDefault()
 
-            axios.post(`${API_URL}/` + 'recieveitem'
+            axios.post(API_URL + '/recieveitem'
                 , { id: ModalInfo._id, name: name, quantity: quantity, description: description, type: type })
                 .then(
                     (res) => {
@@ -229,7 +229,7 @@ export default RecieveItems;
 // const Btn = styled(Button)`
 // background :#EFBB20;
 // margin-left : 10px;
-// border: none; 
+// border: none;
 // &:hover{
 // background: #0e8ccc;
 // }

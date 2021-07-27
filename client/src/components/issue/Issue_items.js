@@ -97,7 +97,7 @@ const IssueItems = () => {
     //     }
 
     //   });
-  }, []);
+  });
   // /////////////////////////////////////////////////
   const [showModal, setShow] = useState(false);
   const [ModalInfo, SetInfo] = useState({});
@@ -116,11 +116,11 @@ const IssueItems = () => {
       axios
         .post(`${API_URL}/issued_item`, {
           quantity: Quantity,
-          duration : Duration,
-          department : Department,
+          duration: Duration,
+          department: Department,
           request_id: requested._id,
           item_id: item_id,
-          id : requested._id
+          id: requested._id
         })
         .then((res) => {
           setShow(false);
@@ -131,9 +131,9 @@ const IssueItems = () => {
           } else if (res.data.code === 200) {
             window.scrollTo(0, 0);
             history.push("/storedashboard");
-            setTimeout(()=>{
-            window.flash("Item Successfully Issued ");
-            }, 1000) 
+            setTimeout(() => {
+              window.flash("Item Successfully Issued ");
+            }, 1000)
             // fetch();
           }
           //  setRequested(res.data);
@@ -166,37 +166,37 @@ const IssueItems = () => {
           </h5>
           <p>Item Name: {ModalInfo.Item_ID.Item_Name}</p>
           <p>Quantity Available: {ModalInfo.Quantity}</p>
-{/*
+          {/*
           <p>
             <strong>Set Issue Quantity</strong>
           </p> */}
 
           <Form>
-          <Form.Control
+            <Form.Control
               type="text"
               value={Department}
-              placeholder = "Department"
+              placeholder="Department"
               onChange={(event) => {
                 setDepartment(event.target.value);
               }}
             />
-          <Form.Control
+            <Form.Control
               type="text"
               value={Duration}
-              placeholder = "Duration"
+              placeholder="Duration"
               onChange={(event) => {
                 setDuration(event.target.value);
               }}
             />
 
-          <Form.Control
+            <Form.Control
               type="number"
               value={Quantity}
-              placeholder = "Quantity"
+              placeholder="Quantity"
               onChange={(event) => {
                 setQuantity(event.target.value);
               }}
-            required
+              required
             />
 
           </Form>
@@ -331,7 +331,7 @@ const IssueItems = () => {
                       </tr>
                     </>
                   );
-                // else return(<tr></tr>)
+                else return (<tr></tr>)
               })}
             </tbody>
           </Table>

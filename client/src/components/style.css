@@ -1,98 +1,120 @@
 .Card1 {
-    width: inherit;
-    margin-top: 5.5rem;
+  width: inherit;
+  margin-top: 5.5rem;
 }
-.Container_Date{
-    margin : 200px;
-    margin-top: 5.5rem;
-    width: 1000px;
+.Container_Date {
+  margin: 200px;
+  margin-top: 5.5rem;
+  width: 1000px;
 }
 .Btn {
-    background: #EFBB20;
-    border: none;
+  background: #efbb20;
+  border: none;
 }
-.Date_Button{
-    margin-top: 2rem;
+.Date_Button {
+  margin-top: 2rem;
 }
-.selectstyle{
-    width: 200px;
+.selectstyle {
+  width: 200px;
 }
 .Btn a {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: white;
 }
-
 
 .AlertMessage {
-    margin-top : 90px;
-
+  margin-top: 90px;
 }
 
-
 .Btn:hover {
-    background: #0e8ccc;
+  background: #0e8ccc;
 }
 
 .TableStyle th {
-    background: #1F386B;
-    color: white;
+  background: #1f386b;
+  color: white;
 }
 
 .TableStyle tr {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .TableStyle tr:hover {
-    background: lightgray;
+  background: lightgray;
 }
 
 .MainContainer {
-    width: 100%;
-    height: auto;
-    min-height: 100%;
-    min-height: 100vh;
-    margin-top: 100px;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  min-height: 100vh;
+  margin-top: 100px;
+}
+
+.labelwidth {
+  width: 200px;
 }
 
 .CardTitle span {
-    color: red;
+  color: red;
+}
+
+.new-line {
+  white-space: pre-line;
 }
 
 .FormStyle {
-    background-color: white;
-    width: 500px;
+  background-color: white;
+  /* width: 500px; */
+}
+
+.CenterLabel {
+  align-items: center;
+  margin-top: 10px;
+  margin-right: 20px;
+  width: 150px;
 }
 
 .ModalBody li {
-    padding: 5px;
+  padding: 5px;
 }
 
 .Row1 {
-    padding: 82px 16px 0px 0px;
+  padding: 82px 16px 0px 0px;
 }
 
 .Nav {
-    background: #1F386B;
-    justify-content: flex-start;
+  background: #1f386b;
+  justify-content: flex-start;
 }
 
 .FormGroup {
-    display: flex;
+  display: flex;
 }
 
 .CardText {
-    color: red;
-    margin-top: -13px;
-    font-size: 12px;
+  color: red;
+  margin-top: -13px;
+  font-size: 12px;
 }
 
 .CardStyle {
-    background: white;
-    box-shadow: 6px 5px 5px rgb(0 0 0);
-    width: 500px;
-    height: 350px;
+  background: white;
+  box-shadow: 6px 5px 5px rgb(0 0 0);
+  width: 500px;
+  height: 350px;
 }
 
-.Date_Form{
-    margin-top: 2rem;
+.Date_Form {
+  margin-top: 2rem;
+}
+
+.Container1 {
+  margin-top: 5rem;
+  display: flex;
+}
+
+.Heading {
+  margin: 40px;
+  text-align: center;
 }
