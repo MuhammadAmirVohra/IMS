@@ -279,7 +279,7 @@ const ReturnNote = () => {
                     })}
 
 
-                    <Button className="btn-lg float-right  ml-2 btn-success" onClick={PDF}>Generate Issue Note</Button>
+                    <Button className="btn-lg float-right  ml-2 btn-success" onClick={PDF}>Generate Return Note</Button>
 
                     <Button className="btn-lg float-right Btn" type="submit" onClick={Submit}>Return</Button>
                 </Form>

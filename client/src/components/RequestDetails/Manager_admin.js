@@ -34,14 +34,15 @@ const ManagerAdmin = () => {
             )
     }, [id])
 
-    const SubmitComment = () => {
+    const SubmitComment = (e) => {
+        e.preventDefault();
         axios.post(`${API_URL}/submitadmin`, { id: id, comment: admin_comment }).then((res) => {
             if (res.data.code === 200) {
                 console.log('Comment Added')
                 window.scrollTo(0, 0);
                 history.push('/managerdashboard');
                 setTimeout(() => {
-                    window.flash('Successfully Added Comment')
+                    window.flash('Successfully Added Comment & Request Forwarded to Director');
                 }, 500);
 
             }
@@ -81,6 +82,7 @@ const ManagerAdmin = () => {
                         Request Details
                     </Card.Header>
                     <Card.Body>
+                        <Card.Title><strong>Request ID: </strong>{request.Order_ID}</Card.Title>
                         <Card.Title><strong>Name: </strong>{request.R_Emp_Name}</Card.Title>
                         <Card.Title><strong>Email: </strong>{request.R_Emp_Email}</Card.Title>
                         <Card.Title><strong>Department: </strong>{department}</Card.Title>
@@ -94,10 +96,10 @@ const ManagerAdmin = () => {
                         <Form className="mt-4" onSubmit={SubmitComment}>
                             <Form.Group>
                                 <Card.Title>Add Comments<span>*</span></Card.Title>
-                                <Form.Control as="textarea" row={5} value={admin_comment} onChange={(e) => { set_admin(e.target.value) }} required></Form.Control>
+                                <Form.Control as="textarea" row={5} placeholder="Comments" value={admin_comment} onChange={(e) => { set_admin(e.target.value) }} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
-                                <Button type="submit" className="btn btn-md float-right"  >Submit</Button>
+                                <Button type="submit" className="Btn btn btn-md float-right"  >Submit</Button>
                             </Form.Group>
                         </Form>
                     </Card.Body>

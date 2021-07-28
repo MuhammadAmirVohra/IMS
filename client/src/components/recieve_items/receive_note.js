@@ -281,7 +281,7 @@ const RecieveNote = () => {
                     })}
 
 
-                    <Button className="btn-lg float-right  ml-2 btn-success" onClick={PDF}>Generate Issue Note</Button>
+                    <Button className="btn-lg float-right  ml-2 btn-success" onClick={PDF}>Generate Receive Note</Button>
 
                     <Button className="btn-lg float-right Btn" type="submit" onClick={Submit}>Receive</Button>
                 </Form>

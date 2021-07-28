@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { Table, Button, Tab, Tabs, Container } from 'react-bootstrap';
+import { Table, Button, Tab, Tabs, Container, Row } from 'react-bootstrap';
 // import { Tabs, Tab } from 'react-bootstrap-tabs';
 // import { useHistory } from 'react-router-dom';
 import { API_URL } from '../../utils/constant';
 
 const RequestTable = () => {
-    const arr = ['Request ID', 'Requested By', 'Email', 'Department', 'Item Name', ' ']
+    const arr = ['Request ID', 'Requested By', 'Email', 'Department', 'Item Name', 'Options', ' ']
     const [allrequest, setrequests] = useState([])
     const [allissued, setissued] = useState([])
     const [allreceive, setreceive] = useState([])
@@ -167,6 +167,7 @@ const RequestTable = () => {
         } */}
             <Container className="MainContainer">
                 <Tabs
+
                     id="controlled-tab-example"
                     activeKey={key}
                     onSelect={key => setkey(key)}
@@ -208,9 +209,12 @@ const RequestTable = () => {
                                         <td>{request.Duration}</td> */}
 
                                                         <td>
-                                                            <Button onClick={() => { onPurchase(request); }} className="Btn m-2"> Send to Purchase </Button>
-                                                            <Button onClick={() => onIssue(request._id)} className="m-2 btn-success mr-1">Issue</Button>
-                                                            <Button onClick={() => onCancel(request._id, request.R_Emp_Email, request.R_Emp_Name, request.Item)} className="btn-danger">Cancel</Button>
+                                                            <Row>
+                                                                <Button onClick={() => { onPurchase(request); }} className="Btn m-2"> Send to Purchase </Button>
+                                                            </Row><Row>
+                                                                <Button onClick={() => onIssue(request._id)} className="m-2 btn-success mr-1">Issue</Button>
+                                                                <Button onClick={() => onCancel(request._id, request.R_Emp_Email, request.R_Emp_Name, request.Item)} className="m-2 btn-danger">Cancel</Button>
+                                                            </Row>
                                                         </td>
                                                     </tr>
                                                     {/* </OverlayTrigger> */}

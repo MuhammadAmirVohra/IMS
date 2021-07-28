@@ -121,4 +121,14 @@
 
 .TableStyle {
   margin-top: 100px;
+  text-align: center;
+}
+
+.ModalStyle {
+  display: grid;
+  justify-content: center;
+}
+
+.button-lg-width {
+  width: 300px;
 }

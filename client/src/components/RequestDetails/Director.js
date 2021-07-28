@@ -137,7 +137,7 @@ const Director = () => {
                         Request Details
                     </Card.Header>
                     <Card.Body ref={ref}>
-                        <Card.Title><strong>ID: </strong>{id}</Card.Title>
+                        <Card.Title><strong>Request ID: </strong>{details.request.Order_ID}</Card.Title>
                         <Card.Title><strong>Name: </strong>{details.request.R_Emp_Name}</Card.Title>
                         <Card.Title><strong>Email: </strong>{details.request.R_Emp_Email}</Card.Title>
                         <Card.Title><strong>Department: </strong>{Department}</Card.Title>

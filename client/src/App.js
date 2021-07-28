@@ -218,7 +218,7 @@ const Routes = () => {
 
             <Route path="/productledger"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store" || Auth.UserRole === "Accounts" || Auth.UserRole === "Admin" || Auth.UserRole === "Director")) { return <ProductLedger /> }
+                    if (Auth.token !== false && (Auth.UserRole === "Store" || Auth.UserRole === "Accounts" || Auth.UserRole === "Admin" || Auth.UserRole === "Director" || Auth.UserRole === "Purchase")) { return <ProductLedger /> }
                     else { return <Redirect exact to="/" ></Redirect> }
 
 
@@ -227,7 +227,7 @@ const Routes = () => {
 
             <Route path="/stockreport"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === "Store" || Auth.UserRole === "Accounts" || Auth.UserRole === "Admin" || Auth.UserRole === "Director")) { return <StockReport /> }
+                    if (Auth.token !== false && (Auth.UserRole === "Store" || Auth.UserRole === "Accounts" || Auth.UserRole === "Admin" || Auth.UserRole === "Director" || Auth.UserRole === "Purchase")) { return <StockReport /> }
                     else { return <Redirect exact to="/" ></Redirect> }
 
 
@@ -339,7 +339,7 @@ const Routes = () => {
 
             <Route path="/previousrequests"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director")) { return <PrevReqs /> }
+                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director" || Auth.UserRole === "Purchase" || Auth.UserRole === "Store")) { return <PrevReqs /> }
                     else {
                         return <Redirect to="/" />
                     }
@@ -350,7 +350,7 @@ const Routes = () => {
 
             <Route path="/:id/recordinfo"
                 render={() => {
-                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director")) { return <ReqInfo /> }
+                    if (Auth.token !== false && (Auth.UserRole === 'Admin' || Auth.UserRole === "Accounts" || Auth.UserRole === "Director" || Auth.UserRole === "Purchase" || Auth.UserRole === "Store")) { return <ReqInfo /> }
                     else {
                         return <Redirect to="/" />
                     }

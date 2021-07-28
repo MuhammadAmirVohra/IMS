@@ -148,7 +148,7 @@ const RequestForm = () => {
                                         <Form.Control
                                             required
                                             className="ml-3"
-                                            type="Number"
+                                            type="text"
                                             name="quantity"
                                             placeholder="Quantity"
                                             value={x.quantity}

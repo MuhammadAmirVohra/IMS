@@ -1,7 +1,7 @@
 import RequestTable from '../storeTable/Store_Table'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Button, Container } from 'react-bootstrap'
+import { Button, Container, Row } from 'react-bootstrap'
 import UserInformation from '../userInformation/User_information.js';
 import { useState, useEffect } from 'react';
 import HeaderPages from '../header/Header_pages';
@@ -24,6 +24,7 @@ const StoreDashboard = () => {
     }, []);
 
     const [showModal, setShow] = useState(false)
+    const [showOperationModal, setoperation] = useState(false);
     const ModalContent = () => {
 
         const [additem, setadditem] = useState();
@@ -149,6 +150,41 @@ const StoreDashboard = () => {
 
 
 
+    const OperationModal = () => {
+
+        return (
+            <Modal show={showOperationModal} onHide={() => { setoperation(false) }}>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Store Operations
+                    </Modal.Title>
+                </Modal.Header>
+                {/* <Form className="FormStyle"> */}
+
+                <Modal.Body className="ModalStyle">
+                    <Container fluid>
+                        <Row>
+                            <Link to="/issuenote"> <Button className="btn Btn m-3 btn-lg button-lg-width"> Issue Item </Button> </Link>
+                        </Row>
+                        <Row>
+                            <Link to="/receivenote"> <Button className="btn Btn btn-lg m-3 button-lg-width"> Recieve Item </Button> </Link>
+                        </Row>
+                        <Row>
+                            <Link to="/returnnote"> <Button className="btn Btn btn-lg m-3 button-lg-width"> Return Item </Button> </Link>
+                        </Row>
+                    </Container>
+                </Modal.Body>
+
+
+
+            </Modal>
+        );
+
+
+    }
+
+
+
 
 
 
@@ -165,22 +201,28 @@ const StoreDashboard = () => {
                 <div>
                     <ModalContent />
                 </div>
-                : null
+                :
+                showOperationModal ?
+                    <div>
+                        <OperationModal />
+                    </div>
+                    : null
             }
-
             <HeaderPages />
-            <Container className="MainContainer" >
+            <Container className="MainContainer">
 
                 <UserInformation />
 
 
                 <Link to="/inventory"> <Button className="btn Btn btn-md mt-4 mb-4 float-right"> Inventory </Button> </Link>
                 <Button className="btn btn-success btn-md mt-4 mb-4 mr-2 float-right" onClick={() => { setShow(true); }}> Product Addition & Deletion </Button>
-                <Link to="/issuenote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Issue Item </Button> </Link>
+                {/* <Link to="/issuenote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Issue Item </Button> </Link>
                 <Link to="/receivenote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Recieve Item </Button> </Link>
-                <Link to="/returnnote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Return Item </Button> </Link>
+                <Link to="/returnnote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Return Item </Button> </Link> */}
+                <Button className="btn btn-success btn-md mt-4 mb-4 mr-2 float-right" onClick={() => { setoperation(true); }}> Store Operations </Button>
                 <Link to="/productledger"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Product Ledger </Button> </Link>
                 <Link to="/stockreport"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Stock Report </Button> </Link>
+                <Link to="/previousrequests"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Previous Requests </Button> </Link>
 
 
                 <RequestTable />

@@ -151,7 +151,8 @@ const RequestTable = () => {
 
 
       <Container>
-        <Button className="Btn float-right mb-2" onClick={fetch} >Refresh</Button>
+        <Button className="float-left mt-4 btn-dark" onClick={fetch} >Refresh</Button>
+
         <Table className="TableStyle" responsive="sm">
           <thead>
             <tr>
@@ -193,6 +194,7 @@ const RequestTable = () => {
             })}
           </tbody>
         </Table>
+
       </Container>
     </>
   )

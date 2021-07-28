@@ -56,7 +56,7 @@ const AdminRequestTable = () => {
 
       <Container>
         {allrequest.length > 0 &&
-          <Table className="TableStyle" responsive>
+          <Table className="TableStyle text-center" responsive>
             <thead>
               <tr>
                 <th>#</th>

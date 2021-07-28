@@ -45,6 +45,48 @@ app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+const Notify = (account_info, id) => {
+	if (account_info.Email.length) {
+		Order.findOne({ _id: id }, (err, request_info) => {
+			if (err)
+				console.log(err);
+			else {
+				console.log('Request : ', request_info);
+				mailer.sendMail(
+					{
+						from: "fastinventorymanagementsystem@gmail.com",
+						to: account_info.Email,
+						subject: "Request Receieved",
+						html:
+							"Hi <b>" +
+							account_info.Emp_Name +
+							"</b>,<br>A Request ( ID : " + request_info.Order_ID + " ) has been received with following details : <br>" +
+							'Requested by : ' + request_info.R_Emp_Name + " ( " + request_info.R_Emp_Email + " ) from " + request_info.Department + " department<br>" +
+							'Request Item : <br><b>' +
+							request_info.Item.replace('\n', '<br>') +
+							"</b><br>Generated at : " + moment(request_info.Added).format("DD-MMMM-YYYY hh:mm A") +
+							"<br> logon to <a>fast-inventory.herokuapp.com</a> for further details.",
+						//text:'your verification code : ' +
+					},
+					function (err, info) {
+						if (err) {
+							console.log("Unable to send mail to " + account_info.Designation, err);
+						} else {
+							console.log("Mail Sent " + info.response);
+						}
+					}
+				);
+			}
+		})
+	} else {
+		console.log('No Email Specified of ', account_info.Designation);
+	}
+}
+
+
+
+
 passport.use(
 	new LocalStrategy((username, password, done) => {
 		Account.findOne(
@@ -461,6 +503,7 @@ const Order_Schema = new mongoose.Schema({
 		ref: 'Department',
 		required: true,
 	},
+	Department: { type: String },
 	// Request_ID : {type : String, required: true},
 	done: { type: Boolean, default: false },
 	Temp_ID: { type: mongoose.Types.ObjectId, ref: 'Temp' },
@@ -648,6 +691,7 @@ app.post("/add_request", (req, res) => {
 				R_Emp_Name: req.body.R_Emp_Name,
 				R_Emp_Dept: req.user.user.Department_ID,
 				Item: req.body.Item,
+				Department: req.user.department.Dept_Name,
 				// Duration: req.body.Duration,
 				// Quantity: req.body.Quantity,
 				Reason: req.body.Reason,
@@ -658,6 +702,21 @@ app.post("/add_request", (req, res) => {
 				if (err) {
 					console.log(err);
 				} else {
+
+					Account.findOne({ Designation: "Store" }, (err, account_data) => {
+						if (err) {
+							console.log(err);
+						}
+						else {
+							console.log('Account Data ', account_data);
+							Notify(account_data, data._id);
+							console.log("Status Updated!");
+							console.log(data);
+							// res.send(data);
+
+						}
+					})
+
 					mailer.sendMail(
 						{
 							from: "fastinventorymanagementsystem@gmail.com",
@@ -673,9 +732,11 @@ app.post("/add_request", (req, res) => {
 								"</b> at the link : <a>fast-inventory.herokuapp.com</a>",
 							//text:'your verification code : ' +
 						},
-						function (err) {
+						function (err, info) {
 							if (err) {
 								console.log("Unable to send mail " + err);
+							} else {
+								console.log("Mail Sent " + info.response);
 							}
 						}
 					);
@@ -691,6 +752,7 @@ app.post("/add_request", (req, res) => {
 				R_Emp_Name: req.body.R_Emp_Name,
 				R_Emp_Dept: req.user.user.Department_ID,
 				Item: req.body.Item,
+				Department: req.user.department.Dept_Name,
 				// Duration: req.body.Duration,
 				// Quantity: req.body.Quantity,
 				Reason: req.body.Reason,
@@ -699,6 +761,16 @@ app.post("/add_request", (req, res) => {
 				if (err) {
 					console.log(err);
 				} else {
+					Account.findOne({ Designation: "Head", Department_ID: req.user.department._id }, (err, head_data) => {
+						if (err) {
+							console.log(err);
+						}
+						else {
+							console.log('Head Data ', head_data);
+							Notify(head_data, data._id);
+
+						}
+					})
 					mailer.sendMail(
 						{
 							from: "fastinventorymanagementsystem@gmail.com",
@@ -711,7 +783,7 @@ app.post("/add_request", (req, res) => {
 								req.body.Item +
 								" has been forwarded, you can track your request by entering, Request ID : <b>" +
 								data.Order_ID +
-								"</b> at the link : <a>fast-inventory.herokuapp.com/dashboard</a>",
+								"</b> at the link : <a>fast-inventory.herokuapp.com</a>",
 							//text:'your verification code : ' +
 						},
 						function (err) {
@@ -869,9 +941,21 @@ app.post("/request_approve", (req, res) => {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log("Status Updated!");
-				console.log(data);
-				res.send(data);
+				Account.findOne({ Designation: "Store" }, (err, account_data) => {
+					if (err) {
+						console.log(err);
+					}
+					else {
+						console.log(data);
+						console.log('Account Data ', account_data);
+						Notify(account_data, req.body.id);
+						console.log("Status Updated!");
+						console.log(data);
+						res.send(data);
+
+					}
+				})
+
 			}
 		}
 	);
@@ -976,10 +1060,22 @@ app.post("/request_forward_purchase", (req, res) => {
 		if (err) {
 			console.log(err);
 		} else {
-			res.send(data);
-			console.log(req.body.id);
-			console.log(data);
-			console.log("sent to purchase department");
+			Account.findOne({ Designation: "Purchase" }, (err, account_data) => {
+				if (err) {
+					console.log(err);
+				}
+				else {
+					console.log('Account Data ', account_data);
+					Notify(account_data, req.body.id);
+					res.send(data);
+					console.log(req.body.id);
+					console.log(data);
+					console.log("sent to purchase department");
+				}
+			})
+
+
+
 		}
 	});
 });
@@ -1044,11 +1140,22 @@ app.post("/submitaccounts", (req, res) => {
 							console.log(err);
 							res.send({ code: 404 });
 						} else {
-							console.log("temp :", data);
-							console.log("order :", order);
+							Account.findOne({ Designation: "Admin" }, (err, account_data) => {
+								if (err) {
+									console.log(err);
+								}
+								else {
+									console.log('Account Data ', account_data);
+									Notify(account_data, req.body.id);
+									console.log("temp :", data);
+									console.log("order :", order);
 
-							console.log("Temp updated");
-							res.send({ code: 200, data: data });
+									console.log("Temp updated");
+									res.send({ code: 200, data: data });
+								}
+							})
+
+
 						}
 					}
 				);
@@ -1063,7 +1170,7 @@ app.post("/sendbacktopurchase", (req, res) => {
 	Order.updateOne(
 		{ _id: req.body.id },
 		{ Status: "Purchase" },
-		(err, order) => {
+		(err, request_info) => {
 			if (err) {
 				console.log(err);
 				res.send({ code: 404 });
@@ -1073,6 +1180,38 @@ app.post("/sendbacktopurchase", (req, res) => {
 						console.log(err)
 					}
 					else {
+						Account.findOne({ Designation: 'Purchase' }, (err, account_info) => {
+							if (err) {
+								console.log(err);
+							}
+							else {
+								console.log(account_info)
+								mailer.sendMail(
+									{
+										from: "fastinventorymanagementsystem@gmail.com",
+										to: account_info.Email,
+										subject: "Request Receieved",
+										html:
+											"Hi <b>" +
+											account_info.Emp_Name +
+											"</b>,<br>A Request ( ID : " + request_info.Order_ID + " ) have returned back from Accounts with following message : " + req.body.comment + "<br><br>Request Details :<br>" +
+											'Requested by : ' + request_info.R_Emp_Name + " ( " + request_info.R_Emp_Email + " ) from " + request_info.Department + " department<br>" +
+											'Request Item : <br><b>' +
+											request_info.Item.replace('\n', '<br>') +
+											"</b><br>Generated at : " + moment(request_info.Added).format("DD-MMMM-YYYY hh:mm A") +
+											"<br> logon to <a>fast-inventory.herokuapp.com</a> for further details.",
+										//text:'your verification code : ' +
+									},
+									function (err, info) {
+										if (err) {
+											console.log("Unable to send mail " + err);
+										} else {
+											console.log("Mail Sent " + info.response);
+										}
+									}
+								);
+							}
+						})
 						console.log("deleted :", deleted);
 						console.log("order :", order);
 
@@ -1108,8 +1247,19 @@ app.post("/submitadmin", (req, res) => {
 							console.log(err);
 							res.send({ code: 404 });
 						} else {
-							console.log("Temp updated");
-							res.send({ code: 200, data: data });
+							Account.findOne({ Designation: "Director" }, (err, account_data) => {
+								if (err) {
+									console.log(err);
+								}
+								else {
+									console.log('Account Data ', account_data);
+									Notify(account_data, req.body.id);
+									console.log("Temp updated");
+									res.send({ code: 200, data: data });
+								}
+							})
+
+
 						}
 					}
 				);
@@ -2750,10 +2900,21 @@ app.post("/:id/upload", upload.single("file"), (req, res, next) => {
 								if (err) {
 									console.log(err);
 								} else {
-									fs.unlinkSync(
-										path.join(__dirname + "/public/uploads/quotation.pdf")
-									);
-									res.send({ code: 200 });
+									Account.findOne({ Designation: "Accounts" }, (err, account_data) => {
+										if (err) {
+											console.log(err);
+										}
+										else {
+											console.log('Account Data ', account_data);
+											Notify(account_data, req.params.id);
+											fs.unlinkSync(
+												path.join(__dirname + "/public/uploads/quotation.pdf")
+											);
+											res.send({ code: 200 });
+										}
+									})
+
+
 								}
 							}
 						);

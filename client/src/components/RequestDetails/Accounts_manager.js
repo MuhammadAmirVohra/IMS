@@ -30,15 +30,19 @@ const Account_Manager = () => {
             )
     }, [id])
 
-    const SubmitComment = () => {
+    const SubmitComment = (e) => {
+        e.preventDefault();
         axios.post(`${API_URL}/submitaccounts`, { id: id, comment: comments }).then((res) => {
+            console.log(res.data);
             if (res.data.code === 200) {
                 console.log('Comment Added')
-
                 window.scrollTo(0, 0);
+
                 history.push('/managerdashboard');
+
                 setTimeout(() => {
-                    window.flash('Successfully Added Comment')
+
+                    window.flash('Successfully Added Comment & Request Forwarded to Admin');
                 }, 500);
 
             }
@@ -103,6 +107,7 @@ const Account_Manager = () => {
                         Request Details
                     </Card.Header>
                     <Card.Body>
+                        <Card.Title><strong>Request ID: </strong>{details.Order_ID}</Card.Title>
                         <Card.Title><strong>Name: </strong>{details.R_Emp_Name}</Card.Title>
                         <Card.Title><strong>Email: </strong>{details.R_Emp_Email}</Card.Title>
                         <Card.Title><strong>Department: </strong>{department}</Card.Title>
@@ -113,7 +118,6 @@ const Account_Manager = () => {
                         <Card.Title><strong>Date Requested </strong>{moment(details.Added).format('Do MMMM YYYY')}</Card.Title>
 
                         <Button className="Btn" onClick={Download}>Download Quotation</Button>
-                        <Button className="ml-3 btn-danger" onClick={SendBack}>Send Back to Purchase</Button>
 
                         <Form className="mt-4" onSubmit={SubmitComment}>
                             <Form.Group>
@@ -121,7 +125,9 @@ const Account_Manager = () => {
                                 <Form.Control placeholder="Enter Comments" as="textarea" row={5} value={comments} onChange={(e) => { set_comments(e.target.value) }} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
-                                <Button type="submit" className="Btn btn btn-md float-right"  >Submit</Button>
+                                <Button type="submit" className="Btn btn btn-md float-right"  >Submit Comments</Button>
+                                <Button className="mr-3 btn-danger float-right" onClick={SendBack}>Send Back to Purchase</Button>
+
                             </Form.Group>
                         </Form>
                     </Card.Body>
