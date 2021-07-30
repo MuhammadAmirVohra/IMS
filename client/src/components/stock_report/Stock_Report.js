@@ -11,7 +11,7 @@ const StockReport = () => {
     const [start_Date, set_Start_Date] = useState();
     const [end_Date, set_End_Date] = useState();
 
-    const arr = ['Product ID', 'Product Name', 'Recieving Balance', 'Purchasing Qty', 'Total', 'Issued', 'Balance']
+    const arr = ['Product ID', 'Product Name', 'Opening Balance', 'Purchasing Qty', 'Total', 'Issued', 'Balance']
 
 
 

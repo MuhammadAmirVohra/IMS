@@ -13,12 +13,12 @@ const Inventory = () => {
     useEffect(() => {
 
         async function fetch() {
-            await axios.get(`${API_URL}/storeallitem`, {
+            await axios.get(`${API_URL}/iteminfo`, {
                 withCredentials: true
             }).then((res) => {
                 console.log(res.data);
 
-                setitems(res.data.items);
+                setitems(res.data);
 
             })
         }

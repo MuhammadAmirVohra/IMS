@@ -2697,7 +2697,7 @@ app.post('/stockreportpdf', (req, res) => {
 
 	// doc.pipe(fs.createWriteStream('example.pdf'));
 	const table0 = {
-		headers: ['Product ID', 'Product Name', 'Recieving Balance', 'Purchasing Qty', 'Total', 'Issued', 'Balance'],
+		headers: ['Product ID', 'Product Name', 'Opening Balance', 'Purchasing Qty', 'Total', 'Issued', 'Balance'],
 		rows: req.body.data
 	};
 
