@@ -127,7 +127,7 @@ const RecieveItems = () => {
 
             <Container className="MainContainer">
                 <Row className="Row1">
-                    <h1>Recieve Items</h1>
+                    <h1>Receive Items</h1>
                 </Row>
                 <Row className="Row1 float-right" >
 
@@ -175,7 +175,7 @@ const RecieveItems = () => {
                                                 <td>{request.Item}</td>
                                                 <td>{request.Quantity}</td>
                                                 <td>{moment(request.Added).format('Do MMMM YYYY')}</td>
-                                                <td><Button className="Btn" onClick={() => { clearInterval(interval_id.current); SetInfo(request); setShow(true); }} >Recieved</Button></td>
+                                                <td><Button className="Btn" onClick={() => { clearInterval(interval_id.current); SetInfo(request); setShow(true); }} >Received</Button></td>
 
 
                                             </tr>
