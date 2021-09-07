@@ -213,17 +213,17 @@ const StoreDashboard = () => {
 
                 <UserInformation />
 
-
-                <Link to="/inventory"> <Button className="btn Btn btn-md mt-4 mb-4 float-right"> Inventory </Button> </Link>
-                <Button className="btn btn-success btn-md mt-4 mb-4 mr-2 float-right" onClick={() => { setShow(true); }}> Product Addition & Deletion </Button>
-                {/* <Link to="/issuenote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Issue Item </Button> </Link>
+                <Container className="Store-Buttons">
+                    <Link to="/inventory"> <Button className="btn Btn btn-md mt-4 mb-4 float-right"> Inventory </Button> </Link>
+                    <Button className="btn btn-success btn-md mt-4 mb-4 mr-2 float-right" onClick={() => { setShow(true); }}> Product Addition & Deletion </Button>
+                    {/* <Link to="/issuenote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Issue Item </Button> </Link>
                 <Link to="/receivenote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Recieve Item </Button> </Link>
                 <Link to="/returnnote"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Return Item </Button> </Link> */}
-                <Button className="btn btn-success btn-md mt-4 mb-4 mr-2 float-right" onClick={() => { setoperation(true); }}> Store Operations </Button>
-                <Link to="/productledger"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Product Ledger </Button> </Link>
-                <Link to="/stockreport"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Stock Report </Button> </Link>
-                <Link to="/previousrequests"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Previous Requests </Button> </Link>
-
+                    <Button className="btn btn-success btn-md mt-4 mb-4 mr-2 float-right" onClick={() => { setoperation(true); }}> Store Operations </Button>
+                    <Link to="/productledger"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Product Ledger </Button> </Link>
+                    <Link to="/stockreport"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Stock Report </Button> </Link>
+                    <Link to="/previousrequests"> <Button className="btn Btn btn-md mt-4 mb-4 mr-2 float-right"> Previous Requests </Button> </Link>
+                </Container>
 
                 <RequestTable />
             </Container>

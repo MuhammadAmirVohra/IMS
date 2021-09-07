@@ -6,6 +6,8 @@
   margin: 200px;
   margin-top: 5.5rem;
   width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .Btn {
   background: #efbb20;
@@ -55,6 +57,12 @@
   width: 200px;
 }
 
+.tab-style {
+  position: absolute;
+}
+.Store-Buttons {
+  overflow: scroll;
+}
 .CardTitle span {
   color: red;
 }
@@ -131,4 +139,8 @@
 
 .button-lg-width {
   width: 300px;
+}
+
+.selectitem {
+  overflow-y: scroll;
 }

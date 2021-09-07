@@ -88,7 +88,7 @@ const ProductLedger = () => {
     return (
         <>
             <HeaderPages />
-            <Container className='Container_Date text-center justify-content-center'>
+            <Container fluid className='Container_Date text-center justify-content-center'>
                 <h1>Product Ledger</h1>
                 <Form onSubmit={Submit} className="d-flex justify-content-center">
                     <Form.Row>
