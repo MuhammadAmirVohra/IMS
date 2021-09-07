@@ -62,7 +62,13 @@
 }
 .Store-Buttons {
   overflow: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.Store-Buttons::-webkit-scrollbar {
+  display: none;
+}
+
 .CardTitle span {
   color: red;
 }

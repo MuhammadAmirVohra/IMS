@@ -1462,9 +1462,9 @@ app.get("/:id/issuerequest", (req, res) => {
 //   );
 
 /*Books.find(
-	{ "authors": { "$regex": "Alex", "$options": "i" } },
-	function(err,docs) {
-	}
+  { "authors": { "$regex": "Alex", "$options": "i" } },
+  function(err,docs) {
+  }
 ); */
 
 ////////////////////////////////////////////////
@@ -2025,8 +2025,8 @@ app.post("/issue_note_pdf", (req, res) => {
   res.setHeader("Content-type", "application/pdf");
 
   var pdf = new PDFDocument({
-      autoFirstPage: false,
-    }),
+    autoFirstPage: false,
+  }),
     table = new PDFTable(pdf, {
       bottomMargin: 30,
     });
@@ -2161,8 +2161,8 @@ app.post("/receive_note_pdf", (req, res) => {
   res.setHeader("Content-type", "application/pdf");
 
   var pdf = new PDFDocument({
-      autoFirstPage: false,
-    }),
+    autoFirstPage: false,
+  }),
     table = new PDFTable(pdf, {
       bottomMargin: 30,
     });
@@ -2294,8 +2294,8 @@ app.post("/return_note_pdf", (req, res) => {
   res.setHeader("Content-type", "application/pdf");
 
   var pdf = new PDFDocument({
-      autoFirstPage: false,
-    }),
+    autoFirstPage: false,
+  }),
     table = new PDFTable(pdf, {
       bottomMargin: 30,
     });
@@ -2443,11 +2443,11 @@ app.post("/productledgerpdf", (req, res) => {
   res.setHeader(
     "Content-disposition",
     "inline; filename=" +
-      req.body.product_name +
-      "Product Ledger " +
-      moment(new Date(req.body.start)).format("DD-MMMM-YYYY") +
-      " - " +
-      moment(new Date(req.body.end)).format("DD-MMMM-YYYY")
+    req.body.product_name +
+    "Product Ledger " +
+    moment(new Date(req.body.start)).format("DD-MMMM-YYYY") +
+    " - " +
+    moment(new Date(req.body.end)).format("DD-MMMM-YYYY")
   );
   res.setHeader("Content-type", "application/pdf");
 
@@ -2466,11 +2466,11 @@ app.post("/productledgerpdf", (req, res) => {
     .moveDown()
     .table(
       "Product Ledger of " +
-        req.body.product_name +
-        " from " +
-        moment(new Date(req.body.start)).format("DD-MMMM-YYYY") +
-        " to " +
-        moment(new Date(req.body.end)).format("DD-MMMM-YYYY"),
+      req.body.product_name +
+      " from " +
+      moment(new Date(req.body.start)).format("DD-MMMM-YYYY") +
+      " to " +
+      moment(new Date(req.body.end)).format("DD-MMMM-YYYY"),
       table0,
       100,
       200
@@ -2519,7 +2519,7 @@ app.post("/generatestockreport", (req, res) => {
                   if (
                     Isssue_Data[j].Date < start &&
                     String(Isssue_Data[j].Item_ID) ==
-                      String(Received_Data[i]._id)
+                    String(Received_Data[i]._id)
                   ) {
                     if (Isssue_Data[j].Status == "Issued") {
                       item_in -= Isssue_Data[j].Quantity;
@@ -2539,7 +2539,7 @@ app.post("/generatestockreport", (req, res) => {
                     Isssue_Data[j].Date >= start &&
                     Isssue_Data[j].Date <= end &&
                     String(Isssue_Data[j].Item_ID) ==
-                      String(Received_Data[i]._id)
+                    String(Received_Data[i]._id)
                   ) {
                     if (Isssue_Data[j].Status == "Issued") {
                       item_out -= Isssue_Data[j].Quantity;
@@ -2612,9 +2612,9 @@ app.post("/stockreportpdf", (req, res) => {
     .moveDown()
     .table(
       "Stock Report from " +
-        moment(new Date(req.body.start)).format("DD-MMMM-YYYY") +
-        " to " +
-        moment(new Date(req.body.end)).format("DD-MMMM-YYYY"),
+      moment(new Date(req.body.start)).format("DD-MMMM-YYYY") +
+      " to " +
+      moment(new Date(req.body.end)).format("DD-MMMM-YYYY"),
       table0,
       100,
       200
