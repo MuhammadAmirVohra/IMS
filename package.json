@@ -4,7 +4,6 @@
   "homepage": "http://fast-inventory.herokuapp.com/",
   "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "cacheDirectories": [
     "node_modules",
     "client/node_modules"
@@ -33,6 +32,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
+    "html-pdf-node": "^1.0.7",
     "jshint": "^2.13.0",
     "moment": "^2.29.1",
     "mongoose": "^5.12.5",

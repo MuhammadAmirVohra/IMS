@@ -56,7 +56,11 @@
 .labelwidth {
   width: 200px;
 }
-
+.loadingicon {
+  margin: 0 auto;
+  float: none;
+  vertical-align: middle;
+}
 .tab-style {
   position: absolute;
 }

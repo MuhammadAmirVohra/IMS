@@ -19,7 +19,7 @@ const Director = () => {
     const { id } = useParams();
     const [details, setDetails] = useState({ request: {}, comment: [] });
     const [Department, setDepartment] = useState("");
-
+    const [generate_btn, setbtn] = useState("Generate PDF");
     console.log("Params ", id);
     const ref = React.createRef();
 
@@ -88,6 +88,7 @@ const Director = () => {
     }
 
     const PDF = async () => {
+        setbtn("Generating ...");
         fetch(`${API_URL}/${id}/pdf`, {
             method: 'POST',
             headers: {
@@ -98,6 +99,7 @@ const Director = () => {
                 content: "Testing Content"
             }),
         }).then(async res => {
+            console.log(res.status);
             if (res.status === 200) {
                 const blob = await res.blob();
                 const file = new Blob(
@@ -105,17 +107,25 @@ const Director = () => {
                     { type: 'application/pdf' },
                     { name: 'report.pdf' }
                 );
-                console.log(file)
+                console.log(file);
+                console.log(blob);
 
                 //Build a URL from the file
                 const fileURL = URL.createObjectURL(file);
                 //Open the URL on new Window
-                console.log(fileURL)
+                console.log(fileURL);
+                setbtn("Generate PDF");
+
                 //   download(res.data, details.request.Item + '_report', 'pdf');
                 window.open(fileURL);
             }
+            else {
+                console.log(res);
+            }
         })
     }
+
+
 
     const Download = async () => {
         await axios.get(`${API_URL}/${id}/download`, {
@@ -146,8 +156,8 @@ const Director = () => {
                         <Card.Title><strong>Quantity: </strong>{details.request.Quantity}</Card.Title> */}
                         <Card.Title><strong>Reason : </strong>{details.request.Reason}</Card.Title>
                         <Card.Title><strong>Date Requested </strong>{moment(details.request.Added).format('Do MMMM YYYY')}</Card.Title>
-                        <Card.Title><strong>Accounts Manager Comments : </strong>{details.comment.Comment_Accounts}</Card.Title>
-                        <Card.Title><strong>Admin Manager Comments : </strong>{details.comment.Comment_Admin}</Card.Title>
+                        <Card.Title><strong>Accounts Manager Comments : </strong><p className="new-line ml-3">{details.comment.Comment_Accounts}</p></Card.Title>
+                        <Card.Title><strong>Admin Manager Comments : </strong><p className="new-line ml-3">{details.comment.Comment_Admin}</p></Card.Title>
                         <Button className="Btn" onClick={Download}>Download Quotation</Button>
 
                     </Card.Body>
@@ -160,7 +170,7 @@ const Director = () => {
 
 
                         {/* <Button className = "Btn float-right"><a href = {`${API_URL}/${id}/pdf`}>Generate Pdf</a></Button> */}
-                        <Button className="Btn float-right" onClick={PDF}>Generate PDF</Button>
+                        <Button className="Btn float-right" onClick={PDF}>{generate_btn}</Button>
 
                     </Card.Footer>
                 </Card>

@@ -10,6 +10,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const moment = require("moment");
 const e = require("express");
+const DuplexStream = require("stream");
+
 const autoIncrement = require("mongoose-auto-increment");
 const uri =
   "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
@@ -27,12 +29,12 @@ app.use(
   })
 );
 
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // <-- location of the react app were connecting to
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:3000", // <-- location of the react app were connecting to
+    credentials: true,
+  })
+);
 
 app.use(
   session({
@@ -191,149 +193,203 @@ autoIncrement.initialize(mongoose.connection);
 // app.use(allowCrossDomain);
 // /--------------------------------------------------
 
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.header("Access-Control-Allow-Credentials", true);
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
+function bufferToStream(buffer) {
+  let stream_created = new DuplexStream.Duplex();
+  stream_created.push(buffer);
+  stream_created.push(null);
+  return stream_created;
+}
 
 app.post("/:id/pdf", (req, res) => {
-  Order.findOne({ _id: req.params.id }, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.send({});
-    } else {
-      const PDFDocument = require("pdfkit");
-      const fs = require("fs");
+  var html_to_pdf = require('html-pdf-node');
 
-      console.log("PDF");
-      var pdfDoc = new PDFDocument();
-      let filename = req.body.filename;
+  let options = { format: 'A4' };
 
-      // Stripping special characters
-      filename = encodeURIComponent(filename) + ".pdf";
-      // Setting response to 'attachment' (download).
-      // If you use 'inline' here it will automatically open the PDF
-      console.log(filename);
-      // res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
-      res.setHeader("Content-disposition", "inline; filename=report.pdf");
-      res.setHeader("Content-type", "application/pdf");
-      Temp.findOne({ Req_Id: req.params.id }, (err, data1) => {
-        if (err) {
-          console.log(err);
-        } else {
-          // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
-          pdfDoc.info["Title"] = "Report.pdf";
-          pdfDoc.image("./nav_logo.png", { fit: [450, 150], align: "center" });
-          pdfDoc.text("\n\n");
-          pdfDoc
-            .fillColor("red")
-            .fontSize(30)
-            .text("Request Details", { bold: true, align: "center" });
-          pdfDoc
-            .fillColor("black")
-            .fontSize(20)
-            .font("Helvetica-Bold")
-            .text("\n\nRequested By : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.R_Emp_Name);
-          pdfDoc.font("Helvetica-Bold").text("\nEmail : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.R_Emp_Email);
-          pdfDoc.font("Helvetica-Bold").text("\nItem Requested : ");
-          pdfDoc.font("Helvetica").text(data.Item);
-          // pdfDoc
-          // 	.font("Helvetica-Bold")
-          // 	.text("\nQuantity Required : ", { continued: true });
-          // pdfDoc.font("Helvetica").text(data.Quantity);
-          if (data.Duration.length)
-            pdfDoc
-              .font("Helvetica-Bold")
-              .text("\nDuration : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.Duration);
-
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nReason : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.Reason);
-
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nDate Requested : ", { continued: true });
-          pdfDoc
-            .fillColor("black")
-            .font("Helvetica")
-            .text(moment(data.Added).format("DD-MMMM-YYYY hh:mm A"));
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nApproved By Head : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(moment(data.Approved_At).format("DD-MMMM-YYYY hh:mm A"));
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nQuotation Added : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(moment(data.Quotation_Added).format("DD-MMMM-YYYY hh:mm A"));
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Accounts Comments : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data1.Comment_Accounts);
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Accounts Comments Added : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(
-              moment(data1.Comment_Accounts_Added).format(
-                "DD-MMMM-YYYY hh:mm A"
-              )
-            );
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Admin Comments : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data1.Comment_Admin);
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Accounts Comments Added : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(
-              moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")
-            );
-          pdfDoc.text("\n\n\n");
-          for (var i = 0; i < 50; i++) pdfDoc.text(" ", { continued: true });
-          for (var i = 0; i < 30; i++)
-            pdfDoc.text(" ", { underline: true, continued: true });
-          pdfDoc.text("\n");
-          for (var i = 0; i < 57; i++) pdfDoc.text(" ", { continued: true });
-          pdfDoc.text("Signature");
-          pdfDoc.pipe(res);
-          pdfDoc.end();
-          // console.log(pdfDoc);
-          //   res.pipe(pdfDoc);
-          // pdfDoc.pipe(res);
-
-          // res.download('./report.pdf')
-          // pdfDoc.pipe(res);
-
-          // res.download(pdfDoc);
-          //   fs.writeFile('report.pdf', pdfDoc,'binary', function(err){
-          //     if (err) throw err;
-          //     console.log('Sucessfully saved!');
-          //     // file = fs.createReadStream('./quotation.pdf')
-          //     // file.pipe(res)
-
-          //     // fs.unlinkSync('./quotation.pdf')
-          // });
+  const data = fs.readFileSync('template.html', 'utf8');
+  // let file = { content: data };
+  var message = "Hi";
+  let file = {
+    content: `
+    
+      <html html >
+    <style>
+        .block{
+            border: 5px solid black;
+            vertical-align: middle;
+            margin-left: 25%;
+            margin-top: 5%;
+            margin-right: 25%;
         }
-      });
-    }
+    </style>
+    <body>
+        <div class="block">
+            <p>${message}</p>
+          
+        </div>
+
+
+
+    </body>
+</html >
+    
+    
+    
+    `
+  }
+
+  // res.setHeader("Content-disposition", "inline; filename=report.pdf");
+  // res.setHeader("Content-type", "application/pdf");
+
+  html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
+    console.log("PDF Buffer:-", pdfBuffer);
+    // bufferToStream(pdfBuffer).pipe(res);
+    res.send(pdfBuffer);
   });
 });
+
+// app.post("/:id/pdf1", (req, res) => {
+//   Order.findOne({ _id: req.params.id }, (err, data) => {
+//     if (err) {
+//       console.log(err);
+//       res.send({});
+//     } else {
+//       const PDFDocument = require("pdfkit");
+//       const fs = require("fs");
+
+//       console.log("PDF");
+//       var pdfDoc = new PDFDocument();
+//       let filename = req.body.filename;
+
+//       // Stripping special characters
+//       filename = encodeURIComponent(filename) + ".pdf";
+//       // Setting response to 'attachment' (download).
+//       // If you use 'inline' here it will automatically open the PDF
+//       console.log(filename);
+//       // res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
+//       res.setHeader("Content-disposition", "inline; filename=report.pdf");
+//       res.setHeader("Content-type", "application/pdf");
+//       Temp.findOne({ Req_Id: req.params.id }, (err, data1) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//           // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
+//           pdfDoc.info["Title"] = "Report.pdf";
+//           pdfDoc.image("./nav_logo.png", { fit: [450, 150], align: "center" });
+//           pdfDoc.text("\n\n");
+//           pdfDoc
+//             .fillColor("red")
+//             .fontSize(30)
+//             .text("Request Details", { bold: true, align: "center" });
+//           pdfDoc
+//             .fillColor("black")
+//             .fontSize(20)
+//             .font("Helvetica-Bold")
+//             .text("\n\nRequested By : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.R_Emp_Name);
+//           pdfDoc.font("Helvetica-Bold").text("\nEmail : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.R_Emp_Email);
+//           pdfDoc.font("Helvetica-Bold").text("\nItem Requested : ");
+//           pdfDoc.font("Helvetica").text(data.Item);
+//           // pdfDoc
+//           // 	.font("Helvetica-Bold")
+//           // 	.text("\nQuantity Required : ", { continued: true });
+//           // pdfDoc.font("Helvetica").text(data.Quantity);
+//           if (data.Duration.length)
+//             pdfDoc
+//               .font("Helvetica-Bold")
+//               .text("\nDuration : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.Duration);
+
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nReason : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.Reason);
+
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nDate Requested : ", { continued: true });
+//           pdfDoc
+//             .fillColor("black")
+//             .font("Helvetica")
+//             .text(moment(data.Added).format("DD-MMMM-YYYY hh:mm A"));
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nApproved By Head : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(moment(data.Approved_At).format("DD-MMMM-YYYY hh:mm A"));
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nQuotation Added : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(moment(data.Quotation_Added).format("DD-MMMM-YYYY hh:mm A"));
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Accounts Comments : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data1.Comment_Accounts);
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Accounts Comments Added : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(
+//               moment(data1.Comment_Accounts_Added).format(
+//                 "DD-MMMM-YYYY hh:mm A"
+//               )
+//             );
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Admin Comments : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data1.Comment_Admin);
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Accounts Comments Added : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(
+//               moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")
+//             );
+//           pdfDoc.text("\n\n\n");
+//           for (var i = 0; i < 50; i++) pdfDoc.text(" ", { continued: true });
+//           for (var i = 0; i < 30; i++)
+//             pdfDoc.text(" ", { underline: true, continued: true });
+//           pdfDoc.text("\n");
+//           for (var i = 0; i < 57; i++) pdfDoc.text(" ", { continued: true });
+//           pdfDoc.text("Signature");
+//           pdfDoc.pipe(res);
+//           pdfDoc.end();
+//           // console.log(pdfDoc);
+//           //   res.pipe(pdfDoc);
+//           // pdfDoc.pipe(res);
+
+//           // res.download('./report.pdf')
+//           // pdfDoc.pipe(res);
+
+//           // res.download(pdfDoc);
+//           //   fs.writeFile('report.pdf', pdfDoc,'binary', function(err){
+//           //     if (err) throw err;
+//           //     console.log('Sucessfully saved!');
+//           //     // file = fs.createReadStream('./quotation.pdf')
+//           //     // file.pipe(res)
+
+//           //     // fs.unlinkSync('./quotation.pdf')
+//           // });
+//         }
+//       });
+//     }
+//   });
+// });
 
 // app.get('/:id/pdf', (req,res)=>{
 //   console.log("PDF :",req.params.id)
@@ -424,7 +480,7 @@ const Item_Schema = new mongoose.Schema({
 
   Receive_Date: {
     type: Date,
-    default: Date.now(),
+    // default: Date.now(),
   },
 });
 
@@ -1584,6 +1640,7 @@ app.post("/additemname", (req, res) => {
       Item_Name: req.body.item_name,
       Item_Type: req.body.item_type,
       Item_Description: req.body.item_description,
+      Receive_Date: null
     },
     (err, item_data) => {
       if (err) {
@@ -2140,7 +2197,21 @@ app.post("/receiveitems", async (req, res) => {
                 // return err;
               } else {
                 console.log(item_data);
-                if (i == items.length - 1) res.send({ code: 200 });
+                Item.findOne({ _id: items[i].item_id }, (err, item_object) => {
+                  if (item_object.Receive_Date)
+                    res.send({ code: 200 });
+                  else {
+                    Item.updateOne({ _id: items[i].item_id }, { Receive_Date: req.body.date }, (err, update_recieve_date) => {
+                      if (err)
+                        console.log(err);
+                      else
+                        res.send({ code: 200 });
+
+                    });
+                  }
+                });
+
+
               }
             }
           );
@@ -2554,16 +2625,16 @@ app.post("/generatestockreport", (req, res) => {
                   }
                 }
                 if (issued < 0) issued = 0;
-
-                data.push([
-                  Received_Data[i].Item_ID,
-                  name,
-                  item_in,
-                  received,
-                  item_in + received,
-                  issued,
-                  item_out,
-                ]);
+                if (!(issued == 0 && received == 0 && item_out == 0 && item_in == 0))
+                  data.push([
+                    Received_Data[i].Item_ID,
+                    name,
+                    item_in,
+                    received,
+                    item_in + received,
+                    issued,
+                    item_out,
+                  ]);
               }
 
               console.log(data);

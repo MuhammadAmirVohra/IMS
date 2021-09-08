@@ -7,7 +7,9 @@ import Header from '../header/Header'
 import { API_URL } from '../../utils/constant';
 import { useHistory } from 'react-router';
 // import PropTypes from 'prop-types';
-import AuthApi from '../Authapi'
+import AuthApi from '../Authapi';
+import { css } from "@emotion/react";
+import PuffLoader from "react-spinners/PuffLoader";
 // import Cookies from 'js-cookie'
 // import {ReactPDF} from '@react-pdf/renderer';
 // import PdfGenerator from '../PDF/PdfGenerator'
@@ -78,7 +80,6 @@ const LoginForm = () => {
 
 
 
-
   const onSubmit = () => {
 
     // event.preventDefault()
@@ -143,11 +144,19 @@ const LoginForm = () => {
     }
   }
 
+  const ForgotPasswd = () => {
+
+  }
+
   return (
     <>
+
+
       <Header />
       <Container className="MainContainer d-flex justify-content-center align-items-center">
+
         <Row>
+
           <Col className="text-center">
             <Card className="CardStyle">
               <Form onSubmit={onSubmit} >
@@ -170,8 +179,9 @@ const LoginForm = () => {
                   }
 
                   <Form.Group className="text-right">
-                    {/* <a href="#"> Forgot Password ? </a> */}
+                    <Button className="mr-2" variant="outline-primary" onClick={ForgotPasswd}> Forgot Password ? </Button>
                     <LoadingButton />
+
                   </Form.Group>
 
                   {/* <Button onClick = {() => { ReactPDF.renderToStream(<PdfGenerator/>); }}> PDF </Button> */}
@@ -187,6 +197,7 @@ const LoginForm = () => {
 
 
       </Container>
+
     </>
   )
 

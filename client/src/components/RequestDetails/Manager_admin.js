@@ -91,7 +91,7 @@ const ManagerAdmin = () => {
                         <Card.Title><strong>Quantity: </strong>{request.Quantity}</Card.Title> */}
                         <Card.Title><strong>Reason : </strong>{request.Reason}</Card.Title>
                         <Card.Title><strong>Date Requested </strong>{moment(request.Added).format('Do MMMM YYYY')}</Card.Title>
-                        <Card.Title><strong>Accounts Manager Comments : </strong>{comment.Comment_Accounts}</Card.Title>
+                        <Card.Title><strong>Accounts Manager Comments : </strong><p className="new-line">{comment.Comment_Accounts}</p></Card.Title>
                         <Button className="Btn" onClick={Download}>Download Quotation</Button>
                         <Form className="mt-4" onSubmit={SubmitComment}>
                             <Form.Group>
