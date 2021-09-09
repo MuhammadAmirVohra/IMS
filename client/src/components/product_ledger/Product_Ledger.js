@@ -8,9 +8,11 @@ import { API_URL } from '../../utils/constant';
 
 const ProductLedger = () => {
 
-    const [start_Date, set_Start_Date] = useState();
-    const [Product, set_Product] = useState();
-    const [end_Date, set_End_Date] = useState();
+    const [start_Date, set_Start_Date] = useState(null);
+    const [Product, set_Product] = useState(null);
+    const [end_Date, set_End_Date] = useState(null);
+    const [balance, set_balance] = useState(null);
+
     const [allitems, setallitems] = useState([]);
 
     const arr = ['Date', 'Quantity', 'Status', 'Department', 'Reason']
@@ -72,14 +74,20 @@ const ProductLedger = () => {
 
     const Submit = (event) => {
         event.preventDefault();
-        axios.post(`${API_URL}/generateproductledger`, { start_date: start_Date, product: Product, end_date: end_Date, product_name: allitems[allitems.map(e => e._id).indexOf(Product)].Item_Name }).then((res) => {
-            if (res.data.code === 200) {
-                setRecords(res.data.records);
-            }
-            else {
-                setRecords([]);
-            }
-        })
+        if (start_Date && end_Date && Product)
+            axios.post(`${API_URL}/generateproductledger`, { start_date: start_Date, product: Product, end_date: end_Date, product_name: allitems[allitems.map(e => e._id).indexOf(Product)].Item_Name }).then((res) => {
+                if (res.data.code === 200) {
+                    setRecords(res.data.records);
+                    set_balance(res.data.balance);
+                }
+                else {
+                    setRecords([]);
+                    set_balance(null);
+
+                }
+            });
+        else
+            alert("Values Missing")
     }
 
 
@@ -128,6 +136,8 @@ const ProductLedger = () => {
                     {allRecords.length > 0 &&
                         <>
                             <h2>Item ID : {allitems[allitems.map(e => e._id).indexOf(Product)].Item_ID}</h2>
+                            <h2>Balance Amount : {balance}</h2>
+
                             <Button className="Btn Date_Button ml-2" onClick={Pdf}>Generate PDF Report</Button>
                             <Table className="TableStyle mt-3 justify-content-center" responsive>
                                 <thead>

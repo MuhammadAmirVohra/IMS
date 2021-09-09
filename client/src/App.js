@@ -27,6 +27,7 @@ import ReturnNote from './components/return_items/return_note';
 import IssueNote from './components/issue/issue_note';
 import PrevReqs from './components/Previous_records/PreviousRecords';
 import ReqInfo from './components/Previous_records/RecordInfo';
+// import ForgotPassword from './components/forgot password/Forgot_Password';
 // import Cookie from 'universal-cookie'
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
@@ -314,6 +315,15 @@ const Routes = () => {
 
                 }}>
             </Route>
+            {/* <Route path="/forgot"
+                render={() => {
+
+                    return <ForgotPassword />
+
+
+
+                }}>
+            </Route> */}
 
             <Route path="/purchase"
                 render={() => {

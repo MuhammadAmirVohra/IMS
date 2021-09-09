@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'react-bootstrap'
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Card, Modal } from 'react-bootstrap';
 
 import axios from 'axios';
 import Header from '../header/Header'
@@ -8,8 +8,8 @@ import { API_URL } from '../../utils/constant';
 import { useHistory } from 'react-router';
 // import PropTypes from 'prop-types';
 import AuthApi from '../Authapi';
-import { css } from "@emotion/react";
-import PuffLoader from "react-spinners/PuffLoader";
+// import { css } from "@emotion/react";
+// import PuffLoader from "react-spinners/PuffLoader";
 // import Cookies from 'js-cookie'
 // import {ReactPDF} from '@react-pdf/renderer';
 // import PdfGenerator from '../PDF/PdfGenerator'
@@ -143,13 +143,79 @@ const LoginForm = () => {
       onSubmit()
     }
   }
+  const [showModal, setShow] = useState(false);
+
+
+  const ModalContent = () => {
+    const [username, setUsername] = useState("");
+
+
+    const ForgotPasswd = () => {
+      setShow(false);
+      axios.post(API_URL + '/api/forgotpaswd',
+        {
+          username: username
+        }
+      ).then((res) => {
+        if (res.data.code === 200) {
+          window.flash('Password is sent to ' + res.data.email);
+        }
+        else if (res.data.code === 201) {
+          window.flash('Username Invalid', "danger");
+        }
+        else if (res.data.code === 400) {
+          window.flash(res.data.message, "danger");
+        }
+      })
+    }
+
+    return (
+      <Modal show={showModal} onHide={() => { setShow(false) }}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Forgot Password
+          </Modal.Title>
+        </Modal.Header>
+        <Form>
+
+          <Modal.Body className="">
+            <ul className="list-unstyled">
+              <li className="mt-3">
+                <Form.Group>
+                  <Form.Label>Enter Your Username</Form.Label>
+                  <Form.Control value={username} onChange={(event) => { setUsername(event.target.value) }} placeholder="Username" row={6} />
+                </Form.Group>
+
+              </li>
+            </ul>
+          </Modal.Body>
+
+
+          <Modal.Footer>
+            <Button className="btn-danger" onClick={() => { ForgotPasswd() }}>Submit</Button>
+
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    );
+
+
+  }
+
+
 
   const ForgotPasswd = () => {
-
+    setShow(true);
   }
 
   return (
     <>
+      {showModal ?
+        <div>
+          <ModalContent />
+        </div>
+        : null
+      }
 
 
       <Header />

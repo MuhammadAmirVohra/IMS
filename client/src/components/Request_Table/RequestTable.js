@@ -41,7 +41,7 @@ const RequestTable = () => {
 
         const Approve = () => {
             console.log('Approve Request')
-            axios.post(`${API_URL}/request_approve`, { id: ModalInfo._id }).then(
+            axios.post(`${API_URL}/request_approve`, { id: ModalInfo._id, head_comment: comment }).then(
                 (res) => {
                     if (res.data) {
                         window.flash('Request Approved')

@@ -71,6 +71,11 @@ const ManagerAdmin = () => {
         })
     }
 
+    const CommentChange = (e) => {
+        if (e.target.value.length <= 80)
+            set_admin(e.target.value);
+    }
+
     return (
 
         <>
@@ -95,8 +100,8 @@ const ManagerAdmin = () => {
                         <Button className="Btn" onClick={Download}>Download Quotation</Button>
                         <Form className="mt-4" onSubmit={SubmitComment}>
                             <Form.Group>
-                                <Card.Title>Add Comments<span>*</span></Card.Title>
-                                <Form.Control as="textarea" row={5} placeholder="Comments" value={admin_comment} onChange={(e) => { set_admin(e.target.value) }} required></Form.Control>
+                                <Card.Title>Add Comments<span>*</span> <span style={{ color: 'gray', fontSize: 15, float: 'right' }}>Word Limit : {80 - admin_comment.length} </span> </Card.Title>
+                                <Form.Control as="textarea" row={5} placeholder="Comments" value={admin_comment} onChange={CommentChange} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
                                 <Button type="submit" className="Btn btn btn-md float-right"  >Submit</Button>

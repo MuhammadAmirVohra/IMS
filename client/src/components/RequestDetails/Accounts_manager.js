@@ -94,6 +94,10 @@ const Account_Manager = () => {
         })
     }
 
+    const CommentChange = (e) => {
+        if (e.target.value.length <= 160)
+            set_comments(e.target.value);
+    }
 
 
     return (
@@ -121,8 +125,8 @@ const Account_Manager = () => {
 
                         <Form className="mt-4" onSubmit={SubmitComment}>
                             <Form.Group>
-                                <Card.Title className="CardTitle">Add Comments<span>*</span></Card.Title>
-                                <Form.Control placeholder="Enter Comments" as="textarea" row={5} value={comments} onChange={(e) => { set_comments(e.target.value) }} required></Form.Control>
+                                <Card.Title className="CardTitle">Add Comments<span>*</span> <span style={{ color: 'gray', fontSize: 15, float: 'right' }}>Word Limit : {160 - comments.length} </span> </Card.Title>
+                                <Form.Control placeholder="Enter Comments" as="textarea" row={5} value={comments} onChange={CommentChange} required></Form.Control>
                             </Form.Group>
                             <Form.Group>
                                 <Button type="submit" className="Btn btn btn-md float-right"  >Submit Comments</Button>

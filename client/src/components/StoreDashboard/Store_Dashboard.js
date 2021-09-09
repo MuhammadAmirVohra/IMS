@@ -61,7 +61,7 @@ const StoreDashboard = () => {
                     fetch();
                 }
                 else
-                    window.flash('Item Failed to Delete', 'danger');
+                    window.flash('Item Failed to Add', 'danger');
             })
 
         }
@@ -71,11 +71,11 @@ const StoreDashboard = () => {
             }).then((res) => {
                 setShow(false);
                 if (res.data.code === 200) {
-                    window.flash('Item Added Successfully');
+                    window.flash('Item Deleted Successfully');
                     fetch();
                 }
                 else
-                    window.flash('Item Failed to Add', 'danger');
+                    window.flash('Item Failed to Delete', 'danger');
             })
         }
 
