@@ -70,7 +70,6 @@ const RequestTable = () => {
                 }
             )
         }
-
         return (
             <Modal show={showModal} onHide={() => { fetch(); interval_id.current = setInterval(() => { fetch() }, 3000); setShow(false) }}>
                 <Modal.Header closeButton>
@@ -89,10 +88,15 @@ const RequestTable = () => {
                             <li className="new-line"><strong>Item:</strong><br />{ModalInfo.Item}</li>
                             {/* <li><strong>Quantity:</strong> {ModalInfo.Quantity}</li>
                             <li><strong>Duration:</strong> {ModalInfo.Duration}</li> */}
-                            <li><strong>Reason:</strong> {ModalInfo.Reason}</li>
+                            {ModalInfo.Reason.length ? <li><strong>Reason:</strong> {ModalInfo.Reason}</li> : null}
                             <li className="mt-3">
                                 <Form.Group>
-                                    <Form.Control as="textarea" value={comment} onChange={(event) => { setcomment(event.target.value) }} placeholder="Additional Comments" row={6} />
+                                    <Form.Label>Additional Comments (optional) : </Form.Label>
+                                    <span style={{ color: 'gray', fontSize: 15, float: 'right' }}>Word Limit : {80 - comment.length} </span>
+                                    <Form.Control as="textarea" value={comment} onChange={(e) => {
+                                        if (e.target.value.length <= 80)
+                                            setcomment(e.target.value);
+                                    }} placeholder="Additional Comments" row={6} />
                                 </Form.Group>
 
                             </li>
