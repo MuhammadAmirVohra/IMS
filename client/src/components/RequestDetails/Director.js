@@ -89,7 +89,7 @@ const Director = () => {
 
     const PDF = async () => {
         setbtn("Generating ...");
-        fetch(`${API_URL}/${id}/pdf1`, {
+        fetch(`${API_URL}/${id}/pdf`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
