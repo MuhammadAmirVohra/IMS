@@ -11,7 +11,7 @@ const cors = require("cors");
 const moment = require("moment");
 const e = require("express");
 const DuplexStream = require("stream");
-
+const handlebars = require("handlebars);
 const autoIncrement = require("mongoose-auto-increment");
 const uri =
   "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
@@ -20,7 +20,7 @@ var multer = require("multer");
 const app = express();
 const mailer = require("./mail");
 app.use(express.static("public"));
-app.set("view engine", "ejs");
+//app.set("view engine", "ejs");
 // Middleware
 app.use(bodyParser.json());
 app.use(
@@ -28,6 +28,10 @@ app.use(
     extended: true,
   })
 );
+
+const hbs = handlebars.create({defaultLayout : "main"});
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars')
 
 // app.use(
 //   cors({
