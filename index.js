@@ -255,9 +255,7 @@ app.post("/:id/pdf", (req, res) => {
       padding: 1.5%;
       
     }
-    b,
-    h2,
-    h3 {
+    .bold {
       font-weight: 350;
     }
     p {
@@ -296,7 +294,7 @@ app.post("/:id/pdf", (req, res) => {
       <h3>Proposal Document</h3>
     </div>
     <div class="top">
-      <h4 class="headings">Indenter</h4>
+      <span class="headings bold">Indenter</span>
       <p><b>Requested By :</b>${data.R_Emp_Name}</p>
       <p><b>Email :</b> ${data.R_Emp_Email}</p>
       <p><b>Item Requested :</b></p>
@@ -306,17 +304,17 @@ app.post("/:id/pdf", (req, res) => {
       <p><b>Quotation Added :</b> ${moment(data1.Quotation_Added).format("DD-MM-YYY hh:mm A")}</p>
     </div>
     <div class="block">
-      <h4 class="headings">Department Head - For Recommendation</h4>
+      <span class="headings bold">Department Head - For Recommendation</span>
       <p><b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
       <p style="white-space: pre-line;">${data.Head_Comments ? data.Head_Comment.length ? data.Head_Comment : "-" : "-"}</p>
     </div>
     <div class="block">
-      <h4 class="headings">Manager Accounts - Financial Analysis</h4>
+      <span class="headings bold">Manager Accounts - Financial Analysis</span>
       <p><b>Comments Added :</b> ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
       <p style="white-space: pre-line;">${data1.Comment_Accounts}</p>
       </div>
     <div class="block">
-      <h4 class="headings">Manager Adminstration - For Execution</h4>
+      <span class="headings bold">Manager Adminstration - For Execution</span>
       <p><b>Comments Added :</b>${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
       <p style="white-space: pre-line;">${data1.Comment_Admin}</p>
 
