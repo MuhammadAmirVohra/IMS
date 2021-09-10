@@ -239,7 +239,7 @@ app.post("/:id/pdf", (req, res) => {
   <style>
  body{
       font-family: Arial, Helvetica, sans-serif;
-      // font-size: small;
+      font-size: small;
     }
     .top {
       margin-top: 5%;
