@@ -258,7 +258,7 @@ app.post("/:id/pdf", (req, res) => {
     b,
     h2,
     h3 {
-      font-weight: 450;
+      font-weight: 350;
     }
     p {
       margin: 0;
