@@ -240,9 +240,9 @@ app.post("/:id/pdf", (req, res) => {
           console.log(data1);
           html =
             `
-            <html>
+           <html>
   <style>
- body{
+    body {
       font-family: Arial, Helvetica, sans-serif;
       font-size: small;
     }
@@ -253,14 +253,16 @@ app.post("/:id/pdf", (req, res) => {
       margin-left: 5%;
       margin-right: 5%;
       padding: 1.5%;
-      
     }
     .bold {
-      font-weight: 350;
+      font-weight: 550;
+    }
+    b {
+      font-weight: 500;
     }
     p {
       margin: 0;
-    word-wrap:break-word
+      word-wrap: break-word;
     }
     .block {
       border: 2px solid black;
@@ -269,23 +271,22 @@ app.post("/:id/pdf", (req, res) => {
       margin-right: 5%;
       padding: 1.5%;
       border-top: none;
-      
     }
     .top-headings {
       text-align: center;
-      margin-top : 5%;
+      margin-top: 5%;
     }
     .headings {
       text-align: center;
-      margin-top : 0;
-      
+      margin: 0 70;
+      margin-top: 0;
     }
     .signature {
       width: auto;
       border-top: 2px solid black;
       margin-top: 10%;
       margin-left: 60%;
-      border-width:75%;
+      border-width: 75%;
     }
   </style>
   <body>
@@ -294,40 +295,54 @@ app.post("/:id/pdf", (req, res) => {
       <h3>Proposal Document</h3>
     </div>
     <div class="top">
-      <span class="headings bold">Indenter</span>
+      <h4 class="headings">Indenter</h4>
       <p><b>Requested By :</b>${data.R_Emp_Name}</p>
       <p><b>Email :</b> ${data.R_Emp_Email}</p>
       <p><b>Item Requested :</b></p>
       <p>${data.Item}</p>
       <p><b>Reason :</b> ${data.Reason}</p>
-      <p><b>Date Requested :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p><b>Quotation Added :</b> ${moment(data1.Quotation_Added).format("DD-MM-YYY hh:mm A")}</p>
-    </div>
+      <p>
+        <b>Date Requested :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}
+      </p >
+          <p>
+            <b>Quotation Added :</b>
+            ${moment(data1.Quotation_Added).format("DD-MM-YYY hh:mm A")}
+          </p>
+    </div >
     <div class="block">
-      <span class="headings bold">Department Head - For Recommendation</span>
-      <p><b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p style="white-space: pre-line;">${data.Head_Comments ? data.Head_Comment.length ? data.Head_Comment : "-" : "-"}</p>
-    </div>
+      <h4 class="headings bold">Department Head - For Recommendation</h4>
+      <p>
+        <b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh: mm A")}
+      </p>
+              <p style="white-space: pre-line">
+                ${data.Head_Comments ? data.Head_Comment.length ? data.Head_Comment : "-" : "-"}
+              </p>
+    </div >
     <div class="block">
       <span class="headings bold">Manager Accounts - Financial Analysis</span>
-      <p><b>Comments Added :</b> ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p style="white-space: pre-line;">${data1.Comment_Accounts}</p>
-      </div>
+      <p>
+        <b>Comments Added :</b>
+        ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}
+      </p>
+      <p style="white-space: pre-line">${data1.Comment_Accounts}</p>
+    </div>
     <div class="block">
-      <span class="headings bold">Manager Adminstration - For Execution</span>
-      <p><b>Comments Added :</b>${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p style="white-space: pre-line;">${data1.Comment_Admin}</p>
-
+      <h4 class="headings bold">Manager Adminstration - For Execution</h4>
+      <p>
+        <b>Comments Added :</b
+        >${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}
+      </p>
+      <p style="white-space: pre-line">${data1.Comment_Admin}</p>
     </div>
     <div class="signature">
-      <h3 style="text-align: center;">Director Signature</h3>
+      <h3 style="text-align: center">Director Signature</h3>
     </div>
-  </body>
-</html>
+  </body >
+</html >
 
-          
-          
-          `;
+
+
+              `;
 
           pdf.create(html, options).toBuffer(function (err, buffer) {
             res.send(buffer);

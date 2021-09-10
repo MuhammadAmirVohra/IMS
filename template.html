@@ -6,21 +6,24 @@
     }
     .top {
       margin-top: 5%;
-      border: 5px solid black;
+      border: 2px solid black;
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
       padding: 1.5%;
     }
+    .bold {
+      font-weight: 550;
+    }
+    b {
+      font-weight: 500;
+    }
     p {
       margin: 0;
       word-wrap: break-word;
     }
-    .bold {
-      font-weight: 600;
-    }
     .block {
-      border: 5px solid black;
+      border: 2px solid black;
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
@@ -33,18 +36,19 @@
     }
     .headings {
       text-align: center;
+      margin: 0 70;
       margin-top: 0;
     }
     .signature {
       width: auto;
       border-top: 2px solid black;
       margin-top: 10%;
-      margin-left: 50%;
-      padding-inline: 6%;
+      margin-left: 60%;
+      border-width: 75%;
     }
   </style>
   <body>
-    <div class="headings">
+    <div class="top-headings">
       <h2>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h2>
       <h3>Proposal Document</h3>
     </div>
@@ -65,7 +69,7 @@
       </p>
     </div>
     <div class="block">
-      <h4 class="headings">Department Head - For Recommendation</h4>
+      <h4 class="headings bold">Department Head - For Recommendation</h4>
       <p>
         <b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY
         hh:mm A")}
@@ -76,7 +80,7 @@
       </p>
     </div>
     <div class="block">
-      <h4 class="headings">Manager Accounts - Financial Analysis</h4>
+      <span class="headings bold">Manager Accounts - Financial Analysis</span>
       <p>
         <b>Comments Added :</b>
         ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}
@@ -84,15 +88,15 @@
       <p style="white-space: pre-line">${data1.Comment_Accounts}</p>
     </div>
     <div class="block">
-      <h4 class="headings">Manager Adminstration - For Execution</h4>
+      <h4 class="headings bold">Manager Adminstration - For Execution</h4>
       <p>
         <b>Comments Added :</b
-        >{{moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}}
+        >${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}
       </p>
       <p style="white-space: pre-line">${data1.Comment_Admin}</p>
     </div>
     <div class="signature">
-      <h2 style="text-align: center">Director Signature</h2>
+      <h3 style="text-align: center">Director Signature</h3>
     </div>
   </body>
 </html>
