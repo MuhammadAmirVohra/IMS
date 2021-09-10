@@ -11,7 +11,6 @@ const cors = require("cors");
 const moment = require("moment");
 const e = require("express");
 const DuplexStream = require("stream");
-const handlebars = require("handlebars);
 const autoIncrement = require("mongoose-auto-increment");
 const uri =
   "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
