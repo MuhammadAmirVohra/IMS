@@ -237,13 +237,18 @@ app.post("/:id/pdf", (req, res) => {
             `
             <html>
   <style>
+ body{
+      font-family: Arial, Helvetica, sans-serif;
+      // font-size: small;
+    }
     .top {
       margin-top: 5%;
       border: 5px solid black;
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
-      padding: 2.5%;
+      padding: 1.5%;
+      
     }
     p {
       margin: 0;
@@ -254,22 +259,29 @@ app.post("/:id/pdf", (req, res) => {
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
-      padding: 2.5%;
+      padding: 1.5%;
       border-top: none;
+      
     }
-    .headings {
+    .top-headings {
       text-align: center;
       margin-top : 5%;
     }
-    .signature{
-      width: fit-content;
-      font-size: large;
+    .headings {
+      text-align: center;
+      margin-top : 0;
+      
+    }
+    .signature {
+      width: auto;
+      border-top: 2px solid black;
       margin-top: 10%;
-      margin-left: 50%;
+      margin-left: 60%;
+      border-width:75%;
     }
   </style>
   <body>
-    <div class="headings">
+    <div class="top-headings">
       <h2>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h2>
       <h3>Proposal Document</h3>
     </div>
@@ -300,7 +312,6 @@ app.post("/:id/pdf", (req, res) => {
 
     </div>
     <div class="signature">
-      <h3>_______________________________</p>
       <h3 style="text-align: center;">Director Signature</h3>
     </div>
   </body>
@@ -310,7 +321,7 @@ app.post("/:id/pdf", (req, res) => {
           
           `;
 
-          pdf.create(html).toBuffer(function (err, buffer) {
+          pdf.create(html, options).toBuffer(function (err, buffer) {
             res.send(buffer);
           });
 
@@ -326,338 +337,251 @@ app.post("/:id/pdf", (req, res) => {
 });
 
 
-app.post("/:id/pdf2", (req, res) => {
-  var html_to_pdf = require('html-pdf-node');
+// app.post("/:id/pdf2", (req, res) => {
+//   var html_to_pdf = require('html-pdf-node');
 
-  let options = { format: 'A4' };
+//   let options = { format: 'A4' };
 
-  // const data = fs.readFileSync('template.html', 'utf8');
-  // let file = { content: data };
+//   // const data = fs.readFileSync('template.html', 'utf8');
+//   // let file = { content: data };
 
-  Order.findOne({ _id: req.params.id }, (err, data) => {
-    if (err)
-      console.log(err);
-    else {
-      Temp.findOne({ Req_Id: req.params.id }, (err, data1) => {
-        if (err) {
-          console.log(err);
-        }
-        else {
-          console.log(data);
-          console.log(data1);
-          let file = {
-            content:
+//   Order.findOne({ _id: req.params.id }, (err, data) => {
+//     if (err)
+//       console.log(err);
+//     else {
+//       Temp.findOne({ Req_Id: req.params.id }, (err, data1) => {
+//         if (err) {
+//           console.log(err);
+//         }
+//         else {
+//           console.log(data);
+//           console.log(data1);
+//           let file = {
+//             content:
 
-              `
-            <html>
-  <style>
-    .top {
-      margin-top: 5%;
-      border: 5px solid black;
-      vertical-align: middle;
-      margin-left: 5%;
-      margin-right: 5%;
-      padding: 2.5%;
-    }
-    p {
-      margin: 0;
-    word-wrap:break-word
-    }
-    .block {
-      border: 5px solid black;
-      vertical-align: middle;
-      margin-left: 5%;
-      margin-right: 5%;
-      padding: 2.5%;
-      border-top: none;
-    }
-    .headings {
-      text-align: center;
-      margin-top : 5%;
-    }
-    .signature{
-      width: fit-content;
-      font-size: large;
-      margin-top: 10%;
-      margin-left: 50%;
-    }
-  </style>
-  <body>
-    <div class="headings">
-      <h2>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h2>
-      <h3>Proposal Document</h3>
-    </div>
-    <div class="top">
-      <h3 class="headings">Indenter</h3>
-      <p><b>Requested By :</b>${data.R_Emp_Name}</p>
-      <p><b>Email :</b> ${data.R_Emp_Email}</p>
-      <p><b>Item Requested :</b></p>
-      <p>${data.Item}</p>
-      <p><b>Reason :</b> ${data.Reason}</p>
-      <p><b>Date Requested :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p><b>Quotation Added :</b> ${moment(data1.Quotation_Added).format("DD-MM-YYY hh:mm A")}</p>
-    </div>
-    <div class="block">
-      <h3 class="headings">Department Head - For Recommendation</h3>
-      <p><b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p style="white-space: pre-line;">${data.Head_Comments ? data.Head_Comment.length ? data.Head_Comment : "-" : "-"}</p>
-    </div>
-    <div class="block">
-      <h3 class="headings">Manager Accounts - Financial Analysis</h3>
-      <p><b>Comments Added :</b> ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p style="white-space: pre-line;">${data1.Comment_Accounts}</p>
-      </div>
-    <div class="block">
-      <h3 class="headings">Manager Adminstration - For Execution</h3>
-      <p><b>Comments Added :</b>${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
-      <p style="white-space: pre-line;">${data1.Comment_Admin}</p>
+//               `
+//             <html>
+//   <style>
+//     .top {
+//       margin-top: 5%;
+//       border: 5px solid black;
+//       vertical-align: middle;
+//       margin-left: 5%;
+//       margin-right: 5%;
+//       padding: 2.5%;
+//     }
+//     p {
+//       margin: 0;
+//     word-wrap:break-word
+//     }
+//     .block {
+//       border: 5px solid black;
+//       vertical-align: middle;
+//       margin-left: 5%;
+//       margin-right: 5%;
+//       padding: 2.5%;
+//       border-top: none;
+//     }
+//     .headings {
+//       text-align: center;
+//       margin-top : 5%;
+//     }
+//     .signature{
+//       width: fit-content;
+//       font-size: large;
+//       margin-top: 10%;
+//       margin-left: 50%;
+//     }
+//   </style>
+//   <body>
+//     <div class="headings">
+//       <h2>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h2>
+//       <h3>Proposal Document</h3>
+//     </div>
+//     <div class="top">
+//       <h3 class="headings">Indenter</h3>
+//       <p><b>Requested By :</b>${data.R_Emp_Name}</p>
+//       <p><b>Email :</b> ${data.R_Emp_Email}</p>
+//       <p><b>Item Requested :</b></p>
+//       <p>${data.Item}</p>
+//       <p><b>Reason :</b> ${data.Reason}</p>
+//       <p><b>Date Requested :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+//       <p><b>Quotation Added :</b> ${moment(data1.Quotation_Added).format("DD-MM-YYY hh:mm A")}</p>
+//     </div>
+//     <div class="block">
+//       <h3 class="headings">Department Head - For Recommendation</h3>
+//       <p><b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+//       <p style="white-space: pre-line;">${data.Head_Comments ? data.Head_Comment.length ? data.Head_Comment : "-" : "-"}</p>
+//     </div>
+//     <div class="block">
+//       <h3 class="headings">Manager Accounts - Financial Analysis</h3>
+//       <p><b>Comments Added :</b> ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+//       <p style="white-space: pre-line;">${data1.Comment_Accounts}</p>
+//       </div>
+//     <div class="block">
+//       <h3 class="headings">Manager Adminstration - For Execution</h3>
+//       <p><b>Comments Added :</b>${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+//       <p style="white-space: pre-line;">${data1.Comment_Admin}</p>
 
-    </div>
-    <div class="signature">
-      <h3>_______________________________</p>
-      <h3 style="text-align: center;">Director Signature</h3>
-    </div>
-  </body>
-</html>
-
-          
-          
-          `}
-
-          html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
-            console.log("PDF Buffer:-", pdfBuffer);
-            // bufferToStream(pdfBuffer).pipe(res);
-            res.send(pdfBuffer);
-          });
-        }
-      });
-    }
-  });
-
-  // let file = { content: data }
-  // let file1 = {
-  //   content: `
-
-  //         <html>
-  //     <style>
-  //       .top {
-  //         margin-top: 5%;
-  //         border: 5px solid black;
-  //         vertical-align: middle;
-  //         margin-left: 5%;
-  //         margin-right: 5%;
-  //         padding: 2.5%;
-  //       }
-  //       .block {
-  //         border: 5px solid black;
-  //         vertical-align: middle;
-  //         margin-left: 5%;
-  //         margin-right: 5%;
-  //         padding: 2.5%;
-  //         border-top: none;
-  //       }
-  //       .headings {
-  //         text-align: center;
-  //       }
-  //     </style>
-  //     <body>
-  //       <div class="headings">
-  //         <h2>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h2>
-  //         <h3>Proposal Document</h3>
-  //       </div>
-  //       <div class="top">
-  //         <h3 class="headings">Indenter</h3>
-  //         <p>Requested By : atif</p>
-  //         <p>Email : atif.islam@nu.edu.pk</p>
-  //         <p>Item Requested :</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-  //         <p>paper Rim (Qty - 10)</p>
-
-  //         <p>Reason : For Fall 2021</p>
-  //         <p>Date Requested : 08-September-2021 03:17 PM</p>
-  //         <p>Approved By Head : 08-September-2021 03:36 PM</p>
-  //       </div>
-  //       <div class="block">
-  //         <h3 class="headings">Department Head - For Recommendation</h3>
-  //         <p>Hello</p>
-  //         <p>Hello</p>
-  //         <p>Hello</p>
-  //       </div>
-  //       <div class="block">
-  //         <h3 class="headings">Manager Accounts - Financial Analysis</h3>
-  //         <p>Budget Head:</p>
-  //         <p>General Stationery</p>
-  //         <p>Demand: October Demand</p>
-  //         <p>Purchase Committee</p>
-  //         <p>Principal Approval</p>
-  //       </div>
-  //       <div class="block">
-  //         <h3 class="headings">Manager Adminstration - For Execution</h3>
-  //         <p>Budget Head:</p>
-  //         <p>General Stationery</p>
-  //         <p>Demand: October Demand</p>
-  //         <p>Purchase Committee</p>
-  //         <p>Principal Approval</p>
-  //       </div>
-  //     </body>
-  //   </html>
+//     </div>
+//     <div class="signature">
+//       <h3>_______________________________</p>
+//       <h3 style="text-align: center;">Director Signature</h3>
+//     </div>
+//   </body>
+// </html>
 
 
 
-  //       `
+//           `}
+
+//           html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
+//             console.log("PDF Buffer:-", pdfBuffer);
+//             // bufferToStream(pdfBuffer).pipe(res);
+//             res.send(pdfBuffer);
+//           });
+//         }
+//       });
+//     }
+//   });
 
 
 
-  // }
+// });
 
-  // res.setHeader("Content-disposition", "inline; filename=report.pdf");
-  // res.setHeader("Content-type", "application/pdf");
+// app.post("/:id/pdf1", (req, res) => {
+//   Order.findOne({ _id: req.params.id }, (err, data) => {
+//     if (err) {
+//       console.log(err);
+//       res.send({});
+//     } else {
+//       const PDFDocument = require("pdfkit");
+//       const fs = require("fs");
 
+//       console.log("PDF");
+//       var pdfDoc = new PDFDocument();
+//       let filename = req.body.filename;
 
-});
+//       // Stripping special characters
+//       filename = encodeURIComponent(filename) + ".pdf";
+//       // Setting response to 'attachment' (download).
+//       // If you use 'inline' here it will automatically open the PDF
+//       console.log(filename);
+//       // res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
+//       res.setHeader("Content-disposition", "inline; filename=report.pdf");
+//       res.setHeader("Content-type", "application/pdf");
+//       Temp.findOne({ Req_Id: req.params.id }, (err, data1) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//           // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
+//           pdfDoc.info["Title"] = "Report.pdf";
+//           pdfDoc.image("./nav_logo.png", { fit: [450, 150], align: "center" });
+//           pdfDoc.text("\n\n");
+//           pdfDoc
+//             .fillColor("red")
+//             .fontSize(30)
+//             .text("Request Details", { bold: true, align: "center" });
+//           pdfDoc
+//             .fillColor("black")
+//             .fontSize(20)
+//             .font("Helvetica-Bold")
+//             .text("\n\nRequested By : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.R_Emp_Name);
+//           pdfDoc.font("Helvetica-Bold").text("\nEmail : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.R_Emp_Email);
+//           pdfDoc.font("Helvetica-Bold").text("\nItem Requested : ");
+//           pdfDoc.font("Helvetica").text(data.Item);
+//           // pdfDoc
+//           // 	.font("Helvetica-Bold")
+//           // 	.text("\nQuantity Required : ", { continued: true });
+//           // pdfDoc.font("Helvetica").text(data.Quantity);
+//           if (data.Duration.length)
+//             pdfDoc
+//               .font("Helvetica-Bold")
+//               .text("\nDuration : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.Duration);
 
-app.post("/:id/pdf1", (req, res) => {
-  Order.findOne({ _id: req.params.id }, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.send({});
-    } else {
-      const PDFDocument = require("pdfkit");
-      const fs = require("fs");
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nReason : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data.Reason);
 
-      console.log("PDF");
-      var pdfDoc = new PDFDocument();
-      let filename = req.body.filename;
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nDate Requested : ", { continued: true });
+//           pdfDoc
+//             .fillColor("black")
+//             .font("Helvetica")
+//             .text(moment(data.Added).format("DD-MMMM-YYYY hh:mm A"));
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nApproved By Head : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(moment(data.Approved_At).format("DD-MMMM-YYYY hh:mm A"));
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nQuotation Added : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(moment(data.Quotation_Added).format("DD-MMMM-YYYY hh:mm A"));
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Accounts Comments : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data1.Comment_Accounts);
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Accounts Comments Added : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(
+//               moment(data1.Comment_Accounts_Added).format(
+//                 "DD-MMMM-YYYY hh:mm A"
+//               )
+//             );
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Admin Comments : ", { continued: true });
+//           pdfDoc.font("Helvetica").text(data1.Comment_Admin);
+//           pdfDoc
+//             .font("Helvetica-Bold")
+//             .text("\nManager Accounts Comments Added : ", { continued: true });
+//           pdfDoc
+//             .font("Helvetica")
+//             .text(
+//               moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")
+//             );
+//           pdfDoc.text("\n\n\n");
+//           for (var i = 0; i < 50; i++) pdfDoc.text(" ", { continued: true });
+//           for (var i = 0; i < 30; i++)
+//             pdfDoc.text(" ", { underline: true, continued: true });
+//           pdfDoc.text("\n");
+//           for (var i = 0; i < 57; i++) pdfDoc.text(" ", { continued: true });
+//           pdfDoc.text("Signature");
+//           pdfDoc.pipe(res);
+//           pdfDoc.end();
+//           // console.log(pdfDoc);
+//           //   res.pipe(pdfDoc);
+//           // pdfDoc.pipe(res);
 
-      // Stripping special characters
-      filename = encodeURIComponent(filename) + ".pdf";
-      // Setting response to 'attachment' (download).
-      // If you use 'inline' here it will automatically open the PDF
-      console.log(filename);
-      // res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
-      res.setHeader("Content-disposition", "inline; filename=report.pdf");
-      res.setHeader("Content-type", "application/pdf");
-      Temp.findOne({ Req_Id: req.params.id }, (err, data1) => {
-        if (err) {
-          console.log(err);
-        } else {
-          // pdfDoc.pipe(fs.createWriteStream('./report.pdf'))
-          pdfDoc.info["Title"] = "Report.pdf";
-          pdfDoc.image("./nav_logo.png", { fit: [450, 150], align: "center" });
-          pdfDoc.text("\n\n");
-          pdfDoc
-            .fillColor("red")
-            .fontSize(30)
-            .text("Request Details", { bold: true, align: "center" });
-          pdfDoc
-            .fillColor("black")
-            .fontSize(20)
-            .font("Helvetica-Bold")
-            .text("\n\nRequested By : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.R_Emp_Name);
-          pdfDoc.font("Helvetica-Bold").text("\nEmail : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.R_Emp_Email);
-          pdfDoc.font("Helvetica-Bold").text("\nItem Requested : ");
-          pdfDoc.font("Helvetica").text(data.Item);
-          // pdfDoc
-          // 	.font("Helvetica-Bold")
-          // 	.text("\nQuantity Required : ", { continued: true });
-          // pdfDoc.font("Helvetica").text(data.Quantity);
-          if (data.Duration.length)
-            pdfDoc
-              .font("Helvetica-Bold")
-              .text("\nDuration : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.Duration);
+//           // res.download('./report.pdf')
+//           // pdfDoc.pipe(res);
 
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nReason : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data.Reason);
+//           // res.download(pdfDoc);
+//           //   fs.writeFile('report.pdf', pdfDoc,'binary', function(err){
+//           //     if (err) throw err;
+//           //     console.log('Sucessfully saved!');
+//           //     // file = fs.createReadStream('./quotation.pdf')
+//           //     // file.pipe(res)
 
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nDate Requested : ", { continued: true });
-          pdfDoc
-            .fillColor("black")
-            .font("Helvetica")
-            .text(moment(data.Added).format("DD-MMMM-YYYY hh:mm A"));
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nApproved By Head : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(moment(data.Approved_At).format("DD-MMMM-YYYY hh:mm A"));
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nQuotation Added : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(moment(data.Quotation_Added).format("DD-MMMM-YYYY hh:mm A"));
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Accounts Comments : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data1.Comment_Accounts);
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Accounts Comments Added : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(
-              moment(data1.Comment_Accounts_Added).format(
-                "DD-MMMM-YYYY hh:mm A"
-              )
-            );
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Admin Comments : ", { continued: true });
-          pdfDoc.font("Helvetica").text(data1.Comment_Admin);
-          pdfDoc
-            .font("Helvetica-Bold")
-            .text("\nManager Accounts Comments Added : ", { continued: true });
-          pdfDoc
-            .font("Helvetica")
-            .text(
-              moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")
-            );
-          pdfDoc.text("\n\n\n");
-          for (var i = 0; i < 50; i++) pdfDoc.text(" ", { continued: true });
-          for (var i = 0; i < 30; i++)
-            pdfDoc.text(" ", { underline: true, continued: true });
-          pdfDoc.text("\n");
-          for (var i = 0; i < 57; i++) pdfDoc.text(" ", { continued: true });
-          pdfDoc.text("Signature");
-          pdfDoc.pipe(res);
-          pdfDoc.end();
-          // console.log(pdfDoc);
-          //   res.pipe(pdfDoc);
-          // pdfDoc.pipe(res);
-
-          // res.download('./report.pdf')
-          // pdfDoc.pipe(res);
-
-          // res.download(pdfDoc);
-          //   fs.writeFile('report.pdf', pdfDoc,'binary', function(err){
-          //     if (err) throw err;
-          //     console.log('Sucessfully saved!');
-          //     // file = fs.createReadStream('./quotation.pdf')
-          //     // file.pipe(res)
-
-          //     // fs.unlinkSync('./quotation.pdf')
-          // });
-        }
-      });
-    }
-  });
-});
+//           //     // fs.unlinkSync('./quotation.pdf')
+//           // });
+//         }
+//       });
+//     }
+//   });
+// });
 
 // app.get('/:id/pdf', (req,res)=>{
 //   console.log("PDF :",req.params.id)

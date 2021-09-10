@@ -1,33 +1,43 @@
 <html>
   <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: small;
+    }
     .top {
       margin-top: 5%;
       border: 5px solid black;
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
-      padding: 2.5%;
+      padding: 1.5%;
     }
     p {
       margin: 0;
-    word-wrap:break-word 
+      word-wrap: break-word;
     }
     .block {
       border: 5px solid black;
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
-      padding: 2.5%;
+      padding: 1.5%;
       border-top: none;
+    }
+    .top-headings {
+      text-align: center;
+      margin-top: 5%;
     }
     .headings {
       text-align: center;
+      margin-top: 0;
     }
-    .signature{
-      width: fit-content;
-      font-size: large;
+    .signature {
+      width: auto;
+      border-top: 2px solid black;
       margin-top: 10%;
       margin-left: 50%;
+      padding-inline: 6%;
     }
   </style>
   <body>
@@ -37,42 +47,116 @@
     </div>
     <div class="top">
       <h3 class="headings">Indenter</h3>
-      <p><b>Requested By :</b>B atif</p>
-      <p><b>Email :</b> atif.islam@nu.edu.pk</p>
+      <p><b>Requested By :</b>${data.R_Emp_Name}</p>
+      <p><b>Email :</b> ${data.R_Emp_Email}</p>
       <p><b>Item Requested :</b></p>
-      <p>paper Rim (Qty - 10)</p>
-      <p>paper Rim (Qty - 10)</p>
-      <p>paper Rim (Qty - 10)</p>
-      <p>paper Rim (Qty - 10)</p>
-      <p>paper Rim (Qty - 10)</p>
-      <p>paper Rim (Qty - 10)</p>
-      <p><b>Reason :</b> For Fall 2021</p>
-      <p><b>Date Requested :</b> 08-September-2021 03:17 PM</p>
-      <p><b>Quotation Added :</b> 09-September-2021 03:17 PM</p>
+      <p>${data.Item}</p>
+      <p><b>Reason :</b> ${data.Reason}</p>
+      <p>
+        <b>Date Requested :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm
+        A")}
+      </p>
+      <p>
+        <b>Quotation Added :</b>
+        ${moment(data1.Quotation_Added).format("DD-MM-YYY hh:mm A")}
+      </p>
     </div>
     <div class="block">
       <h3 class="headings">Department Head - For Recommendation</h3>
-      <p><b>Approved By Head :</b> 08-September-2021 03:36 PM</p>
-      <p>HHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQ</p>
+      <p>
+        <b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY
+        hh:mm A")}
+      </p>
+      <p style="white-space: pre-line">
+        ${data.Head_Comments ? data.Head_Comment.length ? data.Head_Comment :
+        "-" : "-"}
+      </p>
     </div>
     <div class="block">
       <h3 class="headings">Manager Accounts - Financial Analysis</h3>
-      <p><b>Comments Added :</b> 08-September-2021 03:41 PM</p>
-      <p>Budget Head:</p>
-      <p>General Stationery</p>
-      <p>Demand: October Demand</p>
-      <p>Purchase Committee</p>
-      <p>Principal Approval</p>
+      <p>
+        <b>Comments Added :</b>
+        ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}
+      </p>
+      <p style="white-space: pre-line">${data1.Comment_Accounts}</p>
     </div>
     <div class="block">
       <h3 class="headings">Manager Adminstration - For Execution</h3>
-      <p><b>Comments Added :</b>08-September-2021 03:41 PM</p>
-      <p><p>HHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQHHHHHHHHHHQ</p></p>
-      
+      <p>
+        <b>Comments Added :</b
+        >{{moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}}
+      </p>
+      <p style="white-space: pre-line">${data1.Comment_Admin}</p>
     </div>
     <div class="signature">
-      <h3>_______________________________</p>
-      <h3 style="text-align: center;">Director Signature</h3>
+      <h2 style="text-align: center">Director Signature</h2>
     </div>
+    <table class="">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Opening Balance</th>
+          <th>Purchasing Qty</th>
+          <th>Total</th>
+          <th>Issued</th>
+          <th>Balance</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>1</td>
+          <td>Black Pen<br /></td>
+          <td>0</td>
+          <td>69</td>
+          <td>69</td>
+          <td>21</td>
+          <td>48</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>2</td>
+          <td>Computer<br /></td>
+          <td>0</td>
+          <td>5</td>
+          <td>5</td>
+          <td>5</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>8</td>
+          <td>*Paper Rim<br /></td>
+          <td>0</td>
+          <td>100</td>
+          <td>100</td>
+          <td>0</td>
+          <td>110</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>9</td>
+          <td>Paper<br /></td>
+          <td>0</td>
+          <td>7</td>
+          <td>7</td>
+          <td>0</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>10</td>
+          <td>BULB -LED 13 WATT - Deleted<br /></td>
+          <td>0</td>
+          <td>100</td>
+          <td>100</td>
+          <td>35</td>
+          <td>65</td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
