@@ -220,7 +220,12 @@ function bufferToStream(buffer) {
 app.post("/:id/pdf", (req, res) => {
   var pdf = require('html-pdf');
 
-  let options = { format: 'A4' };
+  let options = {
+    "format": 'A4',
+    "zoomFactor": "1",
+
+    "type": "pdf",
+  };
   var html = "";
   Order.findOne({ _id: req.params.id }, (err, data) => {
     if (err)
@@ -243,19 +248,24 @@ app.post("/:id/pdf", (req, res) => {
     }
     .top {
       margin-top: 5%;
-      border: 5px solid black;
+      border: 2px solid black;
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
       padding: 1.5%;
       
     }
+    b,
+    h2,
+    h3 {
+      font-weight: 450;
+    }
     p {
       margin: 0;
     word-wrap:break-word
     }
     .block {
-      border: 5px solid black;
+      border: 2px solid black;
       vertical-align: middle;
       margin-left: 5%;
       margin-right: 5%;
@@ -2340,7 +2350,7 @@ app.post("/issue_note_pdf", (req, res) => {
         id: "item_number",
         header: "Item ID",
         align: "center",
-        width: 50,
+        width: 40,
       },
       {
         id: "item",
@@ -2368,18 +2378,19 @@ app.post("/issue_note_pdf", (req, res) => {
 
   pdf.addPage();
 
-  pdf.fontSize(30).text("Issue Note", { bold: true, align: "center" });
+  pdf.fontSize(16).text("Issue Note", { bold: true, align: "center" });
 
   pdf
-    .fontSize(15)
+    .fontSize(12)
     .text("\n\nDate : " + moment(req.body.date).format("DD-MMMM-YYYY hh:mm A"));
   if (req.body.request_id)
-    pdf.fontSize(15).text("\nRequest ID : " + req.body.request_id);
-  pdf.fontSize(15).text("\nDepartment : " + req.body.department);
+    pdf.fontSize(12).text("\nRequest ID : " + req.body.request_id);
+  pdf.fontSize(12).text("\nDepartment : " + req.body.department);
 
   pdf.text("\n\n");
   pdf.fontSize(11);
   var items = req.body.items;
+  console.log("items", req.body.items);
   var data = [];
   for (let i = 0; i < items.length; i++) {
     data.push({ item_number: " ", item: " ", quantity: " ", reason: " " });
@@ -2499,7 +2510,7 @@ app.post("/receive_note_pdf", (req, res) => {
         id: "item_number",
         header: "Item ID",
         align: "center",
-        width: 50,
+        width: 40,
       },
       {
         id: "item",
@@ -2527,14 +2538,14 @@ app.post("/receive_note_pdf", (req, res) => {
 
   pdf.addPage();
 
-  pdf.fontSize(30).text("Recieve Note", { bold: true, align: "center" });
+  pdf.fontSize(16).text("Recieve Note", { bold: true, align: "center" });
 
   pdf
-    .fontSize(15)
+    .fontSize(12)
     .text("\n\nDate : " + moment(req.body.date).format("DD-MMMM-YYYY hh:mm A"));
   if (req.body.request_id)
-    pdf.fontSize(15).text("\nRequest ID : " + req.body.request_id);
-  pdf.fontSize(15).text("\nDepartment : " + req.body.department);
+    pdf.fontSize(12).text("\nRequest ID : " + req.body.request_id);
+  pdf.fontSize(12).text("\nDepartment : " + req.body.department);
 
   pdf.text("\n\n");
   pdf.fontSize(11);
@@ -2642,7 +2653,7 @@ app.post("/return_note_pdf", (req, res) => {
         id: "item_number",
         header: "Item ID",
         align: "center",
-        width: 50,
+        width: 40,
       },
       {
         id: "item",
@@ -2670,14 +2681,14 @@ app.post("/return_note_pdf", (req, res) => {
 
   pdf.addPage();
 
-  pdf.fontSize(30).text("Return Note", { bold: true, align: "center" });
+  pdf.fontSize(16).text("Return Note", { bold: true, align: "center" });
 
   pdf
-    .fontSize(15)
+    .fontSize(12)
     .text("\n\nDate : " + moment(req.body.date).format("DD-MMMM-YYYY hh:mm A"));
   if (req.body.request_id)
-    pdf.fontSize(15).text("\nRequest ID : " + req.body.request_id);
-  pdf.fontSize(15).text("\nDepartment : " + req.body.department);
+    pdf.fontSize(12).text("\nRequest ID : " + req.body.request_id);
+  pdf.fontSize(12).text("\nDepartment : " + req.body.department);
 
   pdf.text("\n\n");
   pdf.fontSize(11);
@@ -2810,15 +2821,16 @@ app.post("/productledgerpdf", (req, res) => {
   doc
     .moveDown()
     .table(
-      "Product Ledger of " +
-      req.body.product_name +
+
+      req.body.product_name + " ( id : " + req.body.id + " )",
       " from " +
       moment(new Date(req.body.start)).format("DD-MMMM-YYYY") +
       " to " +
       moment(new Date(req.body.end)).format("DD-MMMM-YYYY"),
+      req.body.balance,
       table0,
-      100,
-      200
+      70,
+      180
     );
 
   doc.pipe(res);

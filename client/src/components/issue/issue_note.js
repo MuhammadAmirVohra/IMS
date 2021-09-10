@@ -239,10 +239,10 @@ const IssueNote = () => {
                 e.target.value === "-"
                   ? setreqid(null)
                   : setreqid(
-                      requests[
-                        requests.map((e) => e._id).indexOf(e.target.value)
-                      ].Order_ID
-                    );
+                    requests[
+                      requests.map((e) => e._id).indexOf(e.target.value)
+                    ].Order_ID
+                  );
               }}
             >
               <option value={null} selected>

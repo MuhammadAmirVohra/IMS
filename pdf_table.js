@@ -3,20 +3,23 @@
 const PDFDocument = require('pdfkit');
 
 class PDFDocumentWithTables extends PDFDocument {
-    constructor (options) {
+    constructor(options) {
         super(options);
     }
 
-    table (product, table, arg0, arg1, arg2) {
-        let startX = this.page.margins.left, startY = this.y;
+    table(product, date, balance, table, arg0, arg1, arg2) {
+        let startX = this.x, startY = this.y;
         let options = {};
         this
-        .font("Helvetica-Bold")
-        .fontSize(20)
-        .text("\n"  + product , {underline : true, align : 'center'})
-        .fontSize(10)
-        .font('Helvetica');
-        
+            .font("Helvetica-Bold")
+            .fontSize(12)
+            .text("Product Ledger\n", { underline: true, align: 'center' })
+            .text(product + "\n", { underline: true, align: 'center' })
+            .text(date, { underline: true, align: 'center' })
+            .text("\nProduct Balance  : " + balance, { align: 'center' })
+            .fontSize(10)
+            .font('Helvetica');
+
         if ((typeof arg0 === 'number') && (typeof arg1 === 'number')) {
             startX = arg0;
             startY = arg1;
@@ -32,8 +35,8 @@ class PDFDocumentWithTables extends PDFDocument {
         const rowSpacing = options.rowSpacing || 5;
         const usableWidth = options.width || (this.page.width - this.page.margins.left - this.page.margins.right);
 
-        const prepareHeader = options.prepareHeader || (() => {});
-        const prepareRow = options.prepareRow || (() => {});
+        const prepareHeader = options.prepareHeader || (() => { });
+        const prepareRow = options.prepareRow || (() => { });
         const computeRowHeight = (row) => {
             let result = 0;
 
@@ -118,6 +121,7 @@ class PDFDocumentWithTables extends PDFDocument {
 
         this.x = startX;
         this.moveDown();
+
 
         return this;
     }

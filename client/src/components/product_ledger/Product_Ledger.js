@@ -12,10 +12,10 @@ const ProductLedger = () => {
     const [Product, set_Product] = useState(null);
     const [end_Date, set_End_Date] = useState(null);
     const [balance, set_balance] = useState(null);
-
+    const [button_text, setbutton] = useState("Find");
     const [allitems, setallitems] = useState([]);
 
-    const arr = ['Date', 'Quantity', 'Status', 'Department', 'Reason']
+    const arr = ['Date', 'Quantity', 'Status', 'Department', 'Reason'];
 
 
 
@@ -50,7 +50,9 @@ const ProductLedger = () => {
                 data: allRecords,
                 start: start_Date,
                 end: end_Date,
-                product_name: allitems[allitems.map(e => e._id).indexOf(Product)].Item_Name
+                product_name: allitems[allitems.map(e => e._id).indexOf(Product)].Item_Name,
+                balance: balance,
+                id: allitems[allitems.map(e => e._id).indexOf(Product)].Item_ID
             }),
         }).then(async res => {
             if (res.status === 200) {
@@ -73,7 +75,9 @@ const ProductLedger = () => {
     }
 
     const Submit = (event) => {
+
         event.preventDefault();
+        setbutton("Finding..");
         if (start_Date && end_Date && Product)
             axios.post(`${API_URL}/generateproductledger`, { start_date: start_Date, product: Product, end_date: end_Date, product_name: allitems[allitems.map(e => e._id).indexOf(Product)].Item_Name }).then((res) => {
                 if (res.data.code === 200) {
@@ -88,6 +92,8 @@ const ProductLedger = () => {
             });
         else
             alert("Values Missing")
+
+        setbutton("Find");
     }
 
 
@@ -125,7 +131,7 @@ const ProductLedger = () => {
                         </Form.Group>
 
                         <Form.Group as={Col} className="mt-4">
-                            <Button className="Btn Date_Button ml-2" type='Submit'>Find</Button>
+                            <Button className="Btn Date_Button ml-2" type='Submit'>{button_text}</Button>
                         </Form.Group>
 
                     </Form.Row>
