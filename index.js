@@ -16,6 +16,7 @@ const uri =
   "mongodb+srv://inventory:inventory@request-records.tnggq.mongodb.net/request-records?retryWrites=true&w=majority";
 var logged_in_user = null;
 var multer = require("multer");
+// const handlebars = require('handlebars');
 const app = express();
 const mailer = require("./mail");
 app.use(express.static("public"));
@@ -27,6 +28,11 @@ app.use(
     extended: true,
   })
 );
+
+// const hbs = handlebars.create({ defaultLayout: "main" });
+// app.engine('handlebars', hbs.engine);
+// app.set('view engine', 'handlebars');
+
 
 
 // app.use(
