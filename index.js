@@ -258,7 +258,7 @@ app.post("/:id/pdf", (req, res) => {
       font-weight: 550;
     }
     b {
-      font-weight: 500;
+      font-weight: 550;
     }
     p {
       margin: 0;
@@ -291,8 +291,8 @@ app.post("/:id/pdf", (req, res) => {
   </style>
   <body>
     <div class="top-headings">
-      <h2>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h2>
-      <h3>Proposal Document</h3>
+      <h3>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h3>
+      <h4>Proposal Document</h4>
     </div>
     <div class="top">
       <h4 class="headings">Indenter</h4>
@@ -310,7 +310,7 @@ app.post("/:id/pdf", (req, res) => {
           </p>
     </div >
     <div class="block">
-      <h4 class="headings bold">Department Head - For Recommendation</h4>
+      <h4 class="headings">Department Head - For Recommendation</h4>
       <p>
         <b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh: mm A")}
       </p>
@@ -319,7 +319,7 @@ app.post("/:id/pdf", (req, res) => {
               </p>
     </div >
     <div class="block">
-      <span class="headings bold">Manager Accounts - Financial Analysis</span>
+      <h4 class="headings">Manager Accounts - Financial Analysis</h4>
       <p>
         <b>Comments Added :</b>
         ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}
@@ -327,7 +327,7 @@ app.post("/:id/pdf", (req, res) => {
       <p style="white-space: pre-line">${data1.Comment_Accounts}</p>
     </div>
     <div class="block">
-      <h4 class="headings bold">Manager Adminstration - For Execution</h4>
+      <h4 class="headings">Manager Adminstration - For Execution</h4>
       <p>
         <b>Comments Added :</b
         >${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}
