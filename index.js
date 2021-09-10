@@ -217,11 +217,116 @@ function bufferToStream(buffer) {
 }
 
 
-
-
-
-
 app.post("/:id/pdf", (req, res) => {
+  var pdf = require('html-pdf');
+
+  let options = { format: 'A4' };
+  var html = "";
+  Order.findOne({ _id: req.params.id }, (err, data) => {
+    if (err)
+      console.log(err);
+    else {
+      Temp.findOne({ Req_Id: req.params.id }, (err, data1) => {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          console.log(data);
+          console.log(data1);
+          html =
+            `
+            <html>
+  <style>
+    .top {
+      margin-top: 5%;
+      border: 5px solid black;
+      vertical-align: middle;
+      margin-left: 5%;
+      margin-right: 5%;
+      padding: 2.5%;
+    }
+    p {
+      margin: 0;
+    word-wrap:break-word
+    }
+    .block {
+      border: 5px solid black;
+      vertical-align: middle;
+      margin-left: 5%;
+      margin-right: 5%;
+      padding: 2.5%;
+      border-top: none;
+    }
+    .headings {
+      text-align: center;
+      margin-top : 5%;
+    }
+    .signature{
+      width: fit-content;
+      font-size: large;
+      margin-top: 10%;
+      margin-left: 50%;
+    }
+  </style>
+  <body>
+    <div class="headings">
+      <h2>NATIONAL UNIVERSITY OF COMPUTER & EMERGING SCIENCE</h2>
+      <h3>Proposal Document</h3>
+    </div>
+    <div class="top">
+      <h3 class="headings">Indenter</h3>
+      <p><b>Requested By :</b>${data.R_Emp_Name}</p>
+      <p><b>Email :</b> ${data.R_Emp_Email}</p>
+      <p><b>Item Requested :</b></p>
+      <p>${data.Item}</p>
+      <p><b>Reason :</b> ${data.Reason}</p>
+      <p><b>Date Requested :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+      <p><b>Quotation Added :</b> ${moment(data1.Quotation_Added).format("DD-MM-YYY hh:mm A")}</p>
+    </div>
+    <div class="block">
+      <h3 class="headings">Department Head - For Recommendation</h3>
+      <p><b>Approved By Head :</b> ${moment(data.Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+      <p style="white-space: pre-line;">${data.Head_Comments ? data.Head_Comment.length ? data.Head_Comment : "-" : "-"}</p>
+    </div>
+    <div class="block">
+      <h3 class="headings">Manager Accounts - Financial Analysis</h3>
+      <p><b>Comments Added :</b> ${moment(data1.Comment_Accounts_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+      <p style="white-space: pre-line;">${data1.Comment_Accounts}</p>
+      </div>
+    <div class="block">
+      <h3 class="headings">Manager Adminstration - For Execution</h3>
+      <p><b>Comments Added :</b>${moment(data1.Comment_Admin_Added).format("DD-MMMM-YYYY hh:mm A")}</p>
+      <p style="white-space: pre-line;">${data1.Comment_Admin}</p>
+
+    </div>
+    <div class="signature">
+      <h3>_______________________________</p>
+      <h3 style="text-align: center;">Director Signature</h3>
+    </div>
+  </body>
+</html>
+
+          
+          
+          `;
+
+          pdf.create(html).toBuffer(function (err, buffer) {
+            res.send(buffer);
+          });
+
+
+          // pdf.create(html[, options], function (err, buffer) {
+          //   // stream.pipe(fs.createWriteStream('./foo.pdf'));
+          //   res.send(buffer);
+          // });
+        }
+      });
+    }
+  });
+});
+
+
+app.post("/:id/pdf2", (req, res) => {
   var html_to_pdf = require('html-pdf-node');
 
   let options = { format: 'A4' };
