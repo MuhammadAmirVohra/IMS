@@ -29,9 +29,6 @@ app.use(
   })
 );
 
-const hbs = handlebars.create({defaultLayout : "main"});
-app.engine('handlebars', handlebars.engine);
-app.set('view engine', 'handlebars')
 
 // app.use(
 //   cors({
